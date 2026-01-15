@@ -1,0 +1,14 @@
+---
+import { getEntry } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const entry = await getEntry("pages", "en/principles");
+if (!entry) throw new Error("Content not found: en/principles");
+const { Content } = await entry.render();
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description} lang="en">
+  <article class="prose prose-lg max-w-none">
+    <Content />
+  </article>
+</BaseLayout>

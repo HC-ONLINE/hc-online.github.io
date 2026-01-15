@@ -1,0 +1,68 @@
+---
+import ThemeToggle from "@components/ThemeToggle.astro";
+
+interface Props {
+  lang: string;
+}
+
+const currentPath = Astro.url.pathname;
+const baseURL = import.meta.env.BASE_URL;
+
+const { lang } = Astro.props;
+---
+
+<header
+  class="border-b border-border"
+  style="border-color: var(--color-border);"
+>
+  <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+    <a
+      href={`${baseURL}/${lang}`}
+      class="text-xl font-bold hover:text-accent transition-colors"
+    >
+      {lang === "es" ? "Andrés Henríquez" : "Andrés Henríquez"}
+    </a>
+
+    <div class="flex items-center gap-6">
+      <a
+        href={`${baseURL}/${lang}`}
+        class={`hover:text-accent transition-colors ${currentPath === `${baseURL}/${lang}` || currentPath === `${baseURL}/${lang}/` ? "text-accent font-semibold" : ""}`}
+      >
+        {lang === "es" ? "Inicio" : "Home"}
+      </a>
+      <a
+        href={`${baseURL}/${lang}/projects`}
+        class={`hover:text-accent transition-colors ${currentPath.includes("/projects") ? "text-accent font-semibold" : ""}`}
+      >
+        {lang === "es" ? "Proyectos" : "Projects"}
+      </a>
+      <a
+        href={`${baseURL}/${lang}/principles`}
+        class={`hover:text-accent transition-colors ${currentPath.includes("/principles") ? "text-accent font-semibold" : ""}`}
+      >
+        {lang === "es" ? "Principios" : "Principles"}
+      </a>
+
+      <!-- Language Switcher -->
+      <div class="flex items-center gap-2 ml-4 pl-4 border-l border-border">
+        <a
+          href={currentPath.replace(`/${lang}`, "/es")}
+          class={`px-2 py-1 rounded hover:bg-muted transition-colors ${lang === "es" ? "bg-muted font-semibold" : ""}`}
+          aria-label="Español"
+        >
+          ES
+        </a>
+        <a
+          href={currentPath.replace(`/${lang}`, "/en")}
+          class={`px-2 py-1 rounded hover:bg-muted transition-colors ${lang === "en" ? "bg-muted font-semibold" : ""}`}
+          aria-label="English"
+        >
+          EN
+        </a>
+      </div>
+
+      <!-- Theme Toggle -->
+      <ThemeToggle />
+    </div>
+  </nav>
+</header>

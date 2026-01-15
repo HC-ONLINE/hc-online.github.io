@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  lang: "es" | "en";
+}
+
+const { title, description, lang } = Astro.props;
+
+import "@styles/global.css";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    <!-- Script inline para evitar flash del tema -->
+    <script is:inline>
+      (function () {
+        function getTheme() {
+          if (typeof localStorage !== "undefined") {
+            return localStorage.getItem("theme") || "auto";
+          }
+          return "auto";
+        }
+
+        function applyTheme(theme) {
+          const html = document.documentElement;
+
+          if (theme === "dark") {
+            html.classList.remove("light");
+            html.classList.add("dark");
+          } else if (theme === "light") {
+            html.classList.remove("dark");
+            html.classList.add("light");
+          } else {
+            // Auto: remover ambas clases y usar preferencia del sistema
+            html.classList.remove("dark", "light");
+          }
+        }
+
+        // Aplicar tema inmediatamente
+        applyTheme(getTheme());
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen">
+    <Header lang={lang} />
+
+    <main class="container mx-auto px-4 py-12 max-w-4xl">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+  </body>
+</html>

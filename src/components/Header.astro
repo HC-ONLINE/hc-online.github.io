@@ -12,7 +12,7 @@ const { lang } = Astro.props;
 ---
 
 <header
-  class="border-b border-border"
+  class="sticky top-0 z-50 border-b border-border"
   style="border-color: var(--color-border);"
 >
   <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -20,7 +20,7 @@ const { lang } = Astro.props;
       href={`${baseURL}/${lang}`}
       class="text-xl font-bold hover:text-accent transition-colors"
     >
-      {lang === "es" ? "Andrés Henríquez" : "Andrés Henríquez"}
+      HC-ARCHITECTURE
     </a>
 
     <div class="flex items-center gap-6">

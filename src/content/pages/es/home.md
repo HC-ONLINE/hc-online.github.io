@@ -22,23 +22,23 @@ Trabajo con un stack orientado a backend seguro, automatización y frontend mode
 
 ### ***Lenguajes y frameworks***
 
-- ***Python***: scripting, scraping responsable, automatización y herramientas de análisis.
+- ***Python***: Scripting, scraping responsable, automatización y herramientas de análisis.
 
 - ***Java + Spring Boot***: APIs REST, autenticación/autorización segura, modelos de seguridad (JWT vs Sesiones).
 
 ### ***Frontend y UI***
 
-***Astro + Tailwind CSS***: arquitectura frontend CSS-first enfocada en escalabilidad y consistencia visual.
+***Astro + Tailwind CSS***: Arquitectura frontend CSS-first enfocada en escalabilidad y consistencia visual.
 
 ### ***DevOps y despliegue***
 
-***Docker*** para contenerización y entornos consistentes.
+***Docker***: Contenerización y entornos consistentes.
 
-***GitHub Actions*** para automatización de pruebas, integración continua y despliegue.
+***GitHub Actions*** Automatización de pruebas, integración continua y despliegue.
 
 ### ***Control de versiones y colaboración***
 
-***Git*** y ***GitHub*** para flujos de trabajo colaborativos (issues, Pull Requests) para calidad de código y trazabilidad.
+***Git*** y ***GitHub***: Flujos de trabajo colaborativos (issues, Pull Requests) para calidad de código y trazabilidad.
 
 ---
 

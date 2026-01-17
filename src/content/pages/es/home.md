@@ -42,4 +42,4 @@ Trabajo con un stack orientado a backend seguro, automatización y frontend mode
 
 ---
 
-Explora mis [proyectos](/es/projects) o conoce mis [principios técnicos](/es/principles).
+Explora mis [proyectos](es/projects) o conoce mis [principios técnicos](es/principles).

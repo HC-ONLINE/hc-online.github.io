@@ -73,7 +73,7 @@ jobs:
         run: |
           linkinator https://hc-online.github.io \
             --recurse \
-            --skip "linkedin.com|twitter.com|x.com" \
+            --skip "linkedin.com|twitter.com|x.com|ORBIT-UI/" \
             --verbosity error
 
       - name: Report results

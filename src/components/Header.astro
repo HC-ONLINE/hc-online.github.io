@@ -17,7 +17,7 @@ const { lang } = Astro.props;
 >
   <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
     <a
-      href={`${baseURL}/${lang}`}
+      href={`${baseURL}`}
       class="text-xl font-bold hover:text-accent transition-colors"
     >
       HC-ARCHITECTURE
@@ -25,19 +25,19 @@ const { lang } = Astro.props;
 
     <div class="flex items-center gap-6">
       <a
-        href={`${baseURL}/${lang}`}
-        class={`hover:text-accent transition-colors ${currentPath === `${baseURL}/${lang}` || currentPath === `${baseURL}/${lang}/` ? "text-accent font-semibold" : ""}`}
+        href={`${lang}`}
+        class={`hover:text-accent transition-colors ${currentPath === `${lang}` || currentPath === `${lang}/` ? "text-accent font-semibold" : ""}`}
       >
         {lang === "es" ? "Inicio" : "Home"}
       </a>
       <a
-        href={`${baseURL}/${lang}/projects`}
+        href={`${lang}/projects`}
         class={`hover:text-accent transition-colors ${currentPath.includes("/projects") ? "text-accent font-semibold" : ""}`}
       >
         {lang === "es" ? "Proyectos" : "Projects"}
       </a>
       <a
-        href={`${baseURL}/${lang}/principles`}
+        href={`${lang}/principles`}
         class={`hover:text-accent transition-colors ${currentPath.includes("/principles") ? "text-accent font-semibold" : ""}`}
       >
         {lang === "es" ? "Principios" : "Principles"}

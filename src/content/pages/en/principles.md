@@ -131,4 +131,4 @@ The impact of software matters.
 
 ---
 
-These principles guide all my [projects](https://www.google.com/search?q=projects).
+These principles guide all my [projects](/en/projects).

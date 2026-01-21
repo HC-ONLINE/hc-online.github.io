@@ -130,4 +130,4 @@ El impacto del software importa.
 
 ---
 
-Estos principios guían todos mis [proyectos](projects).
+Estos principios guían todos mis [proyectos](/es/projects).

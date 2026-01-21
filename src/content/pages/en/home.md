@@ -42,4 +42,4 @@ I work with a stack oriented toward secure backend development, automation, and 
 
 ---
 
-Explore my [projects](en/projects) or learn about my [technical principles](en/principles).
+Explore my [projects](/en/projects) or learn about my [technical principles](/en/principles).

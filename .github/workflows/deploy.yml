@@ -71,7 +71,7 @@ jobs:
 
       - name: Check links
         run: |
-          linkinator https://HC-ONLINE.github.io/HC-Architecture \
+          linkinator https://hc-online.github.io \
             --recurse \
             --skip "linkedin.com|twitter.com|x.com" \
             --verbosity error

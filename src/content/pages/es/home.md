@@ -30,7 +30,7 @@ Trabajo con un stack orientado a backend seguro, automatización y frontend mode
 
 **_Astro + Tailwind CSS_**: Arquitectura frontend CSS-first enfocada en escalabilidad y consistencia visual.
 
-- [Ver demostraciones y ejemplos listos](hc-online.github.io/DemoFactory/)
+<a href="https://hc-online.github.io/DemoFactory/es" target="_blank" rel="noopener noreferrer">Ver demostraciones y ejemplos listos</a>
 
 ### **_DevOps y despliegue_**
 

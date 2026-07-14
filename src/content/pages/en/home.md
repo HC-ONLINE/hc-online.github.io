@@ -30,7 +30,7 @@ I work with a stack oriented toward secure backend development, automation, and 
 
 **_Astro + Tailwind_**: CSS-first frontend architecture focused on scalability and visual consistency.
 
-- [View demos and examples](hc-online.github.io/DemoFactory/)
+<a href="https://hc-online.github.io/DemoFactory/en" target="_blank" rel="noopener noreferrer">View demos and examples</a>
 
 ### **_DevOps and deployment_**
 

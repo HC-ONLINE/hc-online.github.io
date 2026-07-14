@@ -7,7 +7,7 @@ description: "Backend development, security and systems portfolio"
 
 I am a developer and researcher focused on web application security and architecture. I am passionate about building practical, elegant tools for auditing, orchestration, and maintainable software design.
 
-## ***What I do***
+## **_What I do_**
 
 I focus on building solutions that:
 
@@ -16,29 +16,31 @@ I focus on building solutions that:
 - Are sustainable and reusable, featuring clear logic and justified dependencies.
 - Integrate DevOps practices with automation and reproducible deployments.
 
-## ***Tecnical focus***
+## **_Tecnical focus_**
 
 I work with a stack oriented toward secure backend development, automation, and modern frontend. I combine languages and tools that optimize both performance and long-term maintenance.
 
-### ***Languages ​​and frameworks***
+### **_Languages ​​and frameworks_**
 
-- ***Python***: Scripting, responsible scraping, automation and analysis tools.
+- **_Python_**: Scripting, responsible scraping, automation and analysis tools.
 
-- ***Java + Spring Boot***: REST APIs, secure authentication/authorization, security models (JWT vs Sessions)
+- **_Java + Spring Boot_**: REST APIs, secure authentication/authorization, security models (JWT vs Sessions)
 
-### ***Frontend and UI***
+### **_Frontend and UI_**
 
-***Astro + Tailwind***: CSS-first frontend architecture focused on scalability and visual consistency.
+**_Astro + Tailwind_**: CSS-first frontend architecture focused on scalability and visual consistency.
 
-### ***DevOps and deployment***
+- [View demos and examples](hc-online.github.io/DemoFactory/)
 
-***Docker***: Containerization and consistent environments.
+### **_DevOps and deployment_**
 
-***GitHub Actions***: Test automation and CI/CD pipelines.
+**_Docker_**: Containerization and consistent environments.
 
-### ***Version Control and Collaboration***
+**_GitHub Actions_**: Test automation and CI/CD pipelines.
 
-***Git*** and ***GitHUb***: Collaborative workflows (Issues, Pull Requests) to ensure code quality and traceability.
+### **_Version Control and Collaboration_**
+
+**_Git_** and **_GitHUb_**: Collaborative workflows (Issues, Pull Requests) to ensure code quality and traceability.
 
 ---
 

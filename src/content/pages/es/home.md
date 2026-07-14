@@ -7,7 +7,7 @@ description: "Portfolio de desarrollo backend, seguridad y sistemas"
 
 Soy desarrollador e investigador centrado en seguridad y arquitectura de aplicaciones web. Me apasiona construir herramientas prácticas y elegantes para auditoría, orquestación y diseño de software mantenible.
 
-## ***Qué hago***
+## **_Qué hago_**
 
 Me enfoco en construir soluciones que:
 
@@ -16,29 +16,31 @@ Me enfoco en construir soluciones que:
 - Sean sostenibles y reutilizables con lógica clara y dependencias justificadas.
 - Integren prácticas DevOps con automatización y despliegues reproducibles.
 
-## ***Enfoque técnico***
+## **_Enfoque técnico_**
 
 Trabajo con un stack orientado a backend seguro, automatización y frontend moderno, combinando lenguajes y herramientas que optimizan rendimiento y mantenimiento:
 
-### ***Lenguajes y frameworks***
+### **_Lenguajes y frameworks_**
 
-- ***Python***: Scripting, scraping responsable, automatización y herramientas de análisis.
+- **_Python_**: Scripting, scraping responsable, automatización y herramientas de análisis.
 
-- ***Java + Spring Boot***: APIs REST, autenticación/autorización segura, modelos de seguridad (JWT vs Sesiones).
+- **_Java + Spring Boot_**: APIs REST, autenticación/autorización segura, modelos de seguridad (JWT vs Sesiones).
 
-### ***Frontend y UI***
+### **_Frontend y UI_**
 
-***Astro + Tailwind CSS***: Arquitectura frontend CSS-first enfocada en escalabilidad y consistencia visual.
+**_Astro + Tailwind CSS_**: Arquitectura frontend CSS-first enfocada en escalabilidad y consistencia visual.
 
-### ***DevOps y despliegue***
+- [Ver demostraciones y ejemplos listos](hc-online.github.io/DemoFactory/)
 
-***Docker***: Contenerización y entornos consistentes.
+### **_DevOps y despliegue_**
 
-***GitHub Actions*** Automatización de pruebas, integración continua y despliegue.
+**_Docker_**: Contenerización y entornos consistentes.
 
-### ***Control de versiones y colaboración***
+**_GitHub Actions_** Automatización de pruebas, integración continua y despliegue.
 
-***Git*** y ***GitHub***: Flujos de trabajo colaborativos (issues, Pull Requests) para calidad de código y trazabilidad.
+### **_Control de versiones y colaboración_**
+
+**_Git_** y **_GitHub_**: Flujos de trabajo colaborativos (issues, Pull Requests) para calidad de código y trazabilidad.
 
 ---
 

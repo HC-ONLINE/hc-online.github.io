@@ -1,0 +1,148 @@
+---
+import { getEntry } from "astro:content";
+
+interface Props {
+  lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+
+const entry = await getEntry("sections", `${lang}/philosophy`);
+if (!entry) throw new Error(`Content not found: sections/${lang}/philosophy`);
+const t = entry.data;
+
+const icons: Record<string, string> = {
+  lock: "M12 1a5 5 0 0 0-5 5v4H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5Zm-3 9V6a3 3 0 1 1 6 0v4H9Z",
+  code: "M8.7 4.3a1 1 0 0 1 0 1.4L3.4 11l5.3 5.3a1 1 0 1 1-1.4 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.4 0Zm6.6 0a1 1 0 0 0 0 1.4l5.3 5.3-5.3 5.3a1 1 0 1 0 1.4 1.4l6-6a1 1 0 0 0 0-1.4l-6-6a1 1 0 0 0-1.4 0Z",
+  activity: "M3 12h4l2.5-6.5 5 13L17 12h4",
+};
+---
+
+<section class="section" id="philosophy">
+  <div class="container mx-auto px-4">
+    {/* Section Header */}
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">
+        <span class="gradient-text">{t.title}</span>
+      </h2>
+      <p class="section-subtitle max-w-2xl mx-auto">{t.subtitle}</p>
+    </div>
+
+    {/* Metrics Grid */}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      {
+        t.philosophyMetrics.map((metric, index) => (
+          <div
+            class="glass-card p-6 text-center group"
+            style={`animation-delay: ${index * 0.1}s`}
+          >
+            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2 group-hover:scale-110 transition-transform duration-300">
+              {metric.value}
+            </div>
+            <div class="text-sm text-(--color-text-muted)">{metric.label}</div>
+          </div>
+        ))
+      }
+    </div>
+
+    {/* Principles Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {
+        t.principles.map((principle, index) => (
+          <div
+            class="glass-card p-6 md:p-8 relative group"
+            style={`animation-delay: ${index * 0.15}s`}
+          >
+            {/* Icon */}
+            <div class="w-12 h-12 rounded-xl bg-linear-to-br from-[#00f5d4] to-[#00ff88] flex items-center justify-center text-(--color-bg-primary) mb-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d={icons[principle.icon] ?? icons.code} />
+              </svg>
+            </div>
+
+            {/* Title */}
+            <h3 class="text-xl font-bold text-(--color-text-primary) mb-3">
+              {principle.title}
+            </h3>
+
+            {/* Description */}
+            <p class="text-(--color-text-secondary) leading-relaxed">
+              {principle.description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    margin-bottom: 0;
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    border-color: var(--color-border-accent);
+    box-shadow: 0 0 20px rgba(0, 245, 212, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Stagger animation */
+  .grid > * {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  .grid > *:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .grid > *:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .grid > *:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .grid > *:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

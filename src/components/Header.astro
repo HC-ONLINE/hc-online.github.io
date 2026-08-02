@@ -1,4 +1,5 @@
 ---
+import { getEntry } from "astro:content";
 import ThemeToggle from "@components/ThemeToggle.astro";
 
 interface Props {
@@ -9,60 +10,170 @@ const currentPath = Astro.url.pathname;
 const baseURL = import.meta.env.BASE_URL;
 
 const { lang } = Astro.props;
+
+const entry = await getEntry("sections", `${lang}/header`);
+if (!entry) throw new Error(`Content not found: sections/${lang}/header`);
+const nav = entry.data.nav;
+
+const isHome = currentPath === `/${lang}` || currentPath === `/${lang}/`;
+const homeHref = isHome ? "#" : `/${lang}`;
+
+const navItems = [
+  { href: homeHref, label: nav.home },
+  {
+    href: isHome ? "#projects" : `/${lang}/projects`,
+    label: nav.projects,
+  },
+  { href: isHome ? "#skills" : `/${lang}#skills`, label: nav.skills },
+  { href: isHome ? "#experience" : `/${lang}#experience`, label: nav.experience },
+  { href: isHome ? "#contact" : `/${lang}#contact`, label: nav.contact },
+];
 ---
 
-<header
-  class="sticky top-0 z-50 border-b border-border"
-  style="border-color: var(--color-border);"
->
-  <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
-    <a
-      href={`${baseURL}`}
-      class="text-xl font-bold hover:text-accent transition-colors"
-    >
-      HC-ARCHITECTURE
-    </a>
-
-    <div class="flex items-center gap-6">
+<header class="fixed top-4 left-4 right-4 z-50 md:top-6 md:left-6 md:right-6">
+  <nav class="glass-card px-4 py-3 md:px-6 md:py-4">
+    <div class="flex items-center justify-between">
+      {/* Logo */}
       <a
-        href={`/${lang}`}
-        class={`hover:text-accent transition-colors ${currentPath === `/${lang}` || currentPath === `/${lang}/` ? "text-accent font-semibold" : ""}`}
+        href={`${baseURL}`}
+        class="text-lg md:text-xl font-bold gradient-text hover:opacity-80 transition-opacity"
       >
-        {lang === "es" ? "Inicio" : "Home"}
-      </a>
-      <a
-        href={`/${lang}/projects`}
-        class={`hover:text-accent transition-colors ${currentPath.includes("/projects") ? "text-accent font-semibold" : ""}`}
-      >
-        {lang === "es" ? "Proyectos" : "Projects"}
-      </a>
-      <a
-        href={`/${lang}/principles`}
-        class={`hover:text-accent transition-colors ${currentPath.includes("/principles") ? "text-accent font-semibold" : ""}`}
-      >
-        {lang === "es" ? "Principios" : "Principles"}
+        HC-ARCHITECTURE
       </a>
 
-      <!-- Language Switcher -->
-      <div class="flex items-center gap-2 ml-4 pl-4 border-l border-border">
-        <a
-          href={currentPath.replace(`/${lang}`, "/es")}
-          class={`px-2 py-1 rounded hover:bg-muted transition-colors ${lang === "es" ? "bg-muted font-semibold" : ""}`}
-          aria-label="Español"
-        >
-          ES
-        </a>
-        <a
-          href={currentPath.replace(`/${lang}`, "/en")}
-          class={`px-2 py-1 rounded hover:bg-muted transition-colors ${lang === "en" ? "bg-muted font-semibold" : ""}`}
-          aria-label="English"
-        >
-          EN
-        </a>
+      {/* Desktop Navigation */}
+      <div class="hidden md:flex items-center gap-1">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                currentPath === item.href || currentPath === `${item.href}/`
+                  ? "bg-(--color-bg-card-hover) text-(--color-text-accent)"
+                  : "text-(--color-text-muted) hover:text-(--color-text-primary) hover:bg-(--color-bg-card-hover)"
+              }`}
+            >
+              {item.label}
+            </a>
+          ))
+        }
       </div>
 
-      <!-- Theme Toggle -->
-      <ThemeToggle />
+      {/* Right Section */}
+      <div class="flex items-center gap-2">
+        {/* Language Switcher */}
+        <div
+          class="flex items-center gap-1 px-2 py-1 rounded-lg bg-(--color-bg-tertiary) border border-(--color-border)"
+        >
+          <a
+            href={currentPath.replace(`/${lang}`, "/es")}
+            class={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
+              lang === "es"
+                ? "bg-(--color-text-accent) text-(--color-bg-primary)"
+                : "text-(--color-text-muted) hover:text-(--color-text-primary)"
+            }`}
+            aria-label="Español"
+          >
+            ES
+          </a>
+          <a
+            href={currentPath.replace(`/${lang}`, "/en")}
+            class={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
+              lang === "en"
+                ? "bg-(--color-text-accent) text-(--color-bg-primary)"
+                : "text-(--color-text-muted) hover:text-(--color-text-primary)"
+            }`}
+            aria-label="English"
+          >
+            EN
+          </a>
+        </div>
+
+        <!-- Theme Toggle -->
+        <ThemeToggle />
+
+        {/* Mobile Menu Button */}
+        <button
+          id="mobile-menu-button"
+          class="md:hidden p-2 rounded-lg hover:bg-(--color-bg-card-hover) transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-(--color-text-muted)"
+          >
+            <line x1="4" x2="20" y1="12" y2="12"></line>
+            <line x1="4" x2="20" y1="6" y2="6"></line>
+            <line x1="4" x2="20" y1="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    {/* Mobile Menu */}
+    <div
+      id="mobile-menu"
+      class="hidden md:hidden mt-4 pt-4 border-t border-(--color-border)"
+    >
+      <div class="flex flex-col gap-2">
+        {
+          navItems.map((item) => (
+            <a
+              href={item.href}
+              class={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                currentPath === item.href || currentPath === `${item.href}/`
+                  ? "bg-(--color-bg-card-hover) text-(--color-text-accent)"
+                  : "text-(--color-text-muted) hover:text-(--color-text-primary) hover:bg-(--color-bg-card-hover)"
+              }`}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </div>
     </div>
   </nav>
 </header>
+
+<script>
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  mobileMenuButton?.addEventListener("click", () => {
+    mobileMenu?.classList.toggle("hidden");
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      !mobileMenuButton?.contains(e.target as Node) &&
+      !mobileMenu?.contains(e.target as Node)
+    ) {
+      mobileMenu?.classList.add("hidden");
+    }
+  });
+</script>
+
+<style>
+  .glass-card {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>

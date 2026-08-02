@@ -1,261 +1,580 @@
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @import "tailwindcss";
 
-/* Tokens semánticos - Light Mode (por defecto) */
+/* ============================================
+   HC-ARCHITECTURE PORTFOLIO - DESIGN SYSTEM
+   Dark Mode Elegant / Neon Accents
+   ============================================ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES - DESIGN TOKENS
+   ============================================ */
+
 :root {
-  /* Colores base */
-  --color-surface: #ffffff;
-  --color-surface-muted: #f8f9fa;
-  --color-border: #e9ecef;
+  /* === PRIMARY PALETTE === */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #12121a;
+  --color-bg-tertiary: #1a1a25;
+  --color-bg-card: #15151f;
+  --color-bg-card-hover: #1e1e2a;
 
-  --color-primary: #212529;
-  --color-muted: #6c757d;
-  --color-accent: #0d6efd;
-  --color-accent-hover: #0b5ed7;
+  /* === ACCENT COLORS - NEON BLUE === */
+  --color-accent-cyan: #3b82f6;
+  --color-accent-cyan-dim: #3b82f680;
+  --color-accent-green: #60a5fa;
+  --color-accent-purple: #8b5cf6;
+  --color-accent-gradient: linear-gradient(135deg, #3b82f6, #60a5fa);
 
-  --color-success: #198754;
-  --color-warning: #ffc107;
-  --color-error: #dc3545;
+  /* === TEXT COLORS === */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-text-accent: #3b82f6;
 
-  /* Tipografía */
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Monaco,
-    "Courier New", monospace;
+  /* === BORDER & SURFACE === */
+  --color-border: #ffffff10;
+  --color-border-accent: #3b82f640;
+  --color-surface-glass: #ffffff08;
+
+  /* === TYPOGRAPHY === */
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* === SPACING === */
+  --section-padding: clamp(4rem, 8vw, 8rem);
+
+  /* === TRANSITIONS === */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === SHADOWS === */
+  --shadow-glow: 0 0 20px #3b82f630;
+  --shadow-glow-strong: 0 0 40px #3b82f650;
+  --shadow-card: 0 4px 24px #00000040;
 }
 
-/* Dark mode automático (basado en preferencia del sistema) */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --color-surface: #1a1a1a;
-    --color-surface-muted: #2d2d2d;
-    --color-border: #404040;
-
-    --color-primary: #f8f9fa;
-    --color-muted: #adb5bd;
-    --color-accent: #3a8dff;
-    --color-accent-hover: #5fa3ff;
-  }
+/* ============================================
+   DARK MODE (DEFAULT)
+   ============================================ */
+:root.dark,
+:root:not(.light) {
+  --color-surface: #0a0a0f;
+  --color-surface-muted: #12121a;
+  --color-border: #ffffff10;
+  --color-primary: #f8fafc;
+  --color-muted: #94a3b8;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
 }
 
-/* Dark mode manual (forzado con clase .dark) */
-:root.dark {
-  --color-surface: #1a1a1a;
-  --color-surface-muted: #2d2d2d;
-  --color-border: #404040;
-
-  --color-primary: #f8f9fa;
-  --color-muted: #adb5bd;
-  --color-accent: #3a8dff;
-  --color-accent-hover: #5fa3ff;
-}
-
-/* Light mode manual (forzado con clase .light) */
+/* ============================================
+   LIGHT MODE
+   ============================================ */
 :root.light {
+  --color-bg-primary: #fafafa;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #e5e5e5;
+  --color-bg-card: #ffffff;
+  --color-bg-card-hover: #f0f0f0;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #64748b;
+  --color-text-accent: #0891b2;
+
+  --color-border: #00000010;
+  --color-border-accent: #0891b240;
+  --color-surface-glass: #00000008;
+
   --color-surface: #ffffff;
-  --color-surface-muted: #f8f9fa;
-  --color-border: #e9ecef;
-
-  --color-primary: #212529;
-  --color-muted: #6c757d;
-  --color-accent: #0d6efd;
-  --color-accent-hover: #0b5ed7;
+  --color-surface-muted: #f5f5f5;
+  --color-primary: #0f172a;
+  --color-muted: #475569;
+  --color-accent: #0891b2;
+  --color-accent-hover: #0e7490;
 }
 
-/* Aplicar colores al body */
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: var(--color-surface);
-  color: var(--color-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-body);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Aplicar colores a elementos comunes */
-a {
-  transition: color 0.3s ease;
-}
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
 
-header {
-  background-color: var(--color-surface);
-  transition: background-color 0.3s ease;
-}
-
-footer {
-  background-color: var(--color-surface);
-  border-color: var(--color-border);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-/* Utilidades personalizadas de color */
-.text-primary {
-  color: var(--color-primary);
-}
-
-.text-muted {
-  color: var(--color-muted);
-}
-
-.text-accent {
-  color: var(--color-accent);
-}
-
-.hover\:text-accent:hover {
-  color: var(--color-accent-hover);
-}
-
-.bg-surface {
-  background-color: var(--color-surface);
-}
-
-.bg-surface-muted {
-  background-color: var(--color-surface-muted);
-}
-
-.bg-muted {
-  background-color: var(--color-surface-muted);
-}
-
-.hover\:bg-muted:hover {
-  background-color: var(--color-surface-muted);
-}
-
-.border-border {
-  border-color: var(--color-border);
-}
-
-/* Prose styling para contenido Markdown no soportado en tailwindcss v4 - 14/01/2026*/
-.prose {
-  color: var(--color-primary);
-  max-width: 75ch;
-  font-family: var(--font-sans);
-  line-height: 1.75;
-}
-
-.prose h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--color-primary);
-}
-
-.prose h2 {
-  font-size: 1.875rem;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
   font-weight: 700;
-  line-height: 1.3;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-  color: var(--color-primary);
+  line-height: 1.2;
+  color: var(--color-text-primary);
 }
 
-.prose h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  color: var(--color-primary);
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); letter-spacing: -0.02em; }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+h4 { font-size: 1.125rem; }
+
+p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
 }
 
-.prose p {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
+/* ============================================
+   LINKS & INTERACTIVE
+   ============================================ */
 
-.prose a {
-  color: var(--color-accent);
+a {
+  color: var(--color-text-accent);
   text-decoration: none;
-  font-weight: 500;
+  transition: color var(--transition-fast);
 }
 
-.prose a:hover {
+a:hover {
   color: var(--color-accent-hover);
-  text-decoration: underline;
 }
 
-.prose ul,
-.prose ol {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
+/* ============================================
+   GLASS MORPHISM CARD
+   ============================================ */
+
+.glass-card {
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transition: all var(--transition-base);
 }
 
-.prose li {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+.glass-card:hover {
+  border-color: var(--color-border-accent);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
 }
 
-.prose code {
-  background-color: var(--color-surface-muted);
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  color: var(--color-primary);
+/* ============================================
+   GLOW EFFECTS
+   ============================================ */
+
+.glow-text {
+  text-shadow: 0 0 20px var(--color-accent-cyan-dim);
 }
 
-.prose pre {
-  background-color: var(--color-surface-muted);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+.glow-border {
+  position: relative;
 }
 
-.prose pre code {
-  background-color: transparent;
-  padding: 0;
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
-.prose hr {
-  border: 0;
-  border-top: 1px solid var(--color-border);
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+.glow-border:hover::before {
+  opacity: 1;
 }
 
-.prose strong {
+/* ============================================
+   GRADIENT TEXT
+   ============================================ */
+
+.gradient-text {
+  background: var(--color-accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   NEON BUTTON
+   ============================================ */
+
+.neon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
   font-weight: 600;
-  color: var(--color-primary);
+  font-size: 0.9375rem;
+  color: var(--color-bg-primary);
+  background: var(--color-accent-gradient);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all var(--transition-base);
 }
 
-.prose blockquote {
-  border-left: 4px solid var(--color-accent);
-  padding-left: 1rem;
-  font-style: italic;
-  color: var(--color-muted);
-  margin: 1.5rem 0;
+.neon-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #00ff88, #00f5d4);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
-/* Utilities personalizados */
-.container {
+.neon-button:hover {
+  box-shadow: var(--shadow-glow-strong);
+  transform: translateY(-2px);
+}
+
+.neon-button:hover::before {
+  opacity: 1;
+}
+
+.neon-button span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   OUTLINE BUTTON
+   ============================================ */
+
+.outline-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.outline-button:hover {
+  border-color: var(--color-accent-cyan);
+  color: var(--color-text-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ============================================
+   TAG/BADGE
+   ============================================ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-accent);
+  background: var(--color-accent-cyan-dim);
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+}
+
+.tag:hover {
+  background: var(--color-accent-cyan);
+  color: var(--color-bg-primary);
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================ */
+
+.section {
+  padding: var(--section-padding) 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-title::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--color-accent-gradient);
+}
+
+.section-subtitle {
+  color: var(--color-text-muted);
+  font-size: 1.125rem;
+  margin-bottom: 3rem;
+}
+
+/* ============================================
+   BENTO GRID
+   ============================================ */
+
+.bento-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(180px, auto);
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   PROJECT CARD
+   ============================================ */
+
+.project-card {
+  position: relative;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+
+.project-card:hover {
+  border-color: var(--color-border-accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.project-card:hover::before {
+  transform: scaleX(1);
+}
+
+.project-card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: var(--color-bg-tertiary);
+}
+
+.project-card-image img {
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
 }
 
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
+.project-card:hover .project-card-image img {
+  transform: scale(1.05);
+}
+
+.project-card-content {
+  padding: 1.5rem;
+}
+
+.project-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.project-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+}
+
+.project-card-description {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.project-card-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-accent);
+  transition: all var(--transition-fast);
+}
+
+.project-card-link:hover {
+  color: var(--color-accent-hover);
+  gap: 0.5rem;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px #00f5d430;
+  }
+  50% {
+    box-shadow: 0 0 40px #00f5d460;
   }
 }
 
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+
+.text-gradient {
+  background: var(--color-accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-subtle {
+  background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+}
+
+.border-glow {
+  border: 1px solid var(--color-border-accent);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* Selection color */
+::selection {
+  background: var(--color-accent-cyan-dim);
+  color: var(--color-bg-primary);
 }

@@ -1,0 +1,168 @@
+---
+import { getEntry } from "astro:content";
+
+interface Props {
+  lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+
+const entry = await getEntry("sections", `${lang}/skills`);
+if (!entry) throw new Error(`Content not found: sections/${lang}/skills`);
+const t = entry.data;
+
+const icons: Record<string, string> = {
+  code: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
+  server: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>`,
+  shield: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>`,
+  database: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>`,
+  layout: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><line x1="3" x2="21" y1="9" y2="9"></line><line x1="9" x2="9" y1="21" y2="9"></line></svg>`,
+  palette: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>`,
+  cloud: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>`,
+  workflow: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>`,
+  star: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+};
+
+const colorClasses: Record<
+  string,
+  { bg: string; border: string; icon: string }
+> = {
+  cyan: {
+    bg: "bg-[#00f5d4]/5",
+    border: "border-[#00f5d4]/20 hover:border-[#00f5d4]/40",
+    icon: "text-[#00f5d4]",
+  },
+  purple: {
+    bg: "bg-[#9d4edd]/5",
+    border: "border-[#9d4edd]/20 hover:border-[#9d4edd]/40",
+    icon: "text-[#9d4edd]",
+  },
+  green: {
+    bg: "bg-[#00ff88]/5",
+    border: "border-[#00ff88]/20 hover:border-[#00ff88]/40",
+    icon: "text-[#00ff88]",
+  },
+};
+---
+
+<section class="section" id="skills">
+  <div class="container mx-auto px-4">
+    {/* Section Header */}
+    <div class="mb-12">
+      <h2 class="section-title text-3xl md:text-4xl font-bold mb-4">
+        <span class="gradient-text">01</span>
+        <span>{t.title}</span>
+      </h2>
+      <p class="section-subtitle">{t.subtitle}</p>
+    </div>
+
+    {/* Bento Grid */}
+    <div class="bento-grid">
+      {
+        t.skills.map((skill, index) => {
+          const colors = colorClasses[skill.color];
+          return (
+            <div
+              class={`glass-card p-6 flex flex-col ${skill.span ?? ""} group cursor-default`}
+              style={`animation-delay: ${index * 0.1}s`}
+            >
+              {/* Icon */}
+              <div
+                class={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center mb-4 ${colors.icon} group-hover:scale-110 transition-transform duration-300`}
+              >
+                <Fragment set:html={icons[skill.icon] ?? icons.code} />
+              </div>
+
+              {/* Title */}
+              <h3 class="text-xl font-semibold mb-4 text-(--color-text-primary)">
+                {skill.title}
+              </h3>
+
+              {/* Skills List */}
+              <div class="flex flex-wrap gap-2 mt-auto">
+                {skill.items.map((item) => (
+                  <span class={`tag ${colors.bg} ${colors.border} border`}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(200px, auto);
+  }
+
+  .col-span-2 {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 1024px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .col-span-2 {
+      grid-column: span 1;
+    }
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  /* Section title */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-title::before {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 2px;
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+  }
+
+  .section-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    margin-bottom: 3rem;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    transition: all 150ms ease;
+  }
+
+  .tag:hover {
+    transform: scale(1.05);
+  }
+</style>

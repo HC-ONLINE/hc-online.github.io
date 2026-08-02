@@ -9,6 +9,28 @@ const { Content } = await entry.render();
 const projects = await getCollection("projects", ({ id }) => {
   return id.startsWith("es/");
 });
+
+const projectMeta: Record<string, { icon: string; color: string }> = {
+  "access-manager": { icon: "shield", color: "#00f5d4" },
+  ciberwebscan: { icon: "scan", color: "#00f5d4" },
+  demofactory: { icon: "layout", color: "#00ff88" },
+  lexguard: { icon: "shield", color: "#9d4edd" },
+  lyricflow: { icon: "music", color: "#00ff88" },
+  modelrouter: { icon: "network", color: "#9d4edd" },
+  "orbit-ui": { icon: "layout", color: "#00f5d4" },
+  "permission-manager": { icon: "shield", color: "#00ff88" },
+  pixelpress: { icon: "layout", color: "#9d4edd" },
+  typocraft: { icon: "code", color: "#00f5d4" },
+};
+
+const icons: Record<string, string> = {
+  shield: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>`,
+  scan: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line></svg>`,
+  layout: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><line x1="3" x2="21" y1="9" y2="9"></line><line x1="9" x2="9" y1="21" y2="9"></line></svg>`,
+  network: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect><rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect><line x1="6" x2="6.01" y1="6" y2="6"></line><line x1="6" x2="6.01" y1="18" y2="18"></line></svg>`,
+  music: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`,
+  code: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
+};
 ---
 
 <BaseLayout
@@ -16,25 +38,242 @@ const projects = await getCollection("projects", ({ id }) => {
   description={entry.data.description}
   lang="es"
 >
-  <article class="prose prose-lg mx-auto">
-    <Content />
-  </article>
+  <section class="section min-h-screen">
+    <div class="container mx-auto px-4">
+      {/* Page Header */}
+      <div class="max-w-3xl mb-14">
+        <p class="font-mono text-sm text-[#00f5d4] mb-4 animate-fade-in-up">
+          &lt; proyectos /&gt;
+        </p>
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight animate-fade-in-up"
+          style="animation-delay: 0.1s"
+        >
+          <span class="gradient-text">{entry.data.title}</span>
+        </h1>
+        <p
+          class="text-lg md:text-xl text-(--color-text-secondary) animate-fade-in-up"
+          style="animation-delay: 0.2s"
+        >
+          {entry.data.description}
+        </p>
+      </div>
 
-  <div class="grid gap-6 mt-8 max-w-4xl mx-auto px-4">
-    {projects.map((project) => (
-      <a
-        href={`/es/projects/${project.id.replace("es/", "").replace(/\.md$/, "")}`}
-        class="block border border-border rounded-lg p-6 bg-surface hover:bg-surface-muted transition-colors duration-200 no-underline"
-      >
-        <h3 class="text-primary text-xl font-bold mt-0 mb-2">{project.data.title}</h3>
-        <p class="text-muted text-sm mb-3">{project.data.subtitle}</p>
-        <div class="flex flex-wrap gap-2 mb-3">
-          {project.data.stack.split(", ").map((tech) => (
-            <span class="bg-surface-muted border border-border rounded-full px-2 py-0.5 text-xs text-muted">{tech}</span>
-          ))}
+      {/* Projects Grid */}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 stagger-children">
+        {
+          projects.map((project) => {
+            const slug = project.id.replace("es/", "").replace(/\.md$/, "");
+            const meta = projectMeta[slug] ?? { icon: "code", color: "#00f5d4" };
+            return (
+              <article class="project-card group">
+                <div class="project-card-content">
+                  {/* Header with icon */}
+                  <div class="flex items-center gap-3 mb-5">
+                    <div
+                      class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
+                      style={`background: ${meta.color}15; color: ${meta.color}; border: 1px solid ${meta.color}30;`}
+                    >
+                      <Fragment set:html={icons[meta.icon] ?? icons.code} />
+                    </div>
+                    <h3 class="project-card-title mb-0">{project.data.title}</h3>
+                  </div>
+
+                  {/* Tags */}
+                  <div class="project-card-tags">
+                    {project.data.stack.split(", ").map((tech) => (
+                      <span class="tag">{tech}</span>
+                    ))}
+                  </div>
+
+                  {/* Description */}
+                  <p class="project-card-description">{project.data.description}</p>
+
+                  {/* Links */}
+                  <div class="project-card-links pt-4 border-t border-(--color-border)">
+                    <a href={`/es/projects/${slug}`} class="project-card-link">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                      </svg>
+                      <span>Ver detalle</span>
+                    </a>
+                    {project.data.github && (
+                      <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="project-card-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                          <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                        </svg>
+                        <span>GitHub</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+
+      {/* Common Philosophy */}
+      <div class="mt-20">
+        <div class="glass-card p-8 md:p-12">
+          <div class="content-styles">
+            <Content />
+          </div>
         </div>
-        <span class="text-accent text-sm font-medium hover:text-accent-hover">Ver proyecto &rarr;</span>
-      </a>
-    ))}
-  </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+  }
+
+  /* Tag */
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-text-accent);
+    background: var(--color-accent-cyan-dim);
+    border-radius: 6px;
+    padding: 0.375rem 0.75rem;
+    transition: all var(--transition-fast);
+  }
+
+  .tag:hover {
+    background: var(--color-accent-cyan);
+    color: var(--color-bg-primary);
+  }
+
+  /* Content styles (rendered MD) */
+  .content-styles :global(h1) {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .content-styles :global(p) {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .content-styles :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 2rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .content-styles :global(h2::before) {
+    content: "";
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    flex-shrink: 0;
+  }
+
+  .content-styles :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .content-styles :global(ul) {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .content-styles :global(ul) {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2.5rem;
+    }
+  }
+
+  .content-styles :global(li) {
+    position: relative;
+    padding-left: 1.75rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .content-styles :global(li::before) {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+  }
+
+  .content-styles :global(li strong) {
+    color: var(--color-text-primary);
+  }
+
+  /* Stagger animation */
+  .stagger-children > * {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+  .stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(9) { animation-delay: 0.45s; }
+  .stagger-children > *:nth-child(10) { animation-delay: 0.5s; }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+</style>

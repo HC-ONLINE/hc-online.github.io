@@ -1,0 +1,248 @@
+---
+import { getEntry } from "astro:content";
+
+interface Props {
+  lang: "es" | "en";
+}
+
+const { lang } = Astro.props;
+
+const entry = await getEntry("sections", `${lang}/contact`);
+if (!entry) throw new Error(`Content not found: sections/${lang}/contact`);
+const t = entry.data;
+
+const socialIcons: Record<string, string> = {
+  github: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`,
+  workana: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4h3.6l2.4 9.2L10.4 4h3.2l2.4 9.2L18.4 4H22l-4.4 16h-3.2L12 10.8 9.6 20H6.4L2 4z"/></svg>`,
+};
+---
+
+<section class="section" id="contact">
+  <div class="container mx-auto px-4">
+    {/* Section Header */}
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+        <span class="gradient-text">{t.title}</span>
+      </h2>
+      <p class="section-subtitle max-w-2xl mx-auto">{t.subtitle}</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      {/* Contact Form */}
+      <div class="glass-card p-8">
+        <form class="space-y-6" id="contact-form">
+          {/* Name */}
+          <div>
+            <label
+              for="name"
+              class="block text-sm font-medium text-(--color-text-primary) mb-2"
+            >
+              {t.formName}
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              class="w-full px-4 py-3 rounded-xl bg-(--color-bg-tertiary) border border-(--color-border) text-(--color-text-primary) placeholder-(--color-text-muted) focus:outline-none focus:border-(--color-border-accent) focus:ring-1 focus:ring-(--color-border-accent) transition-all duration-200"
+              placeholder={t.formName}
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-(--color-text-primary) mb-2"
+            >
+              {t.formEmail}
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              class="w-full px-4 py-3 rounded-xl bg-(--color-bg-tertiary) border border-(--color-border) text-(--color-text-primary) placeholder-(--color-text-muted) focus:outline-none focus:border-(--color-border-accent) focus:ring-1 focus:ring-(--color-border-accent) transition-all duration-200"
+              placeholder={t.formEmail}
+            />
+          </div>
+
+          {/* Message */}
+          <div>
+            <label
+              for="message"
+              class="block text-sm font-medium text-(--color-text-primary) mb-2"
+            >
+              {t.formMessage}
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              class="w-full px-4 py-3 rounded-xl bg-(--color-bg-tertiary) border border-(--color-border) text-(--color-text-primary) placeholder-(--color-text-muted) focus:outline-none focus:border-(--color-border-accent) focus:ring-1 focus:ring-(--color-border-accent) transition-all duration-200 resize-none"
+              placeholder={t.formMessage}></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <button type="submit" class="neon-button w-full justify-center">
+            <span>{t.formSubmit}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="relative z-10"
+            >
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      {/* Contact Info */}
+      <div class="flex flex-col justify-center">
+        {/* Email */}
+        <div class="mb-8">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-[#00f5d4]/10 flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-[#00f5d4]"
+              >
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="text-sm text-(--color-text-muted)">Email</div>
+              <a
+                href={`mailto:${t.contactEmail}`}
+                class="text-lg font-medium text-(--color-text-primary) hover:text-(--color-text-accent) transition-colors"
+              >
+                {t.contactEmail}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Location */}
+        <div class="mb-8">
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-xl bg-[#9d4edd]/10 flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-[#9d4edd]"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" x2="22" y1="12" y2="12"></line>
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <div class="text-sm text-(--color-text-muted)">Location</div>
+              <div class="text-lg font-medium text-(--color-text-primary)">
+                {t.contactLocation}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Social Links */}
+        <div>
+          <div class="text-sm text-(--color-text-muted) mb-4">Connect</div>
+          <div class="flex gap-4">
+            {
+              t.socials.map((social) => (
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-12 h-12 rounded-xl bg-(--color-bg-tertiary) border border-(--color-border) flex items-center justify-center text-(--color-text-muted) hover:text-(--color-text-accent) hover:border-(--color-border-accent) hover:bg-(--color-bg-card-hover) transition-all duration-300"
+                  aria-label={social.name}
+                >
+                  <Fragment set:html={socialIcons[social.icon]} />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-subtitle {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    margin-bottom: 0;
+  }
+
+  /* Glass card */
+  .glass-card {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+  }
+
+  /* Neon button */
+  .neon-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-bg-primary);
+    background: linear-gradient(135deg, #00f5d4, #00ff88);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .neon-button:hover {
+    box-shadow: 0 0 40px rgba(0, 245, 212, 0.4);
+    transform: translateY(-2px);
+  }
+</style>

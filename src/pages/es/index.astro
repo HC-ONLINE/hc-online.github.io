@@ -1,14 +1,25 @@
 ---
-import { getEntry } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import Hero from "@components/Hero.astro";
+import Skills from "@components/Skills.astro";
+import Projects from "@components/Projects.astro";
+import Experience from "@components/Experience.astro";
+import Philosophy from "@components/Philosophy.astro";
+import Contact from "@components/Contact.astro";
 
-const entry = await getEntry("pages", "es/home");
-if (!entry) throw new Error("Content not found: es/home");
-const { Content } = await entry.render();
+const lang = "es";
+
+const meta = {
+  title: "Andrés Henríquez | Desarrollador Full Stack & UI/UX Designer",
+  description: "Portfolio de Andrés Henríquez - Desarrollador Full Stack y Diseñador UI/UX. Creando experiencias digitales que fusionan diseño elegante con código limpio."
+};
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} lang="es">
-  <article class="prose prose-lg mx-auto">
-    <Content />
-  </article>
+<BaseLayout title={meta.title} description={meta.description} lang={lang}>
+  <Hero lang={lang} />
+  <Skills lang={lang} />
+  <Projects lang={lang} />
+  <Experience lang={lang} />
+  <Philosophy lang={lang} />
+  <Contact lang={lang} />
 </BaseLayout>

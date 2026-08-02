@@ -33,6 +33,7 @@ const sectionsCollection = defineCollection({
         projects: z.string(),
         skills: z.string(),
         experience: z.string(),
+        philosophy: z.string().optional(),
         contact: z.string(),
       })
       .optional(),

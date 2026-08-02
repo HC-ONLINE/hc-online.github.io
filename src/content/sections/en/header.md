@@ -1,9 +1,10 @@
 ---
 nav:
   home: "Home"
-  projects: "Projects"
   skills: "Skills"
+  projects: "Projects"
   experience: "Experience"
+  philosophy: "Philosophy"
   contact: "Contact"
 ---
 

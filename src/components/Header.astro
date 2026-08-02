@@ -20,12 +20,13 @@ const homeHref = isHome ? "#" : `/${lang}`;
 
 const navItems = [
   { href: homeHref, label: nav.home },
+  { href: isHome ? "#skills" : `/${lang}#skills`, label: nav.skills },
   {
     href: isHome ? "#projects" : `/${lang}/projects`,
     label: nav.projects,
   },
-  { href: isHome ? "#skills" : `/${lang}#skills`, label: nav.skills },
   { href: isHome ? "#experience" : `/${lang}#experience`, label: nav.experience },
+  { href: isHome ? "#philosophy" : `/${lang}#philosophy`, label: nav.philosophy ?? "Philosophy" },
   { href: isHome ? "#contact" : `/${lang}#contact`, label: nav.contact },
 ];
 ---

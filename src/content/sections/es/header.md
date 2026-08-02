@@ -1,9 +1,10 @@
 ---
 nav:
   home: "Inicio"
-  projects: "Proyectos"
   skills: "Habilidades"
+  projects: "Proyectos"
   experience: "Experiencia"
+  philosophy: "Filosofía"
   contact: "Contacto"
 ---
 

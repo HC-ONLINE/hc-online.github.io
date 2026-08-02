@@ -147,7 +147,7 @@ const t = entry.data;
       <div class="space-y-4">
         {t.education.map((edu, index) => (
           <div
-            class="glass-card p-6 flex items-start gap-4"
+            class="glass-card p-6 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4"
             style={`animation-delay: ${index * 0.1}s`}
           >
             <div class="shrink-0">
@@ -155,7 +155,7 @@ const t = entry.data;
                 {edu.year}
               </span>
             </div>
-            <div>
+            <div class="min-w-0 flex-1">
               <h4 class="font-semibold text-(--color-text-primary)">
                 {edu.degree}
               </h4>

@@ -138,9 +138,17 @@ const sectionsCollection = defineCollection({
     formName: z.string().optional(),
     formEmail: z.string().optional(),
     formMessage: z.string().optional(),
+    formMessagePlaceholder: z.string().optional(),
     formSubmit: z.string().optional(),
+    formSending: z.string().optional(),
+    formSuccess: z.string().optional(),
+    formError: z.string().optional(),
     contactEmail: z.string().optional(),
     contactLocation: z.string().optional(),
+    infoEmailLabel: z.string().optional(),
+    infoLocationLabel: z.string().optional(),
+    infoConnectLabel: z.string().optional(),
+    copyEmailLabel: z.string().optional(),
     socials: z
       .array(
         z.object({

@@ -33,7 +33,7 @@ const socialIcons: Record<string, string> = {
         <form
           class="space-y-6"
           id="contact-form"
-          action={`https://formsubmit.co/${t.contactEmail}`}
+          action="https://formsubmit.co/bb07a54e2fadf344d84b89fc1c5aa0df"
           method="POST"
           data-sending={t.formSending}
           data-success={t.formSuccess}
@@ -151,10 +151,11 @@ const socialIcons: Record<string, string> = {
               </div>
               <div class="flex items-center gap-2">
                 <a
-                  href={`mailto:${t.contactEmail}`}
+                  id="contact-email-link"
+                  href="#contact"
                   class="break-all text-lg font-medium text-(--color-text-primary) hover:text-(--color-text-accent) transition-colors"
                 >
-                  {t.contactEmail}
+                  <span id="contact-email-text"></span>
                 </a>
                 <div class="relative">
                   <button
@@ -308,12 +309,25 @@ const socialIcons: Record<string, string> = {
   const copyTooltip = document.getElementById(
     "copy-email-tooltip"
   ) as HTMLSpanElement | null;
+  const emailLink = document.getElementById(
+    "contact-email-link"
+  ) as HTMLAnchorElement | null;
+  const emailText = document.getElementById(
+    "contact-email-text"
+  ) as HTMLSpanElement | null;
+
+  const localPart = ["henriquezandres", "856"].join("");
+  const domain = ["gmail", "com"].join(".");
+  const at = String.fromCharCode(64);
+  const email = `${localPart}${at}${domain}`;
+
+  if (emailLink && emailText) {
+    emailText.textContent = email;
+    emailLink.href = `mailto:${email}`;
+  }
 
   if (copyBtn && copyTooltip) {
-    const email = copyBtn.closest("div.relative")?.previousElementSibling?.textContent?.trim();
-
     copyBtn.addEventListener("click", async () => {
-      if (!email) return;
       try {
         await navigator.clipboard.writeText(email);
         copyTooltip.classList.remove("opacity-0");

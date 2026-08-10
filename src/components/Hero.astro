@@ -12,9 +12,7 @@ if (!entry) throw new Error(`Content not found: sections/${lang}/hero`);
 const t = entry.data;
 ---
 
-<section
-  class="relative min-h-screen flex items-center overflow-hidden pb-28 lg:pb-32"
->
+<section class="relative py-6 flex items-center overflow-hidden pb-6">
   {/* Background Effects */}
   <div class="absolute inset-0 pointer-events-none">
     {/* Gradient Orbs */}
@@ -40,7 +38,7 @@ const t = entry.data;
     <div class="max-w-4xl">
       {/* Eyebrow */}
       <div
-        class="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-(--color-border-accent) bg-(--color-surface-glass) backdrop-blur-sm animate-fade-in-up"
+        class="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-full border border-(--color-border-accent) bg-(--color-surface-glass) backdrop-blur-sm animate-fade-in-up"
         style="animation-delay: 0.1s;"
       >
         <span class="w-2 h-2 rounded-full bg-[#00f5d4] animate-pulse"></span>
@@ -51,7 +49,7 @@ const t = entry.data;
 
       {/* Greeting */}
       <p
-        class="text-lg md:text-xl text-(--color-text-muted) mb-4 animate-fade-in-up"
+        class="text-lg md:text-xl text-(--color-text-muted) animate-fade-in-up"
         style="animation-delay: 0.2s;"
       >
         {t.greeting}
@@ -59,7 +57,7 @@ const t = entry.data;
 
       {/* Name */}
       <h1
-        class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-none animate-fade-in-up"
+        class="text-5xl md:text-7xl lg:text-8xl font-black mb-2 leading-none animate-fade-in-up"
         style="animation-delay: 0.3s;"
       >
         <span class="gradient-text">{t.name}</span>
@@ -67,7 +65,7 @@ const t = entry.data;
 
       {/* Role */}
       <h2
-        class="text-2xl md:text-3xl lg:text-4xl font-semibold text-(--color-text-primary) mb-6 animate-fade-in-up"
+        class="text-2xl md:text-3xl lg:text-4xl font-semibold text-(--color-text-primary) mb-2 animate-fade-in-up"
         style="animation-delay: 0.4s;"
       >
         {t.role}
@@ -75,7 +73,7 @@ const t = entry.data;
 
       {/* Description */}
       <p
-        class="text-lg md:text-xl text-(--color-text-secondary) max-w-2xl mb-10 animate-fade-in-up"
+        class="text-lg md:text-xl text-(--color-text-secondary) max-w-2xl mb-6 animate-fade-in-up"
         style="animation-delay: 0.5s;"
       >
         {t.tagline}
@@ -83,7 +81,7 @@ const t = entry.data;
 
       {/* CTAs */}
       <div
-        class="flex flex-wrap gap-4 mb-16 animate-fade-in-up"
+        class="flex flex-wrap gap-4 mb-4 animate-fade-in-up"
         style="animation-delay: 0.6s;"
       >
         <a href={`/${lang}/projects`} class="neon-button">
@@ -125,7 +123,7 @@ const t = entry.data;
 
       {/* Stats */}
       <div
-        class="grid grid-cols-3 gap-8 pt-8 border-t border-(--color-border) animate-fade-in-up"
+        class="grid grid-cols-3 gap-8 pt-8 animate-fade-in-up"
         style="animation-delay: 0.7s;"
       >
         {
@@ -138,24 +136,6 @@ const t = entry.data;
             </div>
           ))
         }
-      </div>
-    </div>
-  </div>
-
-  {/* Scroll Indicator */}
-  <div
-    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 animate-fade-in hidden lg:flex"
-    style="animation-delay: 1s;"
-  >
-    <span class="text-xs text-(--color-text-muted) uppercase tracking-widest"
-      >Scroll</span
-    >
-    <div
-      class="w-6 h-10 rounded-full border-2 border-(--color-border) flex justify-center pt-2"
-    >
-      <div
-        class="w-1.5 h-3 rounded-full bg-(--color-text-accent) animate-bounce"
-      >
       </div>
     </div>
   </div>

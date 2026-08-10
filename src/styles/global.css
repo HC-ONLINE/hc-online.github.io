@@ -1,5 +1,5 @@
 /* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @import "tailwindcss";
 
@@ -39,12 +39,12 @@
   --color-surface-glass: #ffffff08;
 
   /* === TYPOGRAPHY === */
-  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-heading: "Inter", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* === SPACING === */
-  --section-padding: clamp(4rem, 8vw, 8rem);
+  --section-padding: clamp(2rem, 4vw, 4rem);
 
   /* === TRANSITIONS === */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -102,6 +102,11 @@
    BASE STYLES
    ============================================ */
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* ~80px: compensa header fixed (top-4/6 + altura nav ~64-70px) */
+}
+
 * {
   box-sizing: border-box;
 }
@@ -123,17 +128,32 @@ body {
    TYPOGRAPHY
    ============================================ */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-text-primary);
 }
 
-h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: -0.03em; }
-h2 { font-size: clamp(1.75rem, 4vw, 2.75rem); letter-spacing: -0.02em; }
-h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
-h4 { font-size: 1.125rem; }
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  letter-spacing: -0.03em;
+}
+h2 {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  letter-spacing: -0.02em;
+}
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+h4 {
+  font-size: 1.125rem;
+}
 
 p {
   color: var(--color-text-secondary);
@@ -185,11 +205,15 @@ a:hover {
 }
 
 .glow-border::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple));
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-cyan),
+    var(--color-accent-purple)
+  );
   z-index: -1;
   opacity: 0;
   transition: opacity var(--transition-base);
@@ -232,7 +256,7 @@ a:hover {
 }
 
 .neon-button::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #00ff88, #00f5d4);
@@ -317,7 +341,7 @@ a:hover {
 }
 
 .section-title::before {
-  content: '';
+  content: "";
   display: block;
   width: 32px;
   height: 2px;
@@ -367,7 +391,7 @@ a:hover {
 }
 
 .project-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -468,8 +492,12 @@ a:hover {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInLeft {
@@ -484,7 +512,8 @@ a:hover {
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px #00f5d430;
   }
   50% {
@@ -510,12 +539,24 @@ a:hover {
   animation: fadeInUp 0.5s ease-out forwards;
 }
 
-.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.stagger-children > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.stagger-children > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.stagger-children > *:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.stagger-children > *:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.stagger-children > *:nth-child(6) {
+  animation-delay: 0.6s;
+}
 
 /* ============================================
    REDUCED MOTION
@@ -547,7 +588,11 @@ a:hover {
 }
 
 .bg-gradient-subtle {
-  background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 100%
+  );
 }
 
 .border-glow {

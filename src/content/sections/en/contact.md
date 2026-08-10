@@ -4,7 +4,7 @@ subtitle: "Available for backend/frontend development, security audits, automati
 formName: "Name"
 formEmail: "Email"
 formMessage: "Message"
-formMessagePlaceholder: "E.g.: Hi Andrés, I need to redesign my web app..."
+formMessagePlaceholder: "E.g.: Hi Andres, I need to redesign my web app..."
 formSubmit: "Send Message"
 formSending: "Sending..."
 formSuccess: "Message sent! I'll get back to you soon."

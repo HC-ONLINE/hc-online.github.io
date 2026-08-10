@@ -4,7 +4,7 @@ subtitle: "Disponible para desarrollo backend/frontend, auditorías de seguridad
 formName: "Nombre"
 formEmail: "Email"
 formMessage: "Mensaje"
-formMessagePlaceholder: "Ej: Hola Andrés, necesito rediseñar mi aplicación web..."
+formMessagePlaceholder: "Ej: Hola Andres, necesito rediseñar mi aplicación web..."
 formSubmit: "Enviar Mensaje"
 formSending: "Enviando..."
 formSuccess: "¡Mensaje enviado! Te responderé pronto."

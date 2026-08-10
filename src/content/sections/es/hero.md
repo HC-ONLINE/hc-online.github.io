@@ -1,6 +1,6 @@
 ---
 greeting: "Hola, soy"
-name: "Andrés Henríquez"
+name: "Andres Henriquez"
 role: "Ingeniero Backend & Seguridad con capacidades Full Stack"
 tagline: "Construyo sistemas donde la seguridad es el cimiento (APIs, IAM, LLMs) y los entrego con interfaces ultrarrápidas y accesibles. Transformo lógica compleja en productos resilientes."
 availability: "Disponible para proyectos freelance"
@@ -15,4 +15,4 @@ stats:
     label: "Años de Desarrollo Técnico"
 ---
 
-Hola, soy Andrés Henríquez.
+Hola, soy Andres Henriquez.

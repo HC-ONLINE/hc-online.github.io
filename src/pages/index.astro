@@ -1,5 +1,21 @@
 ---
 // Redirect root to /es by default
 const baseURL = import.meta.env.BASE_URL;
-return Astro.redirect(`es`);
+const target = `${baseURL}es`;
 ---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={`https://HC-ONLINE.github.io${target}`} />
+    <title>Redireccionando…</title>
+  </head>
+  <body>
+    <a href={target}>Redirigir a /es</a>
+    <script data-redirect={target}>
+      window.location.replace(document.currentScript.dataset.redirect);
+    </script>
+  </body>
+</html>

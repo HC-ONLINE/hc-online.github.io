@@ -1,5 +1,5 @@
 ---
-title: "LexGuard PII-Scanner"
+title: "LexGuard"
 description: "Motor de detección y correlación de PII para auditorías de datos automatizadas"
 subtitle: "Motor de detección y correlación de PII para auditorías de datos automatizadas"
 stack: "Python 3.11+, Typer, pydantic, python-magic, regex"

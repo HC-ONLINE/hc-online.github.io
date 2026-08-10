@@ -70,7 +70,7 @@ const navItems = [
             href={currentPath.replace(`/${lang}`, "/es")}
             class={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
               lang === "es"
-                ? "bg-(--color-text-accent) text-(--color-bg-primary)"
+                ? "bg-(--color-bg-card-hover) text-(--color-text-accent) font-semibold border border-(--color-border-accent)"
                 : "text-(--color-text-muted) hover:text-(--color-text-primary)"
             }`}
             aria-label="Español"
@@ -81,7 +81,7 @@ const navItems = [
             href={currentPath.replace(`/${lang}`, "/en")}
             class={`px-2 py-1 rounded text-xs font-medium transition-all duration-200 ${
               lang === "en"
-                ? "bg-(--color-text-accent) text-(--color-bg-primary)"
+                ? "bg-(--color-bg-card-hover) text-(--color-text-accent) font-semibold border border-(--color-border-accent)"
                 : "text-(--color-text-muted) hover:text-(--color-text-primary)"
             }`}
             aria-label="English"

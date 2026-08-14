@@ -169,6 +169,61 @@ const t = entry.data;
         }
       </div>
     </div>
+
+    {/* Certifications Card */}
+    {
+      t.certifications && t.certifications.length > 0 && (
+        <div class="mt-8">
+          <div class="flex items-center gap-4 mb-6">
+            <div
+              class="w-12 h-12 rounded-xl bg-[#00f5d4]/10 flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-[#00f5d4]"
+              >
+                <circle cx="12" cy="8" r="6"></circle>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-(--color-text-primary)">
+              {t.certificationsTitle}
+            </h3>
+          </div>
+
+          <div class="space-y-4">
+            {t.certifications.map((cert, index) => (
+              <div
+                class="glass-card p-6 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4"
+                style={`animation-delay: ${index * 0.1}s`}
+              >
+                <div class="shrink-0">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-mono font-medium bg-[#00f5d4]/10 text-[#00f5d4] border border-[#00f5d4]/30">
+                    {cert.year}
+                  </span>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <h4 class="font-semibold text-(--color-text-primary)">
+                    {cert.degree}
+                  </h4>
+                  <p class="text-sm text-(--color-text-muted)">
+                    {cert.institution}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    }
   </div>
 </section>
 

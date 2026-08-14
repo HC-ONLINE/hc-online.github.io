@@ -93,6 +93,7 @@ const sectionsCollection = defineCollection({
 
     // Experience
     educationTitle: z.string().optional(),
+    certificationsTitle: z.string().optional(),
     experience: z
       .array(
         z.object({
@@ -106,6 +107,15 @@ const sectionsCollection = defineCollection({
       )
       .optional(),
     education: z
+      .array(
+        z.object({
+          degree: z.string(),
+          institution: z.string(),
+          year: z.string(),
+        })
+      )
+      .optional(),
+    certifications: z
       .array(
         z.object({
           degree: z.string(),

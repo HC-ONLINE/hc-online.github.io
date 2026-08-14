@@ -13,7 +13,13 @@ const { lang } = Astro.props;
 
 const entry = await getEntry("sections", `${lang}/header`);
 if (!entry) throw new Error(`Content not found: sections/${lang}/header`);
-const nav = entry.data.nav;
+const nav = entry.data.nav ?? {
+  home: "Home",
+  skills: "Skills",
+  projects: "Projects",
+  experience: "Experience",
+  contact: "Contact",
+};
 
 const isHome = currentPath === `/${lang}` || currentPath === `/${lang}/`;
 const homeHref = isHome ? "#" : `/${lang}`;

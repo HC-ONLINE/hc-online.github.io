@@ -32,7 +32,7 @@ const icons: Record<string, string> = {
     {/* Metrics Grid */}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
       {
-        t.philosophyMetrics.map((metric, index) => (
+        t.philosophyMetrics?.map((metric, index) => (
           <div
             class="glass-card p-6 text-center group"
             style={`animation-delay: ${index * 0.1}s`}
@@ -49,7 +49,7 @@ const icons: Record<string, string> = {
     {/* Principles Grid */}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {
-        t.principles.map((principle, index) => (
+        t.principles?.map((principle, index) => (
           <div
             class="glass-card p-6 md:p-8 relative group"
             style={`animation-delay: ${index * 0.15}s`}

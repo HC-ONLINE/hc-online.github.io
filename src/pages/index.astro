@@ -14,7 +14,7 @@ const target = `${baseURL}es`;
   </head>
   <body>
     <a href={target}>Redirigir a /es</a>
-    <script data-redirect={target}>
+    <script is:inline data-redirect={target}>
       window.location.replace(document.currentScript.dataset.redirect);
     </script>
   </body>

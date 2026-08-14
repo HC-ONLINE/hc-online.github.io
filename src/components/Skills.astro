@@ -59,7 +59,7 @@ const colorClasses: Record<
     {/* Bento Grid */}
     <div class="bento-grid">
       {
-        t.skills.map((skill, index) => {
+        t.skills?.map((skill, index) => {
           const colors = colorClasses[skill.color];
           return (
             <div

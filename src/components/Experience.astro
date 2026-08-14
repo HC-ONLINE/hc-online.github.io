@@ -26,7 +26,7 @@ const t = entry.data;
     {/* Experience Timeline - Horizontal Cards */}
     <div class="space-y-6">
       {
-        t.experience.map((exp, index) => (
+        t.experience?.map((exp, index) => (
           <div
             class="glass-card p-6 md:p-8 group relative overflow-hidden"
             style={`animation-delay: ${index * 0.15}s`}
@@ -146,7 +146,7 @@ const t = entry.data;
 
       <div class="space-y-4">
         {
-          t.education.map((edu, index) => (
+          t.education?.map((edu, index) => (
             <div
               class="glass-card p-6 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4"
               style={`animation-delay: ${index * 0.1}s`}

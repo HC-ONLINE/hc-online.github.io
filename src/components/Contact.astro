@@ -261,7 +261,7 @@ const socialIcons: Record<string, string> = {
           </div>
           <div class="flex gap-4">
             {
-              t.socials.map((social) => (
+              t.socials?.map((social) => (
                 <a
                   href={social.url}
                   target="_blank"

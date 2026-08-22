@@ -1,30 +1,84 @@
 ---
 title: "LexGuard"
-description: "PII Detection and Correlation Engine for Automated Data Audits"
-subtitle: "PII Detection and Correlation Engine for Automated Data Audits"
-stack: "Python 3.11+, Typer, pydantic, python-magic, regex"
+description: "Proof of concept for detecting and analyzing personally identifiable information (PII) in text using rule-based detection and automated processing."
+subtitle: "Sensitive data detection in text"
+stack: "Python"
 github: "https://github.com/HC-ONLINE/LexGuard"
 ---
 
-## The Problem It Solves
+## Overview
 
-- Slow manual data audits and generic tools with high false-positive rates.
-- Fragmented risk view: evaluates real exposure, not just regex matches.
-- Identification of aggregated risks through cross-PII correlation (multiple sensitive data types coexisting).
+LexGuard is a proof of concept focused on exploring the automated detection of personally identifiable information (PII) within text.
 
-## Key Features
+The project experiments with text analysis and detection patterns to identify potential sensitive data, providing a foundation for security and privacy-oriented analysis tools.
 
-- CLI-first: Designed to run in pipelines, automation scripts, and unattended environments.
-- Rules first, AI as support: Deterministic rules and algorithmic validations (Luhn, prefixes, entropy). AI as a secondary layer to reduce false positives.
-- Explainable risk: Every finding includes a clear breakdown of why it's considered risky and its confidence level.
-- Fail-safe by default: When ambiguous, classifies as UNCERTAIN rather than generating critical false positives.
-- Current detection: Colombian ID (Cédula de Ciudadanía), Colombian mobile phone, email, credit cards, and cross-PII correlation.
-- Modular architecture: Extensible deterministic pipeline: ingestion → detection → validation → scoring → correlation → report.
+## Problem
 
-## Technical Decision
+Sensitive information can appear unintentionally in documents, text, or system inputs. Detecting it manually is difficult to scale and makes it harder to introduce privacy controls early in the data-processing lifecycle.
 
-- Architecture based on deterministic pipeline to ensure reproducibility and traceability.
-- Not a DLP or SIEM: it's an audit and scanning tool that identifies exposure, doesn't remediate it.
-- Region-specific algorithmic validations (Colombia) with extensibility options.
-- Apache-2.0 license for enterprise and collaborative use.
-- Designed for compliance with Ley 1581 de Colombia.
+LexGuard explores how this identification process can be automated through programmatic text analysis and configurable detection rules.
+
+## Solution
+
+The project implements a text analysis workflow that processes input, applies detection mechanisms, and produces results for potentially sensitive elements.
+
+The implementation is intended for experimentation and technical validation rather than as a production-ready data protection system.
+
+## Capabilities
+
+- Automated detection of potential personal information.
+- Pattern-based text analysis.
+- Identification of different categories of sensitive information.
+- Structured detection results.
+- Separation between detection logic and input processing.
+- Extensible approach for adding new detection rules.
+
+## Engineering
+
+- **Rule-based detection** — Pattern-based mechanisms for identifying potential PII.
+- **Text processing** — Programmatic analysis of content to locate relevant matches.
+- **Extensible architecture** — Detection mechanisms are separated to facilitate the addition of new rules.
+- **Python** — Used to implement the prototype and its processing logic.
+
+## Architecture
+
+The analysis pipeline processes text files through a deterministic flow: ingestion, detection, validation, scoring, and report generation.
+
+![LexGuard architecture diagram](/images/projects/lexguard/architecture.png)
+
+## Security and privacy
+
+The project focuses directly on identifying sensitive information and exploring mechanisms that can support privacy-oriented analysis.
+
+Rule-based detection alone cannot guarantee complete identification of personal information or correctly understand every contextual case. Results should therefore be treated as indicators that require additional validation in real-world scenarios.
+
+## Current status
+
+LexGuard is no longer under active development and should be considered a **Proof of Concept (POC)**.
+
+The main objective was to validate the technical approach for PII detection and explore a possible architecture for future privacy and security tooling.
+
+It is not presented as a production system or as a complete regulatory compliance solution.
+
+## Limitations
+
+- Potential false positives and false negatives.
+- Limited coverage of information categories.
+- Dependence on predefined detection rules and patterns.
+- No advanced contextual validation.
+- Not currently designed as a production service.
+- No complete system for managing, storing, or anonymizing detected data.
+
+## What this project demonstrates
+
+- Automation of privacy- and security-related tasks.
+- Programmatic text processing.
+- Design of extensible detection mechanisms.
+- Understanding of the limitations of purely rule-based approaches.
+- Exploration of sensitive-data protection concepts.
+
+## Classification
+
+**Proof of Concept — Completed**
+
+Experimental project used to explore automated PII detection. It is not currently under active development.

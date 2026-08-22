@@ -1,31 +1,84 @@
 ---
 title: "LexGuard"
-description: "Motor de detección y correlación de PII para auditorías de datos automatizadas"
-subtitle: "Motor de detección y correlación de PII para auditorías de datos automatizadas"
-stack: "Python 3.11+, Typer, pydantic, python-magic, regex"
+description: "Prueba de concepto para la detección y análisis de información de identificación personal (PII) en texto mediante reglas y procesamiento automático."
+subtitle: "Detección de datos sensibles en texto"
+stack: "Python"
 github: "https://github.com/HC-ONLINE/LexGuard"
 ---
 
-## Qué resuelve
+## Visión general
 
-- Auditorías de datos manuales lentas y herramientas genéricas con altas tasas de falsos positivos.
-- Visión fragmentada del riesgo: evalúa exposición real, no solo coincidencias de regex.
-- Necesidad de gobernanza de datos explicable, integrable en CI/CD y lista para cumplimiento normativo.
-- Identificación de riesgos agregados mediante correlación cross-PII (múltiples tipos de datos sensibles coexistiendo).
+LexGuard es una prueba de concepto orientada a explorar la detección automática de información de identificación personal (PII) dentro de textos.
 
-## Características clave
+El proyecto experimenta con técnicas de análisis de texto y patrones de detección para identificar posibles datos sensibles, con el objetivo de servir como base para herramientas de análisis y protección de información.
 
-- CLI-first: Diseñado para ejecutarse en pipelines, scripts de automatización y entornos desatendidos.
-- Rules first, IA como apoyo: Reglas deterministas y validaciones algorítmicas (Luhn, prefijos, entropía). IA como capa secundaria para reducir falsos positivos.
-- Riesgo explicable: Cada hallazgo incluye un desglose claro de por qué se considera riesgoso y su nivel de confianza.
-- Fail-safe por defecto: Ante ambigüedad, clasifica como UNCERTAIN antes que generar falsos positivos críticos.
-- Detección actual: Cédula de Ciudadanía (Colombia), teléfono móvil (Colombia), correo electrónico, tarjetas de crédito, y correlación cross-PII.
-- Arquitectura modular: Pipeline determinista extensible: ingestión → detección → validación → scoring → correlación → reporte.
+## Problema
 
-## Decisión técnica
+La información sensible puede aparecer de forma accidental dentro de documentos, textos o entradas de sistemas. Detectarla manualmente resulta poco escalable y dificulta incorporar controles tempranos de privacidad.
 
-- Arquitectura basada en pipeline determinista para garantizar reproducibilidad y trazabilidad.
-- No es un DLP ni un SIEM: es una herramienta de auditoría y escaneo que identifica exposición, no la remedia.
-- Validaciones algorítmicas específicas por región (Colombia) con posibilidad de extensión.
-- Licencia Apache-2.0 para uso empresarial y colaborativo.
-- Diseñado para cumplimiento con Ley 1581 de Colombia.
+LexGuard explora cómo automatizar esta identificación mediante reglas y procesamiento de texto, proporcionando una primera aproximación programática al problema.
+
+## Solución
+
+El proyecto implementa un flujo de análisis que recibe texto, aplica mecanismos de detección y genera resultados sobre los posibles elementos identificados.
+
+El enfoque está orientado a la experimentación y validación de la idea, no a proporcionar un sistema completo de protección de datos listo para producción.
+
+## Capacidades
+
+- Detección automática de posibles datos personales.
+- Análisis de texto mediante patrones.
+- Identificación de diferentes categorías de información sensible.
+- Generación de resultados estructurados.
+- Separación entre la lógica de detección y el procesamiento de entrada.
+- Arquitectura orientada a facilitar futuras extensiones de las reglas de detección.
+
+## Ingeniería
+
+- **Detección basada en reglas** — Uso de patrones para identificar posibles elementos de PII.
+- **Procesamiento de texto** — Análisis programático de contenido para localizar coincidencias.
+- **Arquitectura extensible** — Separación de los mecanismos de detección para facilitar la incorporación de nuevas reglas.
+- **Python** — Implementación del prototipo y sus mecanismos de procesamiento.
+
+## Arquitectura
+
+El pipeline de análisis procesa archivos de texto mediante un flujo determinista: ingesta, detección, validación, puntuación y generación de reporte.
+
+![Diagrama de arquitectura de LexGuard](/images/projects/lexguard/architecture.png)
+
+## Seguridad y privacidad
+
+El proyecto está relacionado directamente con la identificación de información sensible, por lo que su objetivo es facilitar mecanismos de detección y análisis.
+
+La detección basada únicamente en patrones no garantiza identificar toda la información personal ni distinguir correctamente todos los contextos. Por ello, los resultados deben considerarse indicativos y requieren validación adicional en escenarios reales.
+
+## Estado actual
+
+LexGuard se encuentra fuera de desarrollo activo y debe considerarse una **prueba de concepto (POC)**.
+
+El proyecto tuvo como objetivo principal validar el enfoque técnico de detección de PII y explorar una posible arquitectura para futuras herramientas de privacidad y seguridad.
+
+No se presenta como un producto de producción ni como un sistema completo de cumplimiento normativo.
+
+## Limitaciones
+
+- Posibles falsos positivos y falsos negativos.
+- Cobertura limitada de categorías de información.
+- Dependencia de reglas y patrones definidos previamente.
+- Ausencia de validación contextual avanzada.
+- No está diseñado actualmente como servicio de producción.
+- No existe un sistema completo de gestión, almacenamiento o anonimización de los datos detectados.
+
+## Qué demuestra este proyecto
+
+- Automatización de tareas relacionadas con privacidad y seguridad.
+- Procesamiento programático de texto.
+- Diseño de mecanismos de detección extensibles.
+- Identificación de las limitaciones de los enfoques basados exclusivamente en reglas.
+- Exploración de conceptos relacionados con protección de información sensible.
+
+## Clasificación
+
+**Proof of Concept — Completed**
+
+Proyecto experimental utilizado para estudiar la detección automática de PII. No se encuentra actualmente en desarrollo activo.

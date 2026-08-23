@@ -6,17 +6,6 @@ stack: "Python, Typer, HTTPX, Playwright, BeautifulSoup4, FastAPI, Pydantic"
 github: "https://github.com/HC-ONLINE/CiberWebScan"
 ---
 
-# CiberWebScan
-
-## Herramienta modular para reconocimiento y evaluación controlada de aplicaciones web
-
-**Stack:** Python · Typer · Rich · HTTPX · Playwright · BeautifulSoup4 · FastAPI · Pydantic
-**Estado:** Beta
-**Licencia:** Apache 2.0
-**Repositorio:** <https://github.com/HC-ONLINE/CiberWebScan>
-
----
-
 ## 1. Resumen
 
 CiberWebScan es una herramienta de seguridad desarrollada en Python que centraliza diferentes etapas de la evaluación de aplicaciones web en una arquitectura modular.

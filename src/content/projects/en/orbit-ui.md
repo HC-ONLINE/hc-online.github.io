@@ -1,356 +1,314 @@
 ---
 title: "ORBIT-UI"
-description: "CSS-first design system built with Astro and Tailwind CSS v4, based on semantic design tokens and components with explicit contracts."
+description: "CSS-first design system built with Astro and Tailwind CSS v4, based on semantic design tokens, reusable components, and explicit usage contracts."
 subtitle: "Frontend design system and component architecture"
 stack: "Astro, Tailwind CSS v4, TypeScript, GitHub Actions, GitHub Pages"
 github: "https://github.com/HC-ONLINE/ORBIT-UI"
+site: "https://hc-online.github.io/ORBIT-UI/"
 ---
 
-## Overview
+## 1. Summary
 
-ORBIT-UI is a frontend design system built with Astro and Tailwind CSS v4.
+ORBIT-UI is a frontend design system built with Astro and Tailwind CSS v4. The project combines semantic design tokens, reusable components, and explicit composition rules to build consistent interfaces with minimal client-side JavaScript.
 
-The project defines a collection of base components, semantic design tokens and explicit composition rules aimed at building consistent interfaces without introducing unnecessary JavaScript.
+The project prioritizes consistency, complexity control, and reuse over the number of available components. Rather than being only a visual component catalog, ORBIT-UI explores an architecture for building and documenting frontend design systems.
 
-The system prioritizes complexity control and consistency over the number of available components.
+---
 
-## Architecture
+## 2. Problem and Objectives
 
-ORBIT-UI is organized into three main layers:
+Frontend projects can accumulate duplicated styles, visual inconsistencies, and multiple solutions to the same problems as they grow.
 
-```text
-Tokens
-   │
-   ▼
-UI Components
-   │
-   ▼
-Documentation
-```
+ORBIT-UI addresses this through:
 
-**Semantic tokens** define the visual meaning of the system while remaining decoupled from specific components.
+- Semantic design tokens that represent visual meaning.
+- Reusable components with defined properties and states.
+- Explicit contracts documenting valid and invalid usage.
+- CSS-first implementation to avoid unnecessary JavaScript.
+- Documentation integrated directly into the project.
 
-**Astro components** consume these tokens through documented variants, states and properties.
+The main objective is to explore how component and token architecture can maintain consistency without turning the design system into an unnecessarily complex abstraction layer.
 
-**Documentation** is part of the project itself and demonstrates components, contracts, states, variants and usage examples.
+---
 
-The application is generated as a static site with Astro and automatically deployed to GitHub Pages.
+## 3. Solution
 
-## Design System
+ORBIT-UI is structured around three main elements:
 
-### Semantic Tokens
+### Design Tokens
 
-ORBIT-UI uses semantic CSS variables to represent categories such as:
+CSS tokens represent visual meaning rather than specific values.
 
-* Surface
-* Text
-* Accent
-* Status
-* Typography
+The system includes categories such as:
 
-Tokens are not directly tied to specific components.
+- Surface — backgrounds and containers.
+- Text — content hierarchy.
+- Accent — interactive elements.
+- Status — feedback states.
+- Typography — font families.
 
-This allows different components to share the same visual rules without creating dependencies between them.
-
-The current system defines:
-
-* 14 color tokens.
-* 2 typography tokens.
+Tokens are defined through Tailwind CSS v4's CSS-first configuration and consumed by the components.
 
 ### Components
 
-The system includes base components for different interface requirements:
+The system includes 10 base components:
 
-* Button
-* Card
-* Alert
-* Badge
-* NavLink
-* Input
-* Select
-* Modal
-* Table
-* Tooltip
+- Button
+- Card
+- Alert
+- Badge
+- NavLink
+- Input
+- Select
+- Modal
+- Table
+- Tooltip
 
-Table also includes specialized composition components:
+Components define documented variants, states, and properties to reduce inconsistent implementations.
 
-* TableHead
-* TableBody
-* TableRow
-* TableCell
-* TableHeadCell
+### Documentation
 
-Components support variants, states and specific properties according to their documented contracts.
+Documentation is part of the same project and includes:
 
-## CSS-first
+- System principles.
+- Design tokens.
+- Component catalog.
+- Variants and states.
+- Usage examples.
+- Contracts and anti-patterns.
 
-One of the project's main design decisions is minimizing client-side JavaScript.
+---
 
-Most components are implemented through HTML and CSS using Tailwind CSS capabilities.
+## 4. Architecture
 
-The only component requiring client-side JavaScript is Modal, which uses the native `<dialog>` API to control opening and closing.
-
-This approach keeps base components lightweight and avoids introducing client-side logic when it is not required.
-
-## Component Contracts
-
-Each component explicitly documents how it should be used.
-
-The documentation covers:
-
-* Available variants.
-* States.
-* Properties.
-* Valid combinations.
-* Invalid or discouraged combinations.
-* Anti-patterns.
-* Usage examples.
-
-The goal is to make the system more than a visual component collection: it provides a set of rules for maintaining interface consistency.
-
-## Documentation
-
-Documentation is integrated directly into the project through Astro pages.
-
-It includes:
-
-* System overview.
-* Design token documentation.
-* Component catalog.
-* Individual component documentation.
-* Variant and state examples.
-* Composition guidelines.
-
-The current site contains 13 documentation pages.
-
-Documentation-as-code keeps explanations and implementations within the same repository.
-
-## Accessibility
-
-Components incorporate several accessibility foundations directly into their implementation.
-
-These include:
-
-* `aria-disabled`
-* `aria-invalid`
-* `aria-current`
-* `aria-label`
-* `aria-hidden`
-* Semantic roles such as `alert` and `status`
-* `disabled` and `invalid` states
-* Semantic HTML for interactive elements
-
-For example, NavLink automatically detects the active route and uses `aria-current`.
-
-The system does not currently include automated accessibility auditing.
-
-## Responsive Design
-
-Components use Tailwind CSS responsive capabilities to adapt layouts and interfaces across different screen sizes.
-
-The documentation site uses flexible layouts, grids and width constraints to maintain a consistent presentation.
-
-Automated responsive testing has not yet been implemented.
-
-## Technical Architecture
+ORBIT-UI uses a three-layer architecture:
 
 ```text
-GitHub Pages
-      │
-      ▼
-Astro Static Build
-      │
-      ├── Pages
-      │
-      ├── Layouts
-      │
-      ├── UI Components
-      │
-      └── Semantic Tokens
-             │
-             ▼
-        Tailwind CSS
+Design Tokens
+     │
+     ▼
+UI Components
+     │
+     ▼
+Documentation
 ```
 
-### Astro
+![ORBIT-UI architecture diagram](/images/projects/orbit-ui/architecture.png)
 
-Astro is used as the static site generation framework.
+### Token Layer
 
-The project uses Static Site Generation (SSG), allowing the site to be deployed without an application server.
+Defines the visual language of the system through semantic CSS variables.
 
-### Tailwind CSS
-
-Tailwind CSS v4 provides the utility classes used to build the components and supports semantic token definitions through `@theme`.
-
-### TypeScript
-
-Components use TypeScript for defining and validating their properties.
-
-The project uses Astro's strict TypeScript configuration.
-
-## Components and States
-
-Examples of implemented component capabilities include:
-
-**Button**
-
-* Primary
-* Secondary
-* Disabled
-
-**Card**
-
-* Default
-* Muted
-* Interactive
-* Disabled
-* Comfortable
-* Compact
-
-**Alert**
-
-* Info
-* Success
-* Warning
-* Error
-
-**Badge**
-
-* Neutral
-* Success
-* Warning
-* Error
-
-**Input**
-
-* Multiple input types.
-* Disabled and invalid states.
-* ARIA attributes.
-
-**Modal**
-
-* Based on `<dialog>`.
-* Slots for title, content and actions.
-* Native API for opening and closing.
-
-**Tooltip**
-
-* Top
-* Right
-* Bottom
-* Left
-* Hover and focus support.
-
-## Frontend Engineering
-
-The project maintains a clear separation between:
-
-* Design tokens.
-* Components.
-* Layouts.
-* Documentation pages.
-
-Components do not depend on global application state or a JavaScript framework to operate.
-
-The architecture is designed to keep interfaces predictable and reduce unnecessary frontend complexity.
-
-## Build and Deployment
-
-ORBIT-UI is generated as a static site and deployed through GitHub Actions.
-
-The deployment workflow is:
-
-```text
-Push to main
-     │
-     ▼
-Install dependencies
-     │
-     ▼
-Astro build
-     │
-     ▼
-GitHub Pages
+```css
+--color-surface-main
+--color-surface-elevated
+--color-text-primary
+--color-text-muted
+--color-accent-primary
 ```
 
-This allows changes pushed to the main branch to be automatically published.
+Components consume these tokens instead of depending directly on specific visual values.
 
-## Current Status
+### Component Layer
 
-**Active Development**
+Astro components consume the tokens through documented variants, properties, and states.
 
-ORBIT-UI is a functional design system currently under active development.
+Most components work without client-side JavaScript. Modal uses the native `<dialog>` API with a minimal interaction layer.
 
-It includes implemented components, integrated documentation and a public deployment.
+### Documentation Layer
 
-Some areas are not yet implemented, including:
+Astro pages document component behavior and usage together with examples, contracts, and anti-patterns.
 
-* Internationalization.
-* Automated testing.
-* Automated accessibility auditing.
-* More advanced interactive components.
-* Documentation search.
+Documentation is built and deployed alongside the system, keeping implementation and documentation within the same project.
 
-For this reason, the project is not presented as a complete enterprise design system, but as an implementation and exploration of frontend architecture.
+---
 
-## Future Development
+## 5. Technology Stack
 
-Potential improvements include:
+| Technology      | Purpose                                 |
+| --------------- | --------------------------------------- |
+| Astro           | Site generation framework               |
+| Tailwind CSS v4 | Utility styling and token configuration |
+| TypeScript      | Component property typing               |
+| Vite            | Build tooling used by Astro             |
+| pnpm            | Dependency management                   |
+| GitHub Actions  | Automated build and deployment          |
+| GitHub Pages    | Static hosting                          |
 
-* Component testing.
-* Accessibility testing.
-* Completing internationalization.
-* Adding components such as Dropdown, Tabs, Accordion, Toast and Skeleton.
-* Documentation search.
-* Improved responsive documentation.
-* CSS bundle analysis.
+### Typography
 
-## What This Project Demonstrates
+- Inter
+- JetBrains Mono
 
-ORBIT-UI demonstrates experience with:
+---
 
-* Design system architecture.
-* Frontend development with Astro.
-* Tailwind CSS v4.
-* Semantic design tokens.
-* Reusable components.
-* TypeScript.
-* CSS-first development.
-* Accessibility foundations using HTML and ARIA.
-* Static Site Generation.
-* Documentation-as-code.
-* Automated deployment with GitHub Actions.
+## 6. Implemented Features
 
-The project demonstrates an approach focused not only on building interfaces, but on establishing reusable rules that maintain consistency and control frontend complexity.
+### Token System
 
-## Visuals
+- 14 semantically organized color tokens.
+- 2 typography tokens.
+- Surface, Text, Accent, Status, and Typography categories.
+- CSS-first configuration through `@theme`.
 
-<!-- IMAGE 01 — Overview -->
+### Components
+
+- Button with variants and states.
+- Card with multiple presentation variants.
+- Alert for information and feedback states.
+- Badge for semantic states.
+- NavLink with active route detection and `aria-current`.
+- Input with disabled and invalid states.
+- Select with validation.
+- Modal based on `<dialog>`.
+- Table using semantic element composition.
+- Tooltip with multiple positions and hover/focus support.
+
+### Documentation
+
+- Component catalog.
+- Individual component documentation.
+- Variant and state examples.
+- Composition guidelines.
+- Anti-pattern documentation.
+- Reusable code snippets.
+
+---
+
+## 7. Technical Decisions
+
+### CSS-First Architecture
+
+Most components are implemented through HTML and CSS, using JavaScript only where interaction requires it.
+
+**Benefit:** reduces client-side JavaScript and keeps base components simple.
+
+**Trade-off:** more complex interactions require additional logic and are currently outside the system's scope.
+
+### Semantic Tokens
+
+Tokens represent visual meaning, for example:
+
+```css
+--color-text-muted
+```
+
+rather than specific values such as:
+
+```css
+--color-gray-400
+```
+
+**Benefit:** allows the visual language of the system to evolve without coupling it to individual components.
+
+**Trade-off:** developers need to understand token semantics to use them correctly.
+
+### Explicit Component Contracts
+
+Components document variants, states, valid usage, and anti-patterns.
+
+**Benefit:** the system defines composition rules in addition to visual styles.
+
+**Trade-off:** it requires more discipline and documentation than an unrestricted component collection.
+
+### Documentation-as-Code
+
+Documentation lives within the same project and is generated through Astro.
+
+**Benefit:** implementation, examples, and documentation evolve together.
+
+**Trade-off:** documentation depends on the project's build system.
+
+---
+
+## 8. Accessibility and Quality
+
+ORBIT-UI incorporates accessibility foundations directly into its components through:
+
+- Semantic HTML.
+- `aria-current`.
+- `aria-invalid`.
+- `aria-label`.
+- `aria-hidden`.
+- `aria-disabled`.
+- Semantic roles where appropriate.
+- Documented interactive states.
+
+The project does not yet include an automated component testing suite, visual regression testing, or automated accessibility auditing.
+
+This is considered a current limitation and is not presented as a guarantee of complete accessibility.
+
+---
+
+## 9. Visual Evidence
+
+### Overview
 
 ![ORBIT-UI Overview](/images/projects/orbit-ui/overview.png)
 
-*Main design system page showing its structure, principles and navigation.*
+*Main system page showing its structure, principles, and navigation.*
 
-<!-- IMAGE 02 — Tokens -->
+### Design Tokens
 
 ![ORBIT-UI Design Tokens](/images/projects/orbit-ui/tokens.png)
 
-*Semantic design token system used as the visual foundation for the components.*
+*Semantic token system used as the visual foundation for the components.*
 
-<!-- IMAGE 03 — Components -->
+### Components
 
 ![ORBIT-UI Components](/images/projects/orbit-ui/components.png)
 
 *Component catalog and available variants.*
 
-<!-- IMAGE 04 — Component Documentation -->
+### Component Documentation
 
 ![ORBIT-UI Component Documentation](/images/projects/orbit-ui/card.png)
 
-*Component documentation showing its contract, variants, states and usage rules.*
+*Component documentation showing variants, states, contracts, and usage rules.*
 
-<!-- IMAGE 05 — Modal -->
+### Modal
 
 ![ORBIT-UI Modal](/images/projects/orbit-ui/modal.png)
 
 *Modal interaction using the native `<dialog>` API.*
+
+---
+
+## 10. Current Status and Limitations
+
+**Status:** Active Development.
+
+ORBIT-UI is a functional design system with implemented components, integrated documentation, and a public deployment.
+
+It currently does not include:
+
+- Automated component test suite.
+- Automated accessibility auditing.
+- Visual regression testing.
+- Advanced interactive components such as Tabs, Dropdown, or Toast.
+- Documentation search.
+- Internationalization.
+- Formal component versioning strategy.
+- Token export for other frameworks.
+
+Given its current scope, the project is presented as an implementation and exploration of frontend design system architecture rather than a complete enterprise design system.
+
+---
+
+## 11. What This Project Demonstrates
+
+ORBIT-UI demonstrates experience with:
+
+- Design system architecture.
+- Frontend development with Astro.
+- Tailwind CSS v4 and `@theme` configuration.
+- Semantic token design and organization.
+- Reusable component architecture.
+- TypeScript for component contracts.
+- CSS-first development.
+- Semantic HTML and accessibility foundations.
+- Documentation-as-code.
+- Static site generation.
+- Automated build and deployment with GitHub Actions.
+
+The main technical value of the project is demonstrating that a design system can define not only visual components, but also reusable composition rules and a shared visual language.

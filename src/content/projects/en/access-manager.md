@@ -1,42 +1,72 @@
 ---
 title: "AccessManager"
-description: "Backend authentication study project built with Spring Boot and Spring Security, implementing and comparing stateless JWT authentication with stateful HTTP sessions."
-subtitle: "Authentication architecture comparison with Spring Security"
-stack: "Java, Spring Boot, Spring Security, JPA, MySQL, Docker"
+description: "Backend authentication study project implementing and comparing stateless JWT authentication with stateful HTTP sessions using Spring Boot and Spring Security."
+subtitle: "Practical comparison of authentication architectures"
+stack: "Java 21, Spring Boot, Spring Security, JPA, MySQL, Docker"
 github: "https://github.com/HC-ONLINE/AccessManager"
+site: null
 ---
 
-## Overview
+## 1. Summary
 
-AccessManager is a technical reference project focused on studying different authentication strategies for backend applications.
+AccessManager is a technical study project focused on understanding and comparing two backend authentication models: stateless JWT authentication and stateful HTTP sessions.
 
-The same functional domain is implemented using two independent approaches:
+The same functional domain is implemented through two independent branches, each with its own Spring Security configuration, authentication flow, and tests.
 
-- **JWT** — stateless authentication for API-oriented architectures.
-- **HTTP Sessions** — stateful authentication for web applications.
+The goal is not to build a production-ready authentication system, but to turn the differences between both models into executable and comparable implementations.
 
-Each implementation lives in its own branch with independent security configuration, authentication flow, tests and documentation.
+## 2. Context / Problem
 
-The project is not intended to represent a production-ready authentication system. Its purpose is to make the trade-offs between both approaches concrete through executable implementations.
+Choosing an authentication mechanism affects architectural decisions related to state management, credential revocation, scalability, client type, and operational complexity.
 
-## Technical Problem
+AccessManager studies these differences within the same functional domain, avoiding a purely theoretical comparison.
 
-Choosing between JWT and HTTP sessions involves practical trade-offs around:
+The project explores questions such as:
 
-- horizontal scalability;
-- credential revocation;
-- state management;
-- session auditing;
-- client type;
-- implementation complexity.
+- How does the authentication flow differ between JWT and sessions?
+- Where is authenticated state maintained?
+- How is authorization implemented in each model?
+- What advantages and limitations does each strategy introduce?
+- How does the Spring Security configuration change between approaches?
 
-AccessManager implements both models within the same domain to make these trade-offs easier to evaluate in practice.
+## 3. Solution
 
-## Architecture
+AccessManager implements two independent authentication strategies.
 
-### JWT implementation
+### JWT — `auth-jwt` branch
 
-The `auth-jwt` branch uses a stateless architecture:
+- Stateless authentication.
+- REST API login.
+- JWT generation and validation.
+- HMAC-SHA256 signing.
+- Custom `JwtRequestFilter`.
+- Token expiration validation.
+- Role-based authorization.
+- Protected endpoints.
+
+### HTTP Sessions — `auth-session` branch
+
+- Stateful authentication.
+- Spring Security form login.
+- HTTP session management.
+- `JSESSIONID` cookie.
+- CSRF protection.
+- Logout with session invalidation.
+- Thymeleaf-rendered pages.
+
+### Shared Domain
+
+Both implementations include:
+
+- User management.
+- Roles and authorization.
+- Protected resources.
+- JPA persistence.
+- BCrypt password hashing.
+
+## 4. Architecture
+
+### JWT Flow
 
 ```text
 HTTP Client
@@ -50,14 +80,12 @@ AuthenticationManager
 UserDetailsService
     ↓
 MySQL
-
+    ↓
 Valid credentials
     ↓
 JwtUtil
     ↓
-HS256 signed JWT
-
-Protected request
+HMAC-SHA256 signed JWT
     ↓
 Authorization: Bearer <token>
     ↓
@@ -67,14 +95,10 @@ Token validation
     ↓
 SecurityContext
     ↓
-ProtectedController
-```
+Protected resource
+````
 
-Authorization is handled through roles and Spring Security access restrictions.
-
-### Session implementation
-
-The `auth-session` branch uses a stateful architecture:
+### Session Flow
 
 ```text
 Browser
@@ -88,201 +112,231 @@ AuthenticationManager
 UserDetailsService
     ↓
 MySQL
-
+    ↓
 Valid credentials
     ↓
 HttpSession
     ↓
-JSESSIONID cookie
+JSESSIONID
     ↓
 SecurityContext
     ↓
 Protected page
 ```
 
-This approach allows server-side session state to be invalidated immediately.
+![AccessManager architecture comparison](/images/projects/accessmanager/architecture.png)
 
-## Capabilities
+*Comparison of JWT and HTTP session authentication flows.*
 
-### JWT authentication
+The architecture keeps both strategies separate so their configurations, flows, and tests can be studied independently.
+
+## 5. Technology Stack
+
+| Technology      | Purpose                                     |
+| --------------- | ------------------------------------------- |
+| Java 21         | Language and runtime                        |
+| Spring Boot     | Application framework                       |
+| Spring Security | Authentication and authorization            |
+| Spring Data JPA | Persistence                                 |
+| MySQL           | Database                                    |
+| H2              | Test database                               |
+| Maven           | Build and project management                |
+| JWT             | Stateless authentication                    |
+| Thymeleaf       | Server-side rendering in the session branch |
+| Docker          | Containerization                            |
+| Docker Compose  | Runtime environment                         |
+
+### Security
+
+| Mechanism     | JWT                              | Sessions             |
+| ------------- | -------------------------------- | -------------------- |
+| State         | Stateless                        | Stateful             |
+| Credential    | JWT                              | JSESSIONID           |
+| CSRF          | Not applicable to the same model | Implemented          |
+| Authorization | Roles                            | Roles                |
+| Revocation    | Limited by expiration            | Session invalidation |
+
+## 6. Implemented Features
+
+### Authentication
 
 - Email and password login.
 - JWT generation and validation.
-- HMAC-SHA256 signing.
-- Custom token validation filter.
-- Role-based authorization.
-- Protected endpoints.
-- Jakarta Validation for input validation.
-- Security tests using MockMvc.
-
-### Session authentication
-
-- Thymeleaf login form.
 - HTTP session-based authentication.
-- CSRF protection.
-- Logout with session invalidation.
-- Protected page for authenticated users.
-- User state management.
-- BCrypt password migration.
-- Integration tests using H2.
+- Logout and session invalidation.
+- Protected authenticated resources.
 
-## Approach Comparison
+### Authorization
 
-| Aspect         | JWT                                     | HTTP Session                                 |
-| -------------- | --------------------------------------- | -------------------------------------------- |
-| Model          | Stateless                               | Stateful                                     |
-| State          | Not stored server-side                  | Stored server-side                           |
-| Scalability    | Well suited to distributed scenarios    | Requires shared-session strategy for scaling |
-| Revocation     | Not immediate                           | Immediate                                    |
-| Primary client | APIs / distributed applications         | Web applications                             |
-| Credential     | Signed token                            | Session cookie                               |
-| CSRF           | Not required for the implemented scheme | CSRF protection implemented                  |
-| Complexity     | More token lifecycle responsibility     | Centralized session management               |
+- User roles.
+- Access control through Spring Security.
+- Protected resources.
+- Permission checks during requests.
 
-The project makes these trade-offs observable through working implementations rather than only theoretical comparisons.
+### Security
 
-## Engineering
+- BCrypt password hashing.
+- HMAC-SHA256 JWT signing.
+- Token expiration validation.
+- CSRF protection in the session-based implementation.
+- Jakarta Validation for input validation.
 
-- **Spring Security** — authentication, authorization, filters and CSRF protection.
-- **Branch separation** — each authentication model can be executed and tested independently.
-- **Layered architecture** — separation between controllers, services, security, persistence and domain models.
-- **Persistence** — Spring Data JPA with MySQL.
-- **Testing** — MockMvc, Spring Security Test, JUnit 5 and H2 for the session implementation.
-- **Containerization** — multi-stage Dockerfile and Docker Compose for the application and database.
-- **Validation** — Jakarta Validation DTOs in the JWT implementation.
+### Infrastructure
 
-## Technical Decisions
+- Spring Data JPA persistence.
+- MySQL runtime database.
+- H2 test database.
+- Docker and Docker Compose.
 
-### Custom JWT filter
+## 7. Key Technical Decisions
 
-The implementation uses `JwtRequestFilter` and `JwtUtil` to make the token generation and validation process explicit.
+### Independent Implementations
 
-This makes the internals of JWT authentication and Spring Security easier to study, although a production system could rely on abstractions such as OAuth2 Resource Server.
+JWT and session authentication are maintained in separate branches instead of being combined through dynamic configuration.
 
-### Independent implementations
+**Advantage:** allows configurations, flows, and tests to be compared directly without coupling fundamentally different security models.
 
-JWT and session authentication are not combined through feature flags. Each approach has its own branch.
+**Trade-off:** requires maintaining two implementations.
 
-This reduces coupling between fundamentally different security models and makes their configurations and tests easier to compare.
+### Custom JWT Filter
+
+The JWT branch uses `JwtRequestFilter` and `JwtUtil` to make token extraction, validation, and processing explicit.
+
+**Advantage:** makes the JWT authentication flow inside Spring Security easier to study.
+
+**Trade-off:** a production implementation could use standardized solutions such as OAuth 2.0 Resource Server instead of maintaining custom JWT logic.
 
 ### BCrypt
 
-Passwords are stored using BCrypt in both implementations.
+Passwords are not stored in plaintext and are processed using BCrypt.
 
-The configured cost differs between the branches. This is part of the current state of the study project and should not be interpreted as a standardized production configuration.
+**Advantage:** provides password-specific hashing designed to make offline brute-force attacks more expensive.
 
-## Security
+**Trade-off:** the computational cost must be configured according to system requirements and available resources.
 
-### Implemented mechanisms
+### HTTP Sessions for Stateful Applications
+
+The session branch uses the traditional server-managed authentication model.
+
+**Advantage:** provides direct session invalidation and explicit control over authenticated state.
+
+**Trade-off:** distributed architectures require shared session storage or another mechanism for coordinating session state.
+
+## 8. Security
+
+### Implemented Mechanisms
 
 - BCrypt password hashing.
 - HMAC-SHA256 signed JWTs.
 - Token expiration validation.
 - Role-based authorization.
-- CSRF protection for session authentication.
-- Session invalidation through logout.
+- CSRF protection in the session branch.
+- Session invalidation during logout.
 - Input validation.
 - Protected endpoints using Spring Security.
 
-## Testing
+### Security Limitations
 
-The JWT implementation includes security tests using MockMvc.
+The project is a technical study and should not be interpreted as a hardened production security configuration.
 
-The session implementation includes integration tests using an in-memory H2 database.
+It currently does not include:
 
-The tests primarily cover:
+- Refresh tokens.
+- Immediate JWT revocation.
+- Rate limiting.
+- Distributed session management.
+- OAuth2/OIDC integration.
+- External secret management.
+- Dedicated CORS configuration.
+- Dedicated HTTP security header configuration.
+- Advanced security observability.
 
-- authentication;
-- access to protected resources;
-- role-based authorization;
-- authenticated and unauthenticated access;
-- CSRF protection in the session implementation.
+The implementations are therefore intended to study authentication mechanisms and their trade-offs, not to be directly deployed as components of a critical production system.
 
-## Current Limitations
+## 9. Testing & Quality
 
-AccessManager is an educational and technical reference project, not a production-ready IAM system.
+The project includes tests primarily focused on validating security flows.
 
-Current limitations include:
+### JWT
+
+- Authentication tests.
+- Authorization tests.
+- Token validation.
+- MockMvc.
+- Spring Security Test.
+
+### Sessions
+
+- Login and logout tests.
+- CSRF protection validation.
+- Session management tests.
+- H2 integration.
+
+### Tools
+
+- JUnit 5.
+- MockMvc.
+- Spring Security Test.
+- H2.
+
+No coverage or benchmark claims are presented because there are not enough verified measurements to support them.
+
+## 10. Visual Evidence
+
+### Architecture Comparison
+
+![AccessManager architecture comparison](/images/projects/accessmanager/architecture.png)
+
+*Comparison between JWT and HTTP session authentication flows.*
+
+### JWT Authentication
+
+![AccessManager JWT authentication](/images/projects/accessmanager/jwt-flow.png)
+
+*Authentication flow from login to protected resource access using JWT.*
+
+### Session Authentication
+
+![AccessManager session authentication](/images/projects/accessmanager/session-login.png)
+
+*Stateful authentication using Spring Security, HTTP sessions, and Thymeleaf.*
+
+## 11. Status & Limitations
+
+**Classification:** Proof of Concept / Technical Study
+
+AccessManager is maintained as a technical reference project rather than a production product.
+
+### Current Limitations
 
 - No refresh tokens.
 - No immediate JWT revocation.
-- No rate limiting.
-- No CORS configuration.
-- No dedicated HTTP security header configuration.
-- Sessions are stored in memory.
+- Sessions use in-memory storage.
 - No distributed session storage.
-- No OAuth2 integration.
-- No observability or metrics.
+- No rate limiting.
+- No OAuth2/OIDC integration.
 - No CI/CD pipeline.
 - No OpenAPI documentation.
-- Configuration contains values intended for demonstration environments.
+- No verified performance metrics.
+- Configuration is intended for study and demonstration environments.
 
-These limitations are consistent with the project's comparative and educational purpose.
+Some of these limitations are intentional because the primary objective is to study authentication mechanisms rather than build a complete IAM platform.
 
-## Possible Evolution
+## 12. What This Project Demonstrates
 
-The project documents potential extensions such as:
-
-- refresh tokens;
-- JWT revocation using Redis;
-- rate limiting;
-- OAuth2;
-- concurrent session management;
-- Remember Me;
-- distributed session storage using Redis or JDBC.
-
-It could also evolve toward a more production-oriented configuration through:
-
-- externalized secret management;
-- security headers;
-- controlled CORS;
-- structured logging;
-- observability;
-- CI/CD;
-- Testcontainers;
-- Flyway or Liquibase;
-- OpenAPI documentation.
-
-## What This Project Demonstrates
+AccessManager demonstrates practical experience with:
 
 - Backend authentication design.
-- Spring Security.
+- Spring Security configuration.
 - JWT implementation.
 - HTTP session management.
 - Role-based authorization.
 - CSRF protection.
-- Layered architecture.
+- Password hashing.
+- Layered backend architecture.
 - JPA/Hibernate persistence.
 - Security testing.
 - Docker and Docker Compose.
 - Architectural trade-off analysis.
 
-## Visuals
-
-<!-- IMAGE 01 — Architecture comparison -->
-
-![AccessManager architecture comparison](/images/projects/accessmanager/architecture.png)
-
-*Comparison of JWT and HTTP session authentication flows.*
-
-<!-- IMAGE 02 — JWT flow -->
-
-![AccessManager JWT authentication](/images/projects/accessmanager/jwt-flow.png)
-
-*JWT authentication flow from login to protected resource access.*
-
-<!-- IMAGE 03 — Session authentication -->
-
-![AccessManager session authentication](/images/projects/accessmanager/session-login.png)
-
-*HTTP session authentication implemented with Spring Security and Thymeleaf.*
-
-## Short Description
-
-Backend authentication study project comparing stateless JWT and stateful HTTP sessions using Spring Boot and Spring Security.
-
-## Status
-
-### Proof of Concept / Technical Study
-
-AccessManager is maintained as a reference project for studying and comparing authentication architectures. It is not presented as a production-ready product.
+The main value of the project is not implementing JWT or sessions in isolation, but **comparing both strategies within the same domain and understanding how the authentication mechanism affects backend architecture, scalability, state management, and access control**.

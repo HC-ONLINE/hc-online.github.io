@@ -1,170 +1,378 @@
 ---
 title: "PermissionManager"
-description: "Sistema de autorización RBAC con Spring Boot y Spring Security que compara autenticación JWT stateless y sesiones HTTP stateful."
+description: "Estudio técnico de autorización RBAC construido con Spring Boot y Spring Security, con comparación de autenticación JWT stateless y sesiones HTTP stateful."
 subtitle: "Autorización basada en roles y políticas"
 stack: "Java 21, Spring Boot, Spring Security, JPA, MySQL, Docker"
 github: "https://github.com/HC-ONLINE/PermissionManager"
+site: null
 ---
 
-## Visión general
+## 1. Resumen
 
-PermissionManager es un proyecto de estudio técnico centrado en autorización y control de acceso. Implementa un modelo RBAC (Role-Based Access Control) y compara dos mecanismos de autenticación dentro del mismo dominio funcional: JWT stateless y sesiones HTTP stateful.
+PermissionManager es un estudio técnico de autorización y control de acceso construido con Java 21, Spring Boot y Spring Security.
 
-El objetivo es separar claramente la autenticación de la autorización y analizar los trade-offs de cada enfoque en una aplicación backend basada en Spring Security.
+El proyecto implementa un modelo de autorización basado en roles (RBAC), permisos, ownership y reglas adicionales, mientras compara dos mecanismos de autenticación dentro del mismo dominio: JWT stateless y sesiones HTTP stateful.
 
-## Arquitectura
+El objetivo principal es demostrar la separación entre autenticación y autorización y analizar cómo las decisiones de autenticación afectan la arquitectura del backend.
 
-El mismo dominio de autorización se mantiene entre las dos implementaciones, mientras que el mecanismo de autenticación cambia según la rama:
+---
 
-* `rbac-jwt` — autenticación stateless mediante JWT.
-* `rbac-session` — autenticación stateful mediante sesiones HTTP.
+## 2. Contexto / Problema
 
-## Capacidades
+La autenticación determina quién es un usuario, mientras que la autorización determina qué puede hacer dentro del sistema.
+
+En aplicaciones backend, mezclar ambas responsabilidades puede generar lógica de seguridad difícil de mantener y probar.
+
+PermissionManager explora esta separación mediante un dominio común de autorización y dos mecanismos de autenticación diferentes.
+
+El proyecto permite estudiar en la práctica:
+
+- Autenticación stateless mediante JWT.
+- Autenticación stateful mediante sesiones HTTP.
+- Autorización basada en roles y permisos.
+- Verificaciones de ownership.
+- Seguridad a nivel de método.
+- Diferencias arquitectónicas entre ambos modelos.
+
+---
+
+## 3. Solución
+
+PermissionManager mantiene un modelo de autorización común y permite evaluarlo utilizando dos mecanismos de autenticación independientes.
+
+### Modelo de autorización
+
+La lógica de autorización se representa mediante una decisión basada en:
+
+```text
+decide(subject, resource, action, context)
+        ↓
+   ALLOW | DENY
+````
+
+Donde:
+
+- **subject** — identidad autenticada y sus roles.
+- **resource** — recurso sobre el que se solicita acceso.
+- **action** — operación solicitada.
+- **context** — información adicional como ownership o privilegios especiales.
+
+### Roles
+
+- **USER** — permisos básicos sobre recursos permitidos.
+- **SUPPORT** — acceso relacionado con soporte y auditoría.
+- **ADMIN** — administración de usuarios y configuración.
+
+### Autenticación JWT
+
+La rama `rbac-jwt` implementa:
+
+- Autenticación stateless.
+- Bearer Token.
+- Tokens firmados mediante HMAC-SHA256.
+- Validación de expiración.
+- Filtro personalizado de autenticación.
+
+### Autenticación mediante sesiones
+
+La rama `rbac-session` implementa:
+
+- Autenticación stateful.
+- Form login de Spring Security.
+- HTTP sessions.
+- SecurityContext basado en sesión.
+- Protección CSRF.
+
+---
+
+## 4. Arquitectura
+
+El proyecto mantiene el mismo dominio de autorización mientras cambia el mecanismo de autenticación.
+
+![Arquitectura de PermissionManager](/images/projects/permissionmanager/architecture.png)
+
+*Comparación de los flujos JWT stateless y sesiones HTTP stateful con el modelo de autorización compartido.*
+
+### Flujo JWT
+
+```text
+HTTP Client
+    ↓
+POST /api/auth/login
+    ↓
+AuthController
+    ↓
+AuthenticationManager
+    ↓
+UserDetailsService
+    ↓
+Database
+    ↓
+Valid credentials
+    ↓
+JwtUtil
+    ↓
+Signed JWT
+    ↓
+Protected request
+    ↓
+Authorization: Bearer <token>
+    ↓
+JwtRequestFilter
+    ↓
+Token validation
+    ↓
+SecurityContext
+    ↓
+ProtectedController
+    ↓
+Authorization decision
+    ↓
+ALLOW / DENY
+```
+
+### Flujo de sesión
+
+```text
+Browser
+    ↓
+Login form
+    ↓
+Spring Security FilterChain
+    ↓
+AuthenticationManager
+    ↓
+UserDetailsService
+    ↓
+Database
+    ↓
+Valid credentials
+    ↓
+HttpSession
+    ↓
+JSESSIONID cookie
+    ↓
+SecurityContext
+    ↓
+Protected resource
+    ↓
+Authorization decision
+    ↓
+ALLOW / DENY
+```
+
+---
+
+## 5. Stack Tecnológico
+
+| Tecnología      | Propósito                       |
+| --------------- | ------------------------------- |
+| Java 21         | Lenguaje y runtime              |
+| Spring Boot     | Framework backend               |
+| Spring Security | Autenticación y autorización    |
+| Spring Data JPA | Persistencia                    |
+| Hibernate       | ORM                             |
+| MySQL           | Base de datos de aplicación     |
+| H2              | Base de datos para pruebas      |
+| Maven           | Build y gestión de dependencias |
+| Docker          | Containerización                |
+| Docker Compose  | Entorno de ejecución            |
+
+### Seguridad
+
+| Mecanismo         | JWT                                    | Sesiones        |
+| ----------------- | -------------------------------------- | --------------- |
+| Autenticación     | Bearer Token                           | HTTP Session    |
+| Estado            | Stateless                              | Stateful        |
+| CSRF              | No aplica al modelo de token utilizado | Implementado    |
+| Seguridad         | Spring Security                        | Spring Security |
+| Cliente principal | API                                    | Navegador       |
+
+---
+
+## 6. Funcionalidades Implementadas
 
 ### Autorización
 
-* RBAC con roles `USER`, `SUPPORT` y `ADMIN`.
-* Permisos explícitos para operaciones sobre usuarios y auditoría.
-* Control de ownership para proteger recursos propios.
-* Evaluación de autorización mediante `@PreAuthorize`.
-* Protección del último usuario con rol `ADMIN`.
-* Respuestas estructuradas ante decisiones de acceso denegado.
+- RBAC con roles `USER`, `SUPPORT` y `ADMIN`.
+- Permisos explícitos para operaciones protegidas.
+- Verificaciones de ownership.
+- Autorización a nivel de método mediante `@PreAuthorize`.
+- Protección contra eliminación del último usuario `ADMIN`.
+- Respuestas estructuradas para accesos denegados.
 
-### Autenticación
+### Autenticación JWT
 
-* Generación y validación de JWT.
-* Filtro personalizado para autenticación mediante Bearer Token.
-* Autenticación basada en sesiones HTTP.
-* Form login mediante Spring Security.
-* Logout e invalidación de sesión en la implementación stateful.
+- Login mediante email y contraseña.
+- Generación y validación de JWT.
+- Filtro personalizado para Bearer Tokens.
+- Validación de expiración.
+- Secretos configurables mediante variables de entorno.
+
+### Autenticación mediante sesiones
+
+- Formulario de login con Thymeleaf.
+- Autenticación basada en HTTP sessions.
+- Protección CSRF.
+- Logout e invalidación de sesión.
+- Gestión del estado autenticado.
 
 ### Backend
 
-* API REST con Spring Boot.
-* Persistencia mediante JPA/Hibernate.
-* Validación de DTOs.
-* Manejo centralizado de excepciones.
-* Datos iniciales para usuarios, roles y permisos.
+- API REST con Spring Boot.
+- Persistencia mediante JPA/Hibernate.
+- Validación de DTOs con Jakarta Validation.
+- Manejo centralizado de excepciones.
+- Datos iniciales para usuarios, roles y permisos.
 
-## Comparación de arquitecturas
+---
 
-El proyecto utiliza dos ramas para estudiar las diferencias entre los enfoques stateless y stateful.
+## 7. Decisiones Técnicas Relevantes
 
-| Aspecto                  | JWT                       | Sesiones HTTP                                |
-| ------------------------ | ------------------------- | -------------------------------------------- |
-| Estado                   | Stateless                 | Stateful                                     |
-| Escalabilidad horizontal | Simplificada              | Requiere estado compartido o sticky sessions |
-| Revocación               | Limitada hasta expiración | Inmediata                                    |
-| Almacenamiento           | Token del lado cliente    | Sesión del lado servidor                     |
-| Caso de uso              | APIs distribuidas         | Aplicaciones web con control de sesión       |
+### Separación por ramas
 
-Esta separación permite comparar las decisiones arquitectónicas sin cambiar el modelo de autorización.
+JWT y sesiones HTTP se mantienen en ramas independientes en lugar de combinar ambos modelos mediante feature flags.
 
-## Ingeniería
+**Ventaja:** permite comparar configuraciones, flujos y pruebas sin introducir acoplamiento innecesario.
 
-* **Separación de responsabilidades** — autenticación, autorización, servicios y persistencia se mantienen en capas independientes.
-* **Spring Security** — configuración de filtros, `SecurityFilterChain`, autorización por método y protección CSRF en la implementación basada en sesiones.
-* **Modelo RBAC** — usuarios, roles y permisos se representan mediante entidades JPA.
-* **Validación** — DTOs con Jakarta Validation para controlar entradas en los endpoints.
-* **Persistencia** — MySQL para ejecución y H2 para pruebas.
-* **Containerización** — Docker multi-stage y Docker Compose para ejecutar la aplicación junto con MySQL.
-* **Testing** — JUnit, Mockito, MockMvc y Spring Security Test para validar flujos de autenticación y autorización.
+**Trade-off:** requiere mantener dos implementaciones.
 
-## Seguridad
+### Filtro JWT personalizado
 
-El proyecto presta especial atención a los límites entre autenticación y autorización.
+El proyecto utiliza `JwtRequestFilter` y `JwtUtil` para hacer explícitos los procesos de generación y validación de tokens.
 
-Entre los mecanismos implementados se encuentran:
+**Ventaja:** facilita el estudio de los internals de autenticación JWT y Spring Security.
 
-* Validación de credenciales contra la base de datos.
-* Protección de endpoints mediante Spring Security.
-* Autorización basada en roles y permisos.
-* Verificación de ownership.
-* Protección CSRF en la rama basada en sesiones.
-* Gestión configurable del secreto JWT mediante variables de entorno.
-* Invalidación de sesiones durante logout.
+**Trade-off:** en una aplicación real podría ser preferible utilizar abstracciones estándar como OAuth2 Resource Server.
 
-El proyecto es deliberadamente un estudio técnico y no pretende representar una configuración de producción completa.
+### Autorización basada en políticas
 
-## Testing
+La lógica de autorización considera subject, resource, action y context en lugar de depender exclusivamente del rol.
 
-Se incluyen pruebas para validar distintos escenarios de seguridad.
+**Ventaja:** permite expresar reglas como ownership y privilegios específicos.
 
-### Rama JWT
+**Trade-off:** aumenta la complejidad frente a una autorización basada únicamente en roles.
 
-* Login válido y generación de token.
-* Acceso sin token.
-* Token inválido o malformado.
-* Acceso con permisos insuficientes.
+### BCrypt
 
-### Rama de sesiones
+Las contraseñas se almacenan utilizando BCrypt.
 
-* Login válido e inválido.
-* Protección CSRF.
-* Usuarios inexistentes o inactivos.
-* Acceso sin sesión.
-* Restricciones de autorización.
+**Ventaja:** evita almacenar contraseñas en texto plano y utiliza hashing diseñado para credenciales.
 
-Las pruebas utilizan MockMvc y las herramientas de testing de Spring Security.
+**Trade-off:** el coste computacional debe equilibrarse con los requisitos de rendimiento del sistema.
 
-## Limitaciones actuales
+---
 
-* No existe revocación activa de JWT.
-* No hay refresh tokens.
-* No existe rate limiting.
-* La auditoría actualmente utiliza datos mock.
-* Las sesiones se almacenan en memoria.
-* No existe configuración de CORS.
-* No incluye un frontend propio.
-* No cuenta con CI/CD.
-* Algunas configuraciones y credenciales de ejemplo son exclusivamente para desarrollo.
+## 8. Seguridad
 
-## Estado del proyecto
+### Mecanismos implementados
 
-### Proof of Concept / Technical Study
+- Validación de credenciales.
+- BCrypt para contraseñas.
+- Protección de endpoints mediante Spring Security.
+- Autorización basada en roles y permisos.
+- Verificaciones de ownership.
+- Seguridad a nivel de método.
+- Protección CSRF para autenticación mediante sesiones.
+- Secretos JWT mediante configuración externa.
+- Invalidación de sesión durante logout.
 
-PermissionManager es un proyecto educativo y comparativo orientado al estudio de arquitectura backend y seguridad de aplicaciones.
+### Alcance
 
-No se presenta como un producto de autorización listo para producción. Su principal objetivo es demostrar cómo diferentes mecanismos de autenticación pueden coexistir con un mismo modelo de autorización y cómo sus trade-offs afectan al diseño del sistema.
+El proyecto es un estudio técnico y **no debe considerarse una implementación de seguridad lista para producción**.
 
-## Qué demuestra este proyecto
+No implementa actualmente:
 
-* Desarrollo de APIs REST con Spring Boot.
-* Implementación de autenticación y autorización con Spring Security.
-* Diseño RBAC.
-* Separación entre authentication y authorization.
-* Comparación de arquitecturas stateless y stateful.
-* Persistencia relacional con JPA/Hibernate.
-* Testing de flujos de seguridad.
-* Containerización con Docker.
-* Análisis de trade-offs de arquitectura backend.
+- Revocación activa de JWT.
+- Refresh tokens.
+- Rate limiting.
+- Gestión distribuida de sesiones.
+- OAuth2.
+- CORS específico para un entorno de producción.
+- Gestión centralizada de secretos.
+- Auditoría persistente completa.
 
-## Visuales
+---
 
-<!-- IMAGE 01 — Comparación de arquitecturas -->
+## 9. Testing y Calidad
 
-![PermissionManager arquitectura](/images/projects/permissionmanager/architecture.png)
+El proyecto incluye pruebas enfocadas principalmente en los flujos de seguridad.
 
-*Comparacion de los flujos JWT stateless y sesiones HTTP stateful con el motor de autorizacion RBAC compartido.*
+### JWT
 
-<!-- IMAGE 02 — JWT flow -->
+- Login exitoso.
+- Generación de tokens.
+- Acceso sin token.
+- Tokens inválidos o malformados.
+- Acceso con permisos insuficientes.
 
-![PermissionManager flujo JWT](/images/projects/permissionmanager/jwt-flow.png)
+### Sesiones
 
-*Flujo completo de autenticacion JWT: desde el login hasta la decision de autorizacion ALLOW/DENY.*
+- Login exitoso y fallido.
+- Protección CSRF.
+- Usuarios inexistentes o inactivos.
+- Acceso sin sesión.
+- Restricciones de autorización.
 
-<!-- IMAGE 03 — Comparison table -->
+### Herramientas
 
-![PermissionManager comparacion](/images/projects/permissionmanager/comparison.png)
+- JUnit 5.
+- Mockito.
+- MockMvc.
+- Spring Security Test.
+- H2.
 
-*Tabla comparativa de los dos mecanismos de autenticacion: JWT vs sesiones HTTP.*
+---
 
-## Descripción corta
+## 10. Evidencia Visual
 
-Proyecto de estudio técnico que compara autenticación JWT stateless y sesiones HTTP stateful con un motor de autorización RBAC en Spring Boot.
+![Arquitectura de PermissionManager](/images/projects/permissionmanager/architecture.png)
 
-## Estado
+*Arquitectura general y comparación de los mecanismos de autenticación.*
 
-### Proof of Concept / Technical Study
+![Flujo JWT de PermissionManager](/images/projects/permissionmanager/jwt-flow.png)
 
-PermissionManager se mantiene como proyecto educativo y comparativo para el estudio de arquitectura backend y seguridad. No se presenta como un sistema de autorización listo para producción.
+*Flujo de autenticación JWT desde el login hasta la decisión de autorización.*
+
+![Comparación de PermissionManager](/images/projects/permissionmanager/comparison.png)
+
+*Comparación entre autenticación stateless mediante JWT y autenticación stateful mediante sesiones HTTP.*
+
+---
+
+## 11. Estado y Limitaciones
+
+**Clasificación:** Proof of Concept / Technical Study
+
+PermissionManager está concebido como un proyecto de estudio y referencia sobre autenticación, autorización y arquitectura backend.
+
+El objetivo no es proporcionar un sistema IAM completo, sino demostrar mediante código ejecutable cómo separar autenticación y autorización y cómo comparar diferentes modelos de autenticación dentro del mismo dominio.
+
+### Limitaciones actuales
+
+- No existe revocación activa de JWT.
+- No existen refresh tokens.
+- No existe rate limiting.
+- Las sesiones utilizan almacenamiento en memoria.
+- Los datos de auditoría son limitados/mocked.
+- No existe CI/CD.
+- No existe documentación OpenAPI.
+- No existe integración OAuth2.
+- Algunas configuraciones están orientadas al entorno de demostración.
+
+---
+
+## 12. Evolución Futura
+
+Las posibles extensiones del proyecto incluyen:
+
+1. Implementar refresh tokens.
+2. Agregar revocación de JWT mediante Redis.
+3. Implementar rate limiting.
+4. Añadir almacenamiento distribuido de sesiones.
+5. Integrar OAuth2/OIDC.
+6. Añadir documentación OpenAPI.
+7. Incorporar CI/CD.
+8. Implementar observabilidad y auditoría persistente.
+9. Externalizar completamente los secretos.
+10. Realizar hardening de seguridad para un entorno de producción.

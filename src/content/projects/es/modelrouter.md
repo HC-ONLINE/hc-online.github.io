@@ -1,16 +1,17 @@
 ---
 title: "ModelRouter"
-description: "API asíncrona para orquestar múltiples proveedores de LLM mediante una interfaz unificada, con streaming, fallback automático, control de disponibilidad y observabilidad."
-subtitle: "Orquestación multi-proveedor de LLM e infraestructura backend resiliente"
+description: "API asíncrona para orquestar múltiples proveedores LLM mediante una interfaz unificada, con streaming, fallback automático, control de disponibilidad y observabilidad."
+subtitle: "Orquestación multi-proveedor LLM e infraestructura backend"
 stack: "Python, FastAPI, Pydantic, HTTPX, Redis, Docker, GitHub Actions"
 github: "https://github.com/HC-ONLINE/ModelRouter"
+site: null
 ---
 
-## Visión general
+## 1. Resumen
 
-ModelRouter es una API HTTP asíncrona construida con Python y FastAPI que centraliza el acceso a múltiples proveedores de modelos de lenguaje mediante una interfaz común.
+ModelRouter es una API HTTP asíncrona construida con Python y FastAPI que proporciona una interfaz unificada para interactuar con múltiples proveedores de Large Language Models.
 
-El proyecto abstrae las diferencias entre proveedores y añade mecanismos de fallback, streaming en tiempo real, control de disponibilidad y estado compartido mediante Redis.
+El proyecto abstrae las diferencias entre proveedores mediante adaptadores independientes y añade mecanismos de fallback, streaming, control de disponibilidad y estado compartido mediante Redis.
 
 Actualmente integra cinco proveedores:
 
@@ -20,131 +21,259 @@ Actualmente integra cinco proveedores:
 - Gemini
 - Ollama
 
-El proyecto se encuentra en **desarrollo activo** y funciona principalmente como una exploración de arquitectura e infraestructura para aplicaciones basadas en LLM.
+El proyecto se encuentra en estado **experimental / desarrollo activo** y está orientado principalmente a explorar patrones de arquitectura backend para infraestructura basada en LLM.
 
-## Problema
+---
 
-Integrar diferentes proveedores de LLM directamente desde una aplicación obliga a manejar APIs, formatos de respuesta, autenticación y condiciones de error diferentes.
+## 2. Problema
 
-ModelRouter aborda este problema mediante una capa intermedia que proporciona un contrato común para las solicitudes y respuestas.
+Integrar varios proveedores LLM directamente dentro de una aplicación obliga a gestionar diferentes:
 
-Los objetivos principales son:
+- APIs y formatos de solicitud.
+- Mecanismos de autenticación.
+- Modelos y capacidades.
+- Formatos de respuesta.
+- Errores y condiciones de disponibilidad.
+- Mecanismos de streaming.
 
-- Unificar el acceso a diferentes proveedores.
-- Aislar las diferencias específicas de cada API.
-- Cambiar automáticamente de proveedor cuando uno no está disponible.
-- Soportar respuestas en streaming.
-- Mantener estado compartido entre instancias mediante Redis.
+Esto aumenta el acoplamiento entre la aplicación y los proveedores externos y hace más costoso incorporar nuevos proveedores o cambiar la estrategia de disponibilidad.
 
-## Arquitectura
+ModelRouter aborda este problema mediante una capa intermedia que proporciona un contrato común para los consumidores de la API.
 
-ModelRouter utiliza una arquitectura por capas que separa la API HTTP, la orquestación, las decisiones de routing, los adaptadores de proveedores y la infraestructura.
+---
 
-![Diagrama representativo de la arquitectura de ModelRouter](/images/projects/modelrouter/architecture.png)
+## 3. Solución
 
-*Diagrama representativo de la arquitectura por capas de ModelRouter y flujo entre la API, el router, los adaptadores de proveedores y Redis.*
+ModelRouter introduce una capa de orquestación entre el cliente y los proveedores LLM.
 
-Los componentes principales son:
+La arquitectura separa:
 
-- **FastAPI** — capa HTTP y documentación OpenAPI.
-- **Controllers** — validación y serialización de las solicitudes.
-- **Orchestrator** — coordinación del ciclo de ejecución y timeouts.
-- **Router** — selección de proveedor, fallback y control de disponibilidad.
-- **Provider Adapters** — integración independiente con cada proveedor.
-- **HTTP Client** — cliente asíncrono compartido mediante HTTPX.
-- **Redis** — estado temporal compartido entre instancias.
+- API HTTP.
+- Validación y serialización.
+- Orquestación.
+- Decisiones de enrutamiento.
+- Adaptadores de proveedores.
+- Cliente HTTP.
+- Estado temporal compartido.
+- Observabilidad.
 
-## Capacidades
+El cliente interactúa con un único contrato mientras ModelRouter decide qué proveedor utilizar y cómo manejar determinados fallos de disponibilidad.
 
-### Multi-provider
+### Flujo principal
 
-Los proveedores implementan un contrato común mediante adaptadores independientes.
+```text
+Cliente
+   │
+   ▼
+FastAPI
+   │
+   ▼
+Controller
+   │
+   ▼
+Orchestrator
+   │
+   ▼
+Router
+   │
+   ├── Proveedor A
+   ├── Proveedor B
+   ├── Proveedor C
+   └── ...
+        │
+        ▼
+   API LLM externa
+        │
+        ▼
+   Respuesta / Streaming
+```
 
-Esto permite agregar o modificar integraciones sin acoplar la lógica principal a una API específica.
+---
 
-### Automatic fallback
+## 4. Arquitectura
 
-El router puede cambiar al siguiente proveedor disponible cuando el proveedor seleccionado falla, está temporalmente bloqueado o alcanza determinadas condiciones de disponibilidad.
+ModelRouter utiliza una arquitectura por capas para separar las responsabilidades de la API, la lógica de orquestación y las integraciones externas.
 
-El sistema utiliza blacklist temporal y backoff exponencial para evitar reintentos continuos sobre proveedores con problemas.
+![Diagrama de arquitectura de ModelRouter](/images/projects/modelrouter/architecture.png)
+
+*Arquitectura representativa mostrando la interacción entre API, orquestador, router, adaptadores de proveedores, cliente HTTP y Redis.*
+
+### Capas principales
+
+- **API:** FastAPI y documentación OpenAPI.
+- **Controller:** validación de solicitudes y construcción de respuestas.
+- **Orquestación:** coordinación de ejecución, timeouts y flujo de solicitudes.
+- **Enrutamiento:** selección de proveedores, disponibilidad y fallback.
+- **Proveedores:** adaptadores independientes para cada API LLM.
+- **Infraestructura:** HTTPX, Redis y componentes compartidos.
+- **Observabilidad:** logging estructurado, métricas y health checks.
+
+La separación entre router y adaptadores permite modificar las políticas de selección sin acoplarlas a las implementaciones específicas de cada proveedor.
+
+---
+
+## 5. Capacidades implementadas
+
+### Orquestación multi-proveedor
+
+- Interfaz unificada para cinco proveedores LLM.
+- Adaptadores independientes por proveedor.
+- Normalización de solicitudes y respuestas.
+- Aislamiento de diferencias específicas de cada API.
+
+### Fallback y disponibilidad
+
+- Selección de proveedor basada en disponibilidad.
+- Bloqueo temporal de proveedores que presentan fallos.
+- Backoff exponencial para reintentos.
+- Estrategia AIMD para ajustar el comportamiento de disponibilidad.
 
 ### Streaming
 
-El endpoint `/stream` utiliza **Server-Sent Events (SSE)** para enviar los fragmentos de la respuesta a medida que son generados.
-
-```text
-data: <chunk>
-data: <chunk>
-data: <chunk>
-data: [DONE]
-```
-
-Esto permite que el cliente comience a procesar la respuesta sin esperar a que finalice toda la generación.
+- Server-Sent Events (SSE).
+- Entrega incremental de respuestas.
+- Señalización de finalización del stream.
+- Manejo asíncrono de conexiones.
 
 ### API
 
-La API expone actualmente cuatro endpoints principales:
+- `GET /health` — estado del servicio.
+- `GET /metrics` — métricas compatibles con Prometheus.
+- `POST /chat` — generación de respuestas sin streaming.
+- `POST /stream` — generación mediante streaming SSE.
 
-- `GET /health`
-- `GET /metrics`
-- `POST /chat`
-- `POST /stream`
+### Estado compartido
 
-Las solicitudes utilizan modelos Pydantic para validar mensajes y parámetros antes de llegar al sistema de routing.
+Redis se utiliza para mantener información temporal relacionada con:
 
-## Redis y estado distribuido
-
-Redis 7 se utiliza para mantener estado temporal relacionado con los proveedores:
-
-- Blacklist temporal.
-- Contadores de fallos.
-- Estado de rate limiting.
+- Fallos de proveedores.
+- Bloqueos temporales.
+- Contadores.
+- Estado utilizado por mecanismos de disponibilidad.
 - Coordinación entre instancias.
 
-Redis no se utiliza actualmente como base de datos de conversaciones. El proyecto no dispone todavía de persistencia para historiales de chat.
-
-## Observabilidad
-
-El proyecto incorpora mecanismos básicos de observabilidad:
+### Observabilidad
 
 - Logging estructurado en JSON.
 - Correlación mediante `request_id`.
 - Métricas compatibles con Prometheus.
-- Endpoint `/metrics`.
 - Health checks.
 
-Esto permite separar la lógica de generación de LLM de las necesidades operativas del servicio.
+---
 
-## Seguridad
+## 6. Stack tecnológico
 
-ModelRouter incorpora varias medidas básicas de seguridad:
+| Tecnología     | Propósito                      |
+| -------------- | ------------------------------ |
+| Python 3.11+   | Runtime                        |
+| FastAPI        | API HTTP asíncrona             |
+| Pydantic       | Validación y modelos de datos  |
+| HTTPX          | Cliente HTTP asíncrono         |
+| Redis 7        | Estado temporal compartido     |
+| pytest         | Testing                        |
+| Black          | Formateo                       |
+| Flake8         | Linting                        |
+| MyPy           | Verificación estática de tipos |
+| pre-commit     | Automatización de hooks        |
+| Docker         | Containerización               |
+| Docker Compose | Desarrollo local               |
+| GitHub Actions | CI/CD                          |
+| Trivy          | Escaneo de imágenes Docker     |
+
+### Proveedores integrados
+
+| Proveedor  | Integración      |
+| ---------- | ---------------- |
+| Groq       | Adaptador de API |
+| OpenRouter | Adaptador de API |
+| OpenAI     | Adaptador de API |
+| Gemini     | Adaptador de API |
+| Ollama     | Adaptador local  |
+
+---
+
+## 7. Decisiones técnicas relevantes
+
+### Patrón Adapter
+
+Cada proveedor se implementa mediante un adaptador independiente.
+
+**Ventaja:** reduce el acoplamiento con APIs externas y permite incorporar nuevos proveedores sin modificar directamente la lógica de orquestación.
+
+**Trade-off:** cada integración requiere mantener y probar una implementación específica.
+
+### Router separado de los proveedores
+
+La selección de proveedor y las políticas de fallback están separadas de los adaptadores.
+
+**Ventaja:** las políticas de disponibilidad pueden evolucionar sin modificar las integraciones externas.
+
+**Trade-off:** introduce una capa adicional de lógica de decisión.
+
+### Estado compartido mediante Redis
+
+El estado temporal de disponibilidad se mantiene fuera del proceso principal.
+
+**Ventaja:** permite compartir determinados estados entre múltiples instancias del servicio.
+
+**Trade-off:** introduce una dependencia externa y requiere gestionar la disponibilidad de Redis.
+
+### Arquitectura asíncrona
+
+FastAPI y HTTPX permiten manejar solicitudes concurrentes y streaming sin bloquear el flujo principal.
+
+**Ventaja:** adecuada para un servicio que permanece esperando respuestas de proveedores externos.
+
+**Trade-off:** exige un manejo cuidadoso de errores, timeouts y cancelación en código asíncrono.
+
+---
+
+## 8. Seguridad
+
+### Mecanismos implementados
 
 - Autenticación mediante API key.
-- Validación de entrada con Pydantic.
+- Validación de entradas mediante Pydantic.
 - Gestión de credenciales mediante variables de entorno.
-- Sanitización de información sensible en los logs.
-- Escaneo de vulnerabilidades de la imagen Docker mediante Trivy.
+- Sanitización de información sensible en logs.
+- Escaneo de imágenes Docker mediante Trivy.
 
-La implementación actual no pretende ser un gateway de LLM endurecido para producción. La autenticación es simple y existen aspectos pendientes relacionados con gestión de secretos, CORS y control multiusuario.
+### Limitaciones actuales
 
-## Docker e infraestructura
+ModelRouter no se presenta como un gateway LLM endurecido para producción.
 
-El proyecto incluye una imagen Docker multi-stage y un entorno Docker Compose compuesto por:
+Actualmente:
+
+- La autenticación es básica.
+- No existe control de acceso multiusuario.
+- No existe configuración CORS específica.
+- No existe un sistema propio de rate limiting independiente de los límites de los proveedores.
+- No existe firma o verificación criptográfica de solicitudes.
+- No existe un sistema completo de auditoría.
+
+Estas limitaciones son parte del estado experimental actual del proyecto.
+
+---
+
+## 9. Testing y calidad
+
+El proyecto incluye una suite automatizada orientada a validar la lógica de orquestación, adaptadores y componentes principales.
+
+### Métricas observables
+
+- 14 archivos de test.
+- 61 tests.
+- Tests unitarios y de integración.
+- Mocking de adaptadores de proveedores.
+- Verificación estática de tipos.
+- Linting y formateo automatizados.
+- Builds de imágenes Docker.
+- Escaneo de seguridad en CI.
+
+### Pipeline
 
 ```text
-ModelRouter
-     │
-     └── Redis 7
-```
-
-El contenedor de aplicación utiliza un usuario no root y health checks para facilitar su ejecución como servicio.
-
-## CI/CD y calidad
-
-GitHub Actions automatiza diferentes etapas del desarrollo:
-
-```text
-Quality
+Calidad
    ├── Black
    ├── Flake8
    └── MyPy
@@ -157,103 +286,112 @@ Build
    └── Trivy
 ```
 
-El repositorio cuenta actualmente con:
+Estas métricas reflejan el nivel de automatización y control de calidad del proyecto, pero no deben interpretarse como una garantía de comportamiento correcto frente a todos los proveedores externos.
 
-- 14 archivos de pruebas.
-- 61 tests.
-- Validación de tipos.
-- Linting y formato automatizados.
-- Construcción de imágenes Docker.
-- Escaneo de seguridad en CI.
+---
 
-## Decisiones técnicas
+## 10. Interfaz y experiencia del desarrollador
 
-### Adapter Pattern
+Aunque ModelRouter es principalmente un backend, se ha diseñado una interfaz orientada a facilitar su integración.
 
-Cada proveedor se implementa mediante un adaptador independiente.
+### API
 
-Esto reduce el acoplamiento entre la aplicación y las APIs externas y permite extender el sistema incorporando nuevos proveedores.
+- Swagger UI en `/docs`.
+- Especificación OpenAPI.
+- Respuestas JSON estructuradas.
+- Streaming mediante SSE.
+- IDs de correlación.
+- Health checks.
+- Endpoint de métricas.
 
-### Router + fallback
+### Desarrollo local
 
-La selección de proveedor está separada de la lógica HTTP y de las integraciones específicas.
+- Configuración mediante variables de entorno.
+- Docker Compose.
+- Dependencias externas claramente definidas.
+- Estructura modular del código.
 
-Esto permite aplicar políticas de disponibilidad y fallback sin modificar los controllers.
+El objetivo es que una aplicación cliente pueda integrarse con ModelRouter sin conocer los detalles específicos de cada proveedor LLM.
 
-### Estado compartido con Redis
+---
 
-El uso de Redis permite mantener información temporal de los proveedores fuera del proceso de la aplicación.
+## 11. Evidencia visual
 
-Esto resulta más adecuado para una arquitectura con múltiples instancias que depender exclusivamente del estado local.
+### Streaming
 
-### Arquitectura asíncrona
+![Salida de streaming de ModelRouter](/images/projects/modelrouter/streaming.png)
 
-FastAPI y HTTPX permiten manejar solicitudes concurrentes y streaming sin bloquear el flujo principal de la aplicación.
+*Respuesta incremental entregada mediante Server-Sent Events.*
 
-## Estado actual
+### API
 
-### Experimental / Active Development
+![Documentación de API de ModelRouter](/images/projects/modelrouter/api-docs.png)
 
-ModelRouter es un proyecto técnico de infraestructura y experimentación arquitectónica.
+*Documentación interactiva generada mediante Swagger/OpenAPI.*
+
+### Observabilidad
+
+![Métricas de ModelRouter](/images/projects/modelrouter/metrics.png)
+
+*Métricas expuestas mediante el endpoint compatible con Prometheus.*
+
+---
+
+## 12. Estado y limitaciones
+
+### Estado actual: Experimental / Desarrollo Activo
+
+ModelRouter es principalmente una exploración de arquitectura e infraestructura backend para aplicaciones basadas en LLM.
 
 Actualmente no incluye:
 
 - Persistencia de conversaciones.
 - Base de datos relacional.
-- Frontend.
+- Interfaz frontend.
 - Tests end-to-end contra proveedores reales.
 - Gestión avanzada de usuarios y credenciales.
-- Todas las garantías necesarias para considerarlo un gateway de LLM de producción.
+- Control de acceso multiusuario.
+- Rate limiting propio.
+- Logging de auditoría.
+- Tracing distribuido.
 
-Estas áreas forman parte de posibles evoluciones futuras.
+Estas limitaciones delimitan el alcance actual del proyecto y evitan presentarlo como un gateway LLM listo para producción.
 
-## Evolución futura
+---
 
-Entre las posibles mejoras se encuentran:
+## 13. Evolución y competencias demostradas
 
-- Persistencia de conversaciones mediante PostgreSQL.
-- Integración con más proveedores.
-- Dashboard de observabilidad con Grafana.
-- Métricas más completas por proveedor.
-- Gestión avanzada de credenciales.
-- Autenticación multiusuario.
-- Tests de integración y end-to-end.
+### Evolución futura
 
-## Qué demuestra
+Las posibles líneas de evolución incluyen:
 
-ModelRouter permite demostrar experiencia en:
+1. Persistencia de conversaciones con PostgreSQL.
+2. Incorporación de nuevos proveedores LLM.
+3. Dashboard de observabilidad con Grafana.
+4. Métricas más detalladas por proveedor.
+5. Gestión avanzada de credenciales.
+6. Autenticación y autorización multiusuario.
+7. Testing de integración y end-to-end.
+8. Rate limiting configurable.
+9. Logging de auditoría.
+10. Tracing distribuido.
+
+### Qué demuestra este proyecto
+
+ModelRouter demuestra experiencia práctica en:
 
 - Desarrollo backend asíncrono.
-- FastAPI y APIs REST.
-- Integración de múltiples proveedores de LLM.
+- FastAPI y diseño de APIs REST.
+- Integración de múltiples proveedores LLM.
 - Server-Sent Events.
-- Diseño basado en adapters.
-- Fallback y resiliencia.
-- Redis y estado distribuido.
+- Patrón Adapter.
+- Estrategias de fallback y resiliencia.
+- Gestión de estado compartido con Redis.
 - Observabilidad con Prometheus.
-- Docker.
-- GitHub Actions.
-- Testing y calidad de código.
-- Seguridad básica de APIs.
+- Containerización con Docker.
+- CI/CD con GitHub Actions.
+- Testing automatizado.
+- Análisis estático y calidad de código.
+- Diseño de infraestructura desacoplada.
 
-El objetivo principal del proyecto es demostrar cómo construir una capa de infraestructura que desacople una aplicación de los proveedores concretos de LLM y permita introducir mecanismos de resiliencia alrededor de ellos.
-
-## Visuales
-
-<!-- IMAGE 01 — Streaming -->
-
-![Salida representativa de streaming en ModelRouter](/images/projects/modelrouter/streaming.png)
-
-*Respuesta representativa en streaming mediante Server-Sent Events.*
-
-<!-- IMAGE 02 — API -->
-
-![Documentación de la API de ModelRouter](/images/projects/modelrouter/api-docs.png)
-
-*Documentación interactiva de la API mediante Swagger/OpenAPI.*
-
-<!-- IMAGE 03 — Observabilidad -->
-
-![Métricas representativas de ModelRouter](/images/projects/modelrouter/metrics.png)
-
-*Métricas representativas expuestas mediante el endpoint compatible con Prometheus.*
+El principal valor técnico del proyecto está en la separación entre **proveedores, políticas de enrutamiento y capa de transporte**, permitiendo experimentar con diferentes estrategias de disponibilidad sin acoplar la aplicación a una API LLM concreta.

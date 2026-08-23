@@ -1,84 +1,218 @@
 ---
 title: "LexGuard"
-description: "Proof of concept for detecting and analyzing personally identifiable information (PII) in text using rule-based detection and automated processing."
+description: "Python proof of concept for detecting potential personal data in text using rule-based and deterministic analysis."
 subtitle: "Sensitive data detection in text"
 stack: "Python"
 github: "https://github.com/HC-ONLINE/LexGuard"
 ---
 
-## Overview
+## 1. Summary
 
-LexGuard is a proof of concept focused on exploring the automated detection of personally identifiable information (PII) within text.
+LexGuard is a Python proof of concept for exploring the automated detection of potential personally identifiable information (PII) within text.
 
-The project experiments with text analysis and detection patterns to identify potential sensitive data, providing a foundation for security and privacy-oriented analysis tools.
+The project implements a deterministic analysis workflow based on predefined rules and patterns. Its purpose is not to provide a complete data protection system, but to validate a programmatic approach to the problem and explore an extensible architecture for future privacy and security tooling.
 
-## Problem
+## 2. Context / Problem
 
-Sensitive information can appear unintentionally in documents, text, or system inputs. Detecting it manually is difficult to scale and makes it harder to introduce privacy controls early in the data-processing lifecycle.
+Personal data can unintentionally appear in documents, text files, or system inputs. Manually identifying this information does not scale well and makes it harder to introduce privacy controls early in the data-processing lifecycle.
 
-LexGuard explores how this identification process can be automated through programmatic text analysis and configurable detection rules.
+LexGuard explores how a first layer of identification can be automated through deterministic rules that analyze text and flag potential matches for further review.
 
-## Solution
+An important assumption of the project is that pattern detection is not the same as contextual understanding. Therefore, results should be treated as indicators rather than definitive decisions about whether information is personal data.
 
-The project implements a text analysis workflow that processes input, applies detection mechanisms, and produces results for potentially sensitive elements.
+## 3. Solution
 
-The implementation is intended for experimentation and technical validation rather than as a production-ready data protection system.
+LexGuard processes text files through a deterministic analysis pipeline consisting of:
 
-## Capabilities
+1. Content ingestion.
+2. Detection rule execution.
+3. Potential match identification.
+4. Result processing.
+5. Structured output generation.
 
-- Automated detection of potential personal information.
-- Pattern-based text analysis.
-- Identification of different categories of sensitive information.
-- Structured detection results.
-- Separation between detection logic and input processing.
-- Extensible approach for adding new detection rules.
-
-## Engineering
-
-- **Rule-based detection** — Pattern-based mechanisms for identifying potential PII.
-- **Text processing** — Programmatic analysis of content to locate relevant matches.
-- **Extensible architecture** — Detection mechanisms are separated to facilitate the addition of new rules.
-- **Python** — Used to implement the prototype and its processing logic.
-
-## Architecture
-
-The analysis pipeline processes text files through a deterministic flow: ingestion, detection, validation, scoring, and report generation.
+The architecture separates input processing from detection mechanisms, allowing new rules to be introduced without completely redesigning the analysis workflow.
 
 ![LexGuard architecture diagram](/images/projects/lexguard/architecture.png)
 
-## Security and privacy
+## 4. Architecture
 
-The project focuses directly on identifying sensitive information and exploring mechanisms that can support privacy-oriented analysis.
+The system follows a deterministic flow:
 
-Rule-based detection alone cannot guarantee complete identification of personal information or correctly understand every contextual case. Results should therefore be treated as indicators that require additional validation in real-world scenarios.
+```text
+Input
+  │
+  ▼
+Ingestion
+  │
+  ▼
+Detection Rules
+  │
+  ▼
+Matches
+  │
+  ▼
+Analysis
+  │
+  ▼
+Structured Output
+```
 
-## Current status
+### Detection
 
-LexGuard is no longer under active development and should be considered a **Proof of Concept (POC)**.
+Rules analyze the input content for patterns associated with potential personal data.
 
-The main objective was to validate the technical approach for PII detection and explore a possible architecture for future privacy and security tooling.
+### Separation of Responsibilities
 
-It is not presented as a production system or as a complete regulatory compliance solution.
+Detection logic is kept separate from input processing, allowing the rule set to grow without turning the entire pipeline into a monolithic implementation.
 
-## Limitations
+### Deterministic Processing
 
-- Potential false positives and false negatives.
-- Limited coverage of information categories.
-- Dependence on predefined detection rules and patterns.
-- No advanced contextual validation.
-- Not currently designed as a production service.
-- No complete system for managing, storing, or anonymizing detected data.
+The same input and rule set produce reproducible results, making the system easier to inspect and debug.
 
-## What this project demonstrates
+## 5. Technology Stack
 
-- Automation of privacy- and security-related tasks.
-- Programmatic text processing.
-- Design of extensible detection mechanisms.
-- Understanding of the limitations of purely rule-based approaches.
-- Exploration of sensitive-data protection concepts.
+| Technology | Purpose                                     |
+| ---------- | ------------------------------------------- |
+| Python     | Pipeline implementation and detection logic |
 
-## Classification
+The project intentionally uses a small technology stack because its primary goal is to validate the detection approach and architectural separation rather than build a complete platform.
 
-**Proof of Concept — Completed**
+## 6. Implemented Features
 
-Experimental project used to explore automated PII detection. It is not currently under active development.
+* Text file processing.
+* Potential personal-data detection using predefined patterns.
+* Extensible detection rules.
+* Deterministic processing.
+* Structured results.
+* Separation between ingestion and detection logic.
+* Command-line interface.
+* Workflow designed to support additional detection categories.
+
+## 7. Technical Decisions
+
+### Rule-Based Detection
+
+The project uses predefined detection patterns instead of machine learning models.
+
+**Advantage:** deterministic, interpretable, and easy to debug.
+
+**Trade-off:** unable to reliably identify information that depends on context or does not match the predefined patterns.
+
+### Extensible Architecture
+
+Detection rules are separated from the main processing workflow.
+
+**Advantage:** new detectors can be introduced without redesigning the entire pipeline.
+
+**Trade-off:** each new category requires dedicated rules that must be created and maintained.
+
+### Python Implementation
+
+Python was selected to keep the prototype simple and fast to develop.
+
+**Advantage:** low experimentation cost and a strong ecosystem for text processing.
+
+**Trade-off:** the current implementation does not include the optimizations, testing, and operational controls required to justify it as a high-volume production detection service.
+
+## 8. Security and Privacy
+
+LexGuard should be considered a **detection tool**, not a protection mechanism.
+
+The system identifies potential matches for personal information, but it does not guarantee complete detection of personal data or that every match actually represents personal information.
+
+Therefore:
+
+* Results may contain false positives.
+* False negatives are possible.
+* Pattern-based rules do not provide contextual understanding.
+* Results require validation before being used for privacy or compliance decisions.
+* The project does not implement storage, anonymization, or automatic deletion of detected data.
+
+The main security consideration is avoiding the interpretation of detection results as a guarantee of complete coverage.
+
+## 9. Testing & Quality
+
+The current project does not include an automated quality infrastructure.
+
+Currently:
+
+* No automated test suite.
+* No CI/CD pipeline.
+* No automated linting.
+* No automated type checking.
+
+Because the project is a proof of concept, these capabilities were outside the initial scope.
+
+Turning the project into a maintainable detection tool would require tests for individual detection rules, edge cases, and scenarios designed to measure false positives and false negatives.
+
+## 10. Usage Workflow
+
+LexGuard is designed as a command-line tool.
+
+The conceptual workflow is:
+
+```text
+Text File
+    │
+    ▼
+LexGuard
+    │
+    ├── Detection Rules
+    │
+    ▼
+Detected Matches
+    │
+    ▼
+Structured Result
+```
+
+There is currently no web interface or backend associated with the project.
+
+## 11. Status & Limitations
+
+**Classification:** Proof of Concept — Completed
+
+LexGuard is considered a completed proof of concept and is not presented as a production product.
+
+Main limitations include:
+
+* Limited PII category coverage.
+* Dependence on predefined patterns.
+* No contextual analysis.
+* Potential false positives and false negatives.
+* No automated tests.
+* No CI/CD pipeline.
+* No REST API.
+* No web interface.
+* No anonymization or automatic remediation.
+* No coverage guarantees for regulatory or compliance scenarios.
+
+These limitations are an important part of the project's outcome: they demonstrate where a deterministic approach becomes insufficient and where additional techniques would be required.
+
+## 12. Evolution & What It Demonstrates
+
+A reasonable evolution path would include:
+
+1. Expanding detection categories.
+2. Adding dedicated tests for each detection rule.
+3. Measuring false positives and false negatives.
+4. Adding contextual validation through NLP.
+5. Supporting JSON and CSV inputs.
+6. Adding JSON, CSV, and HTML outputs.
+7. Exposing the analysis through a REST API.
+8. Adding anonymization or redaction mechanisms.
+9. Introducing CI/CD and automated quality checks.
+
+### What It Demonstrates
+
+LexGuard demonstrates:
+
+* Automation of privacy-related analysis.
+* Programmatic text processing.
+* Deterministic rule design.
+* Extensible architecture.
+* Separation of responsibilities.
+* Understanding of the limitations of pattern-only detection.
+* Python-based security and privacy tooling.
+
+The main technical value of the project is not implementation complexity, but demonstrating how the problem was decomposed into a reproducible and extensible pipeline while explicitly identifying the limitations of the selected approach.

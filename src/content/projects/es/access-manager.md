@@ -15,6 +15,8 @@ El mismo dominio funcional se implementa mediante dos ramas independientes, cada
 
 El objetivo no es construir un sistema de autenticación listo para producción, sino convertir las diferencias entre ambos modelos en implementaciones ejecutables y comparables.
 
+---
+
 ## 2. Contexto / Problema
 
 Elegir un mecanismo de autenticación afecta decisiones posteriores de arquitectura relacionadas con gestión de estado, revocación de credenciales, escalabilidad, tipo de cliente y complejidad operativa.
@@ -28,6 +30,8 @@ El proyecto busca responder preguntas como:
 - ¿Cómo se implementa la autorización en cada modelo?
 - ¿Qué ventajas y limitaciones introduce cada estrategia?
 - ¿Cómo cambia la configuración de Spring Security?
+
+---
 
 ## 3. Solución
 
@@ -63,6 +67,8 @@ Ambas implementaciones utilizan:
 - Recursos protegidos.
 - Persistencia mediante JPA.
 - Hash de contraseñas con BCrypt.
+
+---
 
 ## 4. Arquitectura
 
@@ -130,6 +136,8 @@ Página protegida
 
 La arquitectura mantiene ambas estrategias separadas para que sus configuraciones, flujos y pruebas puedan estudiarse de forma independiente.
 
+---
+
 ## 5. Stack Tecnológico
 
 | Tecnología      | Uso                                            |
@@ -155,6 +163,8 @@ La arquitectura mantiene ambas estrategias separadas para que sus configuracione
 | CSRF         | No aplicable al mismo modelo | Implementado           |
 | Autorización | Roles                        | Roles                  |
 | Revocación   | Limitada por expiración      | Invalidación de sesión |
+
+---
 
 ## 6. Funcionalidades Implementadas
 
@@ -187,6 +197,8 @@ La arquitectura mantiene ambas estrategias separadas para que sus configuracione
 - MySQL para ejecución.
 - H2 para pruebas.
 - Docker y Docker Compose.
+
+---
 
 ## 7. Decisiones Técnicas Relevantes
 
@@ -222,6 +234,8 @@ La rama de sesiones utiliza el modelo tradicional de autenticación gestionada p
 
 **Trade-off:** una arquitectura distribuida requiere resolver el almacenamiento compartido de sesiones o utilizar mecanismos de afinidad.
 
+---
+
 ## 8. Seguridad
 
 ### Mecanismos implementados
@@ -253,6 +267,8 @@ Actualmente no incluye:
 
 Por tanto, las implementaciones sirven para estudiar los mecanismos y sus trade-offs, no como componentes listos para incorporarse directamente a un sistema crítico.
 
+---
+
 ## 9. Testing y Calidad
 
 El proyecto incluye pruebas orientadas principalmente a validar los flujos de seguridad.
@@ -281,6 +297,8 @@ El proyecto incluye pruebas orientadas principalmente a validar los flujos de se
 
 No se presentan métricas de cobertura ni benchmarks porque no existen mediciones verificables suficientes para respaldar esos claims.
 
+---
+
 ## 10. Evidencia Visual
 
 ### Comparación de arquitecturas
@@ -300,6 +318,8 @@ No se presentan métricas de cobertura ni benchmarks porque no existen medicione
 ![Autenticación por sesiones de AccessManager](/images/projects/accessmanager/session-login.png)
 
 *Autenticación stateful mediante Spring Security, sesiones HTTP y Thymeleaf.*
+
+---
 
 ## 11. Estado y Limitaciones
 
@@ -321,6 +341,8 @@ AccessManager se mantiene como proyecto de referencia técnica y no como product
 - La configuración está orientada a entornos de estudio y demostración.
 
 Estas limitaciones son deliberadas en parte porque el objetivo principal del proyecto es estudiar mecanismos de autenticación y no construir una plataforma IAM completa.
+
+---
 
 ## 12. Qué Demuestra Este Proyecto
 

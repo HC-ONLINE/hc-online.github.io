@@ -15,6 +15,8 @@ The same functional domain is implemented through two independent branches, each
 
 The goal is not to build a production-ready authentication system, but to turn the differences between both models into executable and comparable implementations.
 
+---
+
 ## 2. Context / Problem
 
 Choosing an authentication mechanism affects architectural decisions related to state management, credential revocation, scalability, client type, and operational complexity.
@@ -28,6 +30,8 @@ The project explores questions such as:
 - How is authorization implemented in each model?
 - What advantages and limitations does each strategy introduce?
 - How does the Spring Security configuration change between approaches?
+
+---
 
 ## 3. Solution
 
@@ -63,6 +67,8 @@ Both implementations include:
 - Protected resources.
 - JPA persistence.
 - BCrypt password hashing.
+
+---
 
 ## 4. Architecture
 
@@ -130,6 +136,8 @@ Protected page
 
 The architecture keeps both strategies separate so their configurations, flows, and tests can be studied independently.
 
+---
+
 ## 5. Technology Stack
 
 | Technology      | Purpose                                     |
@@ -155,6 +163,8 @@ The architecture keeps both strategies separate so their configurations, flows, 
 | CSRF          | Not applicable to the same model | Implemented          |
 | Authorization | Roles                            | Roles                |
 | Revocation    | Limited by expiration            | Session invalidation |
+
+---
 
 ## 6. Implemented Features
 
@@ -187,6 +197,8 @@ The architecture keeps both strategies separate so their configurations, flows, 
 - MySQL runtime database.
 - H2 test database.
 - Docker and Docker Compose.
+
+---
 
 ## 7. Key Technical Decisions
 
@@ -222,6 +234,8 @@ The session branch uses the traditional server-managed authentication model.
 
 **Trade-off:** distributed architectures require shared session storage or another mechanism for coordinating session state.
 
+---
+
 ## 8. Security
 
 ### Implemented Mechanisms
@@ -253,6 +267,8 @@ It currently does not include:
 
 The implementations are therefore intended to study authentication mechanisms and their trade-offs, not to be directly deployed as components of a critical production system.
 
+---
+
 ## 9. Testing & Quality
 
 The project includes tests primarily focused on validating security flows.
@@ -281,6 +297,8 @@ The project includes tests primarily focused on validating security flows.
 
 No coverage or benchmark claims are presented because there are not enough verified measurements to support them.
 
+---
+
 ## 10. Visual Evidence
 
 ### Architecture Comparison
@@ -300,6 +318,8 @@ No coverage or benchmark claims are presented because there are not enough verif
 ![AccessManager session authentication](/images/projects/accessmanager/session-login.png)
 
 *Stateful authentication using Spring Security, HTTP sessions, and Thymeleaf.*
+
+---
 
 ## 11. Status & Limitations
 
@@ -321,6 +341,8 @@ AccessManager is maintained as a technical reference project rather than a produ
 - Configuration is intended for study and demonstration environments.
 
 Some of these limitations are intentional because the primary objective is to study authentication mechanisms rather than build a complete IAM platform.
+
+---
 
 ## 12. What This Project Demonstrates
 

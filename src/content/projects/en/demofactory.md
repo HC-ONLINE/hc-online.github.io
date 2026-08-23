@@ -1,84 +1,55 @@
 ---
 title: "DemoFactory"
-description: "UI/UX project portfolio with high-fidelity interactive demos"
-subtitle: "UI/UX project portfolio with high-fidelity interactive demos"
+description: "Bilingual hub of six independent UI/UX frontend demos built with Astro, TypeScript, and Tailwind CSS v4."
+subtitle: "Content-driven frontend architecture and interactive web experiences"
 stack: "Astro 7.x, TypeScript, Tailwind CSS v4, MapLibre GL, Sharp"
 github: "https://github.com/HC-ONLINE/DemoFactory"
 site: "https://hc-online.github.io/DemoFactory/"
 ---
 
-# DemoFactory
+## 1. Summary
 
-## Overview
+DemoFactory is a bilingual hub of UI/UX experiences built with Astro, TypeScript, and Tailwind CSS v4. It brings six independent frontend demos together within a single project while keeping each experience isolated at the component, content, and interaction levels.
 
-DemoFactory is a **high-fidelity UI/UX demo hub** built with Astro, TypeScript, and Tailwind CSS v4. The project brings six independent web experiences together within a single application while keeping each demo isolated at the component and content level.
+The project follows a content-driven architecture that separates localized content from visual implementation through Markdown files in Spanish and English.
 
-The architecture follows a **content-driven approach**, separating presentation content from visual implementations through bilingual Markdown files in Spanish and English.
+Beyond serving as a portfolio of interfaces, DemoFactory explores how multiple heterogeneous frontend experiences can be organized within a single repository without turning them into a monolithic application.
 
-The project combines editorial experiences, corporate interfaces, immersive storytelling, and a creative-coding weather application driven by real external data.
+## 2. Context / Problem
 
-Beyond visual design, DemoFactory serves as an architectural exercise for organizing multiple independent frontend experiences within a single repository without turning them into a tightly coupled monolithic application.
+A portfolio containing multiple visual experiences can easily end up depending on separate repositories or a single application with excessive shared dependencies.
 
-## Context and Objective
+DemoFactory addresses this through an architecture that allows it to:
 
-DemoFactory was created to provide a common environment for building and presenting different UI/UX experiences without requiring a completely independent repository for every demo.
+- Keep each demo as an independent unit.
+- Share only the infrastructure that is actually required.
+- Separate content from presentation.
+- Maintain Spanish and English versions.
+- Integrate interactive experiences without requiring a backend.
+- Deploy the entire project as a static website.
 
-The technical objectives were to:
+The goal is not to build an enterprise platform, but to demonstrate different frontend approaches within a common technical foundation.
 
-- Keep each demo visually and functionally isolated.
-- Share a minimal common infrastructure.
-- Separate content from presentation logic.
-- Support Spanish and English through parallel routes and content.
-- Build advanced interactive experiences without introducing an unnecessary backend.
-- Deploy the complete project as a static website.
+## 3. Solution
 
-The result is a **frontend demo factory** where additional experiences can follow a common structural convention while remaining independent.
+The application is organized around a central project index and independent components for each experience.
 
-## Solution
+### Content System
 
-The application is organized around a central project index and independent components for each demo.
-
-The repository currently contains **six local demos**:
-
-- **Aeterna** — scroll-driven narrative experience based on historical eras.
-- **Aura Weather** — interactive weather application combining maps and creative coding.
-- **Elite Vows** — editorial wedding landing page.
-- **Lumina** — editorial portfolio with a bento-style gallery.
-- **NF Archive** — visual discography experience.
-- **Tech Nexus Consulting** — B2B technology consulting landing page.
-
-The index can also link to additional experiences hosted outside the repository.
-
-Each demo has its own main component, localized content, and route, while shared infrastructure remains intentionally small.
-
-## Architecture
-
-DemoFactory uses a **static, content-driven architecture**.
-
-![DemoFactory architecture diagram](/images/projects/demofactory/architecture.png)
-
-_Content-driven flow: Markdown → es/en routes → isolated demo components → shared layer → client scripts → SSG → GitHub Pages._
-
-### Frontend
-
-Astro is used as the primary framework with **Static Site Generation (SSG)**.
-
-Most of the application is rendered during the build process, while interactive functionality runs in the browser through client-side scripts.
-
-### Content
-
-Demo content is kept outside the visual components using Markdown.
+Localized content is kept separate from visual implementation:
 
 ```text
-src/content/demos/<demo>/es.md
-src/content/demos/<demo>/en.md
+src/content/demos/
+├── <demo>/
+│   ├── es.md
+│   └── en.md
 ```
 
-This makes it possible to update copy and localized content without modifying the visual implementation.
+This makes it possible to update copy, metadata, and translations without directly modifying presentation components.
 
 ### Demo Isolation
 
-Each experience has its own component structure:
+Each experience maintains its own components and logic:
 
 ```text
 src/components/
@@ -90,83 +61,97 @@ src/components/
 └── tech-nexus-consulting/
 ```
 
-This approach limits coupling and allows each demo to evolve independently.
+### Included Demos
 
-## Technology Stack
+- **Aeterna** — Scroll-driven narrative experience based on historical eras.
+- **Aura Weather** — Interactive weather application combining maps and creative coding.
+- **Elite Vows** — Editorial wedding landing page.
+- **Lumina** — Editorial portfolio with a bento-style gallery.
+- **NF Archive** — Visual discography experience.
+- **Tech Nexus Consulting** — B2B technology consulting landing page.
+
+## 4. Architecture
+
+DemoFactory uses a static, content-driven architecture:
+
+![DemoFactory architecture diagram](/images/projects/demofactory/architecture.png)
+
+*General flow between Markdown content, bilingual routes, isolated components, client-side scripts, static generation, and GitHub Pages.*
+
+### Static Generation
+
+Astro generates the pages during the build process. Most of the interface is delivered as generated HTML, while experiences requiring interaction execute JavaScript in the browser.
+
+### Content
+
+Text and metadata are kept outside the components through localized Markdown files.
+
+### Components
+
+Each demo has an independent structure and can use different implementation techniques without introducing unnecessary dependencies between experiences.
+
+### Interactivity
+
+Dynamic functionality runs primarily on the client. Aura Weather, for example, integrates MapLibre, weather APIs, geolocation, and multiple visualization modules.
+
+## 5. Technology Stack
 
 ### Frontend
 
-- **Astro 7.0.6** — primary framework and static site generation.
-- **TypeScript** — application and client-side logic.
-- **Tailwind CSS v4** — styling system.
-- **MapLibre GL 5.24.0** — interactive mapping for `aura_weather`.
-- **CSS / Canvas / SVG** — animations, particles, and visual effects.
-- **Astro Assets / Sharp** — image processing and optimization.
-- **Self-hosted fonts** — improved control over typography and external dependencies.
+| Technology           | Purpose                                   |
+| -------------------- | ----------------------------------------- |
+| Astro 7.x            | Primary framework and static generation   |
+| TypeScript           | Application logic and client-side scripts |
+| Tailwind CSS v4      | Styling system                            |
+| MapLibre GL          | Interactive map for Aura Weather          |
+| CSS / Canvas / SVG   | Animations and visual effects             |
+| Astro Assets / Sharp | Image processing and optimization         |
 
 ### External APIs
 
-The weather demo integrates:
-
-- **Open-Meteo** — weather data.
-- **Nominatim** — geocoding.
-- **OpenFreeMap** — map tiles.
-
-The implemented integrations do not require API keys.
+| Service     | Purpose      |
+| ----------- | ------------ |
+| Open-Meteo  | Weather data |
+| Nominatim   | Geocoding    |
+| OpenFreeMap | Map tiles    |
 
 ### Infrastructure
 
-- **GitHub Pages** — static hosting.
-- **GitHub Actions** — automated build and deployment.
-- **pnpm** — package management.
-- **Node.js 22** — build environment.
+| Technology     | Purpose               |
+| -------------- | --------------------- |
+| GitHub Pages   | Static hosting        |
+| GitHub Actions | Build and deployment  |
+| pnpm           | Dependency management |
+| Node.js 22     | Build environment     |
 
-There is no custom backend or database.
+## 6. Implemented Features
 
-## Main Features
-
-### Bilingual Demo Hub
-
-The main index provides:
+### Main Hub
 
 - Project navigation.
 - Spanish/English support.
 - Responsive project grid.
 - Persistent dark mode.
 - Optimized responsive images.
-- Links to external projects.
+- External project links.
 
 ### Aeterna
 
-A scroll-driven narrative experience covering different historical eras.
-
-![aeterna](/images/projects/demofactory/aeterna.png)
-
-Features include:
-
 - 12 chronological sections.
 - Point-based navigation.
-- `IntersectionObserver` section detection.
-- Live era indicator.
+- Section detection using `IntersectionObserver`.
+- Active era indicator.
 - Dedicated CSS animations.
-- Decorative particle system.
-- Dedicated typography.
+- Particle system.
+- Experience-specific typography.
 
 ### Aura Weather
-
-The most technically complex demo in the project.
-
-It combines an interactive map with real weather data and transforms different weather conditions into a visual creative-coding experience.
-
-![aura_weather](/images/projects/demofactory/aura-weather.png)
-
-Features include:
 
 - Interactive MapLibre map.
 - City search.
 - Geolocation.
-- Open-Meteo weather data.
-- Temporary result caching.
+- Weather data through Open-Meteo.
+- Temporary caching.
 - Debounced search.
 - Keyboard support.
 - Rain and snow particle systems.
@@ -175,30 +160,18 @@ Features include:
 - Interpolated gradients.
 - Six weather states.
 - Demonstration mode.
-- Internationalized UI.
-
-The visual system relies on Canvas 2D and SVG filters rather than introducing a WebGL framework.
+- Internationalized interface.
 
 ### Elite Vows
-
-An editorial wedding landing page featuring:
-
-![elite-vows](/images/projects/demofactory/elite-vows.png)
 
 - Parallax hero.
 - Ceremony timeline.
 - Mobile navigation.
-- Smooth anchor scrolling.
+- Anchor scrolling.
 - Reveal animations.
 - Simulated RSVP form.
 
 ### Lumina
-
-An editorial portfolio focused on visual composition.
-
-![lumina](/images/projects/demofactory/lumina.png)
-
-It includes:
 
 - Bento-style gallery.
 - Reveal animations.
@@ -206,10 +179,6 @@ It includes:
 - Typography-focused presentation.
 
 ### NF Archive
-
-A visual discography experience featuring:
-
-![nf-archive](/images/projects/demofactory/nf-archive.png)
 
 - Structured album data.
 - Track information.
@@ -219,10 +188,6 @@ A visual discography experience featuring:
 
 ### Tech Nexus Consulting
 
-A B2B technology consulting landing page featuring:
-
-![tech-nexus-consulting](/images/projects/demofactory/tech-nexus-consulting.png)
-
 - Business metrics.
 - Native HTML FAQ.
 - Anchor navigation.
@@ -230,87 +195,94 @@ A B2B technology consulting landing page featuring:
 - Simulated audit form.
 - Responsive design.
 
-## Key Technical Decisions
+## 7. Technical Decisions
 
 ### Content and Presentation Separation
 
-Markdown is used for demo content while Astro components handle presentation.
+Markdown contains localized content while Astro components control presentation.
 
-This allows copy and translations to evolve without directly modifying the UI implementation.
+**Advantage:** allows copy and translations to evolve without directly modifying the visual implementation.
 
-**Trade-off:** individual demos maintain some duplicated data structures and conventions.
+**Trade-off:** some demos maintain their own data structures and conventions.
 
 ### One Demo = One Isolated Unit
 
-Each experience owns its main component and interactive logic.
+Each experience maintains its own visual and interactive logic.
 
-This makes it possible to experiment with different visual architectures without creating unnecessary dependencies between demos.
+**Advantage:** allows different approaches to be explored without creating strong dependencies between demos.
 
-**Trade-off:** certain UI patterns, such as mobile navigation and reveal animations, are duplicated across experiences.
+**Trade-off:** some interface patterns may be duplicated.
 
 ### Static Site Generation
 
-The project does not require authentication, a database, or a custom server because its primary purpose is frontend presentation and experimentation.
+SSG is used because the project does not require authentication, a database, or a custom server.
 
-SSG provides:
+**Advantage:** simple deployment, pre-generated HTML, and reduced infrastructure requirements.
 
-- Free hosting.
-- A reduced attack surface.
-- Pre-rendered HTML.
-- Simple deployments.
-- No server-side secrets.
+**Trade-off:** dynamic functionality must run in the browser.
 
-The trade-off is that dynamic functionality must run in the browser.
+### Public APIs
 
-### Public APIs Without API Keys
+Aura Weather uses public services that do not require API keys.
 
-The weather application uses free services that do not require API keys in the implemented architecture.
+**Advantage:** no deployment secrets are required.
 
-Caching and debouncing are used to reduce unnecessary requests.
-
-The main limitation is dependency on third-party availability and usage policies.
+**Trade-off:** the application depends on third-party availability, limits, and usage policies.
 
 ### Dynamic Module Loading
 
-The weather application dynamically loads specialized modules for functionality such as:
+Aura Weather dynamically loads specialized modules for selected interactive features.
 
-- mapping,
-- particles,
-- metaballs,
-- gradients,
-- weather handling.
+**Advantage:** separates functionality and reduces the initial loading of features that are not always required.
 
-This provides a degree of code splitting for the interactive experience.
+**Trade-off:** requires careful module and dependency organization.
 
-### Resource Optimization
+## 8. Security, UX and Accessibility
 
-Images are processed through Astro's asset pipeline and served in optimized formats.
+### Security
 
-Primary fonts are self-hosted, while dynamic imports are used for selected interactive modules.
+DemoFactory is a static application and does not manage accounts, sessions, or sensitive information.
 
-## Security
-
-DemoFactory does not manage user accounts, sessions, or sensitive information.
-
-Because it is primarily a static application:
-
-- There are no backend credentials.
-- There is no database.
-- There is no user-data persistence.
-- There is no authentication layer.
+- No custom backend.
+- No database.
+- No user-data persistence.
+- No authentication.
 - External links use `noopener noreferrer`.
 
-One security improvement identified during the project review concerns `aura_weather`: some geocoding results are inserted into the DOM using `innerHTML`. Even though the data comes from an external service, this should be replaced with safe DOM manipulation and `textContent`.
+A security improvement was identified in `aura_weather`, where some geocoding data is inserted using `innerHTML`. This should be replaced with safe DOM manipulation using `textContent` and explicit node creation.
 
-A Content Security Policy would also be a reasonable future improvement for a more security-focused deployment.
+A Content Security Policy would also be a reasonable improvement for a more demanding deployment.
 
-## Testing and Quality
+### UX and Accessibility
+
+The demos implement several interaction patterns:
+
+- Responsive layouts.
+- Mobile navigation.
+- Smooth scrolling.
+- Reveal animations.
+- Parallax.
+- Loading states.
+- Visual feedback.
+- Keyboard navigation.
+- `aria-label`.
+- `aria-expanded`.
+- `aria-live`.
+
+Accessibility coverage is not fully consistent across all experiences and remains an area for consolidation.
+
+## 9. Testing and Quality
 
 The project currently prioritizes frontend experimentation, visual implementation, and interaction design.
 
-There is no automated test suite or independent lint/type-check pipeline configured in the repository.
+Current state:
 
-The CI/CD pipeline primarily performs:
+- No automated test suite.
+- No independent linting pipeline.
+- No independent type-checking pipeline.
+- CI/CD primarily focuses on build and deployment.
+
+Current flow:
 
 ```text
 pnpm install --frozen-lockfile
@@ -320,132 +292,113 @@ pnpm run build
 GitHub Pages
 ```
 
-Therefore, the project should not be presented as a fully tested production application.
+DemoFactory is therefore not presented as a production application with complete automated test coverage.
 
-Automated testing and stronger CI validation would be appropriate if the project were later transformed into a production-grade platform.
+## 10. Visual Evidence
 
-## UX and Accessibility
+### Aeterna
 
-The demos implement several modern interaction patterns:
+![Aeterna demo](/images/projects/demofactory/aeterna.png)
 
-- Responsive layouts.
-- Mobile navigation.
-- Smooth scrolling.
-- Reveal animations.
-- Parallax.
-- Loading states.
-- Visual feedback.
-- Section navigation.
-- Keyboard interaction.
-- `aria-label`.
-- `aria-expanded`.
-- `aria-live`.
+*Scroll-driven narrative experience with 12 chronological sections.*
 
-Accessibility is not completely uniform across every demo. Some shared accessibility labels remain fixed in Spanish, leaving room for a more centralized internationalization strategy.
+### Aura Weather
 
-## CI/CD
+![Aura Weather demo](/images/projects/demofactory/aura-weather.png)
 
-Deployment is automated through GitHub Actions.
+*Interactive weather application with MapLibre, creative coding, and external weather data.*
 
-```text
-Push to main
-    ↓
-GitHub Actions
-    ↓
-Node.js 22
-    ↓
-pnpm install
-    ↓
-Astro build
-    ↓
-GitHub Pages
-```
+### Elite Vows
 
-This allows repository changes to be automatically converted into a new static deployment.
+![Elite Vows demo](/images/projects/demofactory/elite-vows.png)
 
-## Verifiable Metrics
+*Editorial wedding landing page with parallax hero and ceremony timeline.*
 
-The repository review identified:
+### Lumina
 
-- **6 local demos**.
-- **10 projects displayed in the main index**, including local and external projects.
-- **15 generated HTML pages**: index + six demos × two languages.
-- **35 commits** during the analyzed development period.
-- Development concentrated in July 2026.
-- `aura_weather/App.astro` at approximately 900 lines.
-- `aeterna` stylesheet at approximately 1,288 lines.
+![Lumina demo](/images/projects/demofactory/lumina.png)
+
+*Photography portfolio with a bento-style gallery composition.*
+
+### NF Archive
+
+![NF Archive demo](/images/projects/demofactory/nf-archive.png)
+
+*Visual experience based on discography and music-related content.*
+
+### Tech Nexus Consulting
+
+![Tech Nexus Consulting demo](/images/projects/demofactory/tech-nexus-consulting.png)
+
+*B2B technology consulting landing page with metrics, services, and FAQ.*
+
+## 11. Current Status, Limitations and Evolution
+
+**Classification:** Demo / Portfolio Project
+
+DemoFactory is a functional frontend project focused on demonstrating UI/UX design, interaction, creative coding, and static web architecture.
+
+### Observable State
+
+- 6 local demos.
+- 10 projects displayed in the main index.
+- 15 generated HTML pages.
 - No automated test suite.
-- No independent lint/type-check scripts.
 
-Performance metrics such as FPS, Lighthouse scores, bundle size, and coverage are intentionally not presented because they were not formally measured in the repository.
+These metrics describe project size and activity, not quality.
 
-## Current Limitations
-
-DemoFactory is a frontend demonstration project rather than a production platform.
-
-Current limitations include:
+### Limitations
 
 - No backend.
 - Simulated forms.
-- No persistent user data.
-- No automated test suite.
-- Inconsistent accessibility coverage between demos.
+- No persistent data.
+- No automated tests.
+- Uneven accessibility coverage.
 - Some duplicated UI patterns.
-- Dependency on external weather and mapping services.
+- Dependency on external APIs and services.
 - No integrated observability or analytics.
-- Some internal documentation no longer fully reflects the final implementation.
-- Incomplete visible error handling for external APIs.
+- External API error handling can be improved.
+- Some internal documentation needs synchronization with the implementation.
 
-These limitations are consistent with the project's main purpose: **demonstrating frontend engineering, interaction design, creative coding, and static architecture**.
+### Future Evolution
 
-## Future Improvements
-
-The most relevant technical improvements would be:
-
-1. Add unit tests for `aura_weather` logic.
+1. Add unit tests for Aura Weather logic.
 2. Add E2E tests for critical interactions.
 3. Integrate linting and type checking into CI.
 4. Centralize content schemas.
-5. Extract reusable UI patterns shared between demos.
+5. Extract genuinely shared UI patterns.
 6. Improve visible API error handling.
-7. Replace unsafe `innerHTML` usage.
+7. Remove unsafe `innerHTML` usage.
 8. Centralize accessibility internationalization.
-9. Update internal documentation to match the actual structure.
+9. Update internal documentation.
 10. Add formal performance measurements before publishing performance claims.
 
-## What This Project Demonstrates
+## 12. What This Project Demonstrates
 
-DemoFactory demonstrates the ability to:
+DemoFactory demonstrates experience with:
 
-- Build independent frontend experiences.
-- Work with **Astro and static generation**.
-- Use **TypeScript** for frontend applications.
-- Build styling systems with **Tailwind CSS v4**.
-- Design **content-driven architectures**.
-- Implement route-based internationalization.
-- Integrate external APIs.
-- Build interactive maps with MapLibre.
-- Implement creative coding with Canvas and SVG.
-- Develop particle systems and complex animations.
-- Optimize frontend assets.
-- Build responsive interfaces.
-- Implement CI/CD with GitHub Actions.
-- Keep experimentation isolated from shared infrastructure.
+- Frontend architecture with Astro.
+- Static Site Generation.
+- TypeScript.
+- Tailwind CSS v4.
+- Content-driven architectures.
+- Route-based internationalization.
+- External API integration.
+- Interactive maps with MapLibre.
+- Canvas and SVG.
+- Particle systems.
+- Complex animations and transitions.
+- Responsive design.
+- Asset optimization.
+- CI/CD with GitHub Actions.
+- Isolation of frontend experiences.
 
-More importantly, the project demonstrates the ability to **turn different visual concepts into functional web experiences while maintaining a consistent technical foundation**.
+The project's main technical value is demonstrating the ability to turn very different visual concepts into functional experiences while maintaining a deliberately small shared infrastructure.
 
-## Short Description
+### Short Description
 
-**DemoFactory** is a bilingual hub of six high-fidelity UI/UX demos built with Astro, TypeScript, and Tailwind CSS v4. It combines editorial experiences, corporate interfaces, and an interactive weather application using MapLibre, Canvas, particles, metaballs, and external APIs.
+Bilingual hub of six UI/UX demos built with Astro, TypeScript, and Tailwind CSS v4, combining editorial experiences, B2B interfaces, and an interactive weather application using MapLibre and creative coding.
 
-## Technologies
+### Professional Description
 
-`Astro` · `TypeScript` · `Tailwind CSS v4` · `MapLibre GL` · `Canvas 2D` · `SVG` · `Open-Meteo` · `Nominatim` · `OpenFreeMap` · `GitHub Actions` · `GitHub Pages` · `pnpm`
-
-## Status
-
-**Demo / Portfolio Project**
-
-A frontend project created to explore and demonstrate UI/UX design, frontend interaction, creative coding, and static web architecture.
-
-It should not be presented as a SaaS product or production platform.
+DemoFactory is a frontend portfolio project that brings six independent UI/UX experiences together within a static, content-driven architecture. Built with Astro, TypeScript, and Tailwind CSS v4, it incorporates route-based internationalization, external API integration, interactive maps, and creative coding techniques including particle systems, Canvas, SVG, and metaball transitions. The project explores how heterogeneous frontend experiences can remain isolated within a single repository without introducing unnecessarily complex shared infrastructure.

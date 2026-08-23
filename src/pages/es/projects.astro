@@ -98,6 +98,16 @@ const icons: Record<string, string> = {
                       </svg>
                       <span>Ver detalle</span>
                     </a>
+                    {project.data.site && (
+                      <a href={project.data.site} target="_blank" rel="noopener noreferrer" class="project-card-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="2" x2="22" y1="12" y2="12"></line>
+                          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        <span>Sitio</span>
+                      </a>
+                    )}
                     {project.data.github && (
                       <a href={project.data.github} target="_blank" rel="noopener noreferrer" class="project-card-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

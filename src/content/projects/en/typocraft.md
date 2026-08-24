@@ -73,7 +73,7 @@ Generated HTML
 Selected Theme
       ↓
 Typographic Preview
-````
+```
 
 All processing occurs locally in the browser.
 

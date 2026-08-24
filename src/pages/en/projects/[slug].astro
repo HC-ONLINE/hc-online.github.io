@@ -306,6 +306,16 @@ const icons: Record<string, string> = {
     line-height: 1.7;
   }
 
+  .content-styles :global(pre:has(code.language-text)) {
+    background: linear-gradient(135deg, #12121a, #15151f);
+    border-color: #3b82f620;
+    color: var(--color-text-secondary);
+  }
+
+  .content-styles :global(pre:has(code.language-text) code) {
+    color: inherit;
+  }
+
   .content-styles :global(code) {
     font-family: var(--font-mono);
     font-size: 0.9em;

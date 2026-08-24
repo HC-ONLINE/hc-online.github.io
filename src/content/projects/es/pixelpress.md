@@ -1,233 +1,261 @@
 ---
 title: "PixelPress"
-description: "Aplicación web full-stack para publicación de contenido sobre videojuegos, construida con Astro 7 y desplegada mediante SSR sobre Cloudflare Workers."
-subtitle: "Blog de videojuegos bilingüe con SSR, panel administrativo y edge computing"
+description: "Plataforma editorial bilingüe para contenido sobre videojuegos, construida con Astro 7 y desplegada mediante SSR sobre Cloudflare Workers."
+subtitle: "Plataforma editorial full-stack con SSR, administración, MDX y edge computing"
 stack: "Astro 7, TypeScript, React 19, Tailwind CSS 4, MDX, Zod, Cloudflare Workers, Cloudflare R2, Giscus, Web Crypto API"
 site: "https://pixelpress.henriquezandres856.workers.dev/"
 ---
 
-## Resumen
+## 1. Resumen
 
-**PixelPress** es un blog de videojuegos bilingüe construido con **Astro 7**, **TypeScript**, **Tailwind CSS v4** y **MDX**, desplegado sobre **Cloudflare Workers** mediante SSR en el edge.
+**PixelPress** es una plataforma editorial bilingüe orientada a contenido sobre videojuegos. Está construida con **Astro 7, TypeScript, React, Tailwind CSS 4 y MDX**, y desplegada mediante **SSR sobre Cloudflare Workers**.
 
-El proyecto incorpora un panel de administración protegido mediante JWT, un editor rich-text, API REST para operaciones administrativas, almacenamiento de imágenes en Cloudflare R2, comentarios mediante Giscus y un sistema de anuncios preparado para Google AdSense.
+El proyecto combina publicación de contenido, panel administrativo, autenticación mediante JWT, API REST, almacenamiento de imágenes en Cloudflare R2, comentarios mediante Giscus y preparación para monetización mediante anuncios.
 
-El contenido se organiza como archivos MDX validados mediante Zod, mientras que el frontend se ejecuta en Cloudflare Workers.
+El contenido editorial utiliza MDX y schemas de Zod para mantener una estructura validada y versionada mediante Git.
 
-El proyecto demuestra la construcción de una aplicación web full-stack en un único repositorio, combinando frontend, SSR, APIs, autenticación, almacenamiento externo, internacionalización y despliegue edge.
+### Datos del proyecto
 
-## Contexto / Problema
+| ~20         | ~15   | 12             | 16                         |
+| ----------- | ----- | -------------- | -------------------------- |
+| componentes | rutas | artículos demo | dependencias de producción |
 
-**Objetivo técnico:**
+---
 
-Construir una plataforma editorial especializada en videojuegos que permitiera:
+## 2. Contexto y Objetivo
+
+El objetivo técnico fue construir una plataforma editorial especializada que combinara:
 
 - Renderizado SSR sobre edge computing.
-- Contenido bilingüe español/inglés.
-- Gestión de artículos desde un panel administrativo.
+- Contenido en español e inglés.
+- Administración desde navegador.
 - Edición de contenido mediante interfaz rich-text.
 - Almacenamiento externo de imágenes.
-- Integración de comentarios sin desarrollar un sistema propio.
+- Integración de comentarios mediante un servicio externo.
 - Preparación para monetización mediante anuncios.
-- Mantener el contenido versionado dentro del repositorio.
+- Contenido versionado dentro del repositorio.
 
-El repositorio **no documenta un problema de negocio concreto** ni métricas de usuarios. Por tanto, PixelPress debe presentarse principalmente como un proyecto técnico y de producto editorial, no como una solución SaaS validada comercialmente.
+El proyecto no parte de métricas comerciales ni de una necesidad de negocio validada. Por ello, PixelPress se presenta como un **proyecto técnico y de producto editorial**, no como un SaaS comercial validado.
 
-## Solución
+---
 
-PixelPress combina un frontend SSR con una capa API y servicios externos.
+## 3. Solución
 
-### Componentes principales
+PixelPress combina un frontend SSR, una capa de API, un panel administrativo y servicios externos.
 
-#### Frontend SSR
+### Frontend SSR
 
-Astro genera las páginas del blog en servidor utilizando Cloudflare Workers como runtime.
+Astro genera las páginas mediante SSR utilizando Cloudflare Workers como runtime.
 
-#### Sistema de contenido
+### Sistema de contenido
 
-Los artículos se almacenan como archivos MDX separados por idioma y utilizan schemas de Zod para validar su estructura.
+Los artículos se almacenan como archivos MDX y se organizan por idioma. Los datos del contenido se validan mediante schemas de Zod.
 
-#### Panel administrativo
+### Administración
 
-Incluye autenticación, dashboard y editor rich-text para crear y modificar artículos.
+El panel administrativo permite autenticarse, gestionar información editorial y utilizar un editor rich-text para generar contenido estructurado.
 
-#### API REST
+Actualmente, el editor genera archivos MDX que deben incorporarse manualmente al repositorio. Por tanto, el panel funciona como una **herramienta de administración y generación de contenido**, no como un CMS con publicación completamente automatizada.
 
-Proporciona endpoints para autenticación, gestión de artículos y subida de imágenes.
+### API
 
-#### Almacenamiento
+La aplicación incluye endpoints para:
 
-Las imágenes se almacenan en Cloudflare R2 mediante bindings de Workers.
+- Autenticación.
+- Gestión de artículos.
+- Subida de imágenes.
 
-#### Internacionalización
+### Almacenamiento
 
-El contenido está disponible en español e inglés mediante rutas diferenciadas.
+Las imágenes se almacenan en Cloudflare R2 mediante bindings de Cloudflare Workers.
 
-#### Integraciones
+### Internacionalización
 
-- Giscus para comentarios.
-- Google AdSense para anuncios.
-- Cloudflare R2 para imágenes.
+El contenido se mantiene en español e inglés mediante rutas diferenciadas.
 
-### Flujo principal
+### Flujo de publicación
 
-1. El visitante solicita una página.
-2. Cloudflare Workers ejecuta Astro SSR.
-3. Astro obtiene el contenido MDX correspondiente.
-4. El contenido es validado mediante el schema definido con Zod.
-5. Astro genera el HTML y lo entrega al navegador.
-6. Giscus y AdSense se cargan como integraciones externas.
+```text
+Administrador
+     ↓
+Panel administrativo
+     ↓
+Autenticación JWT
+     ↓
+Editor de contenido
+     ↓
+MDX estructurado
+     ↓
+Repositorio Git
+     ↓
+Build / Deploy
+     ↓
+Cloudflare Workers
+````
 
-Para administración:
+### Flujo de lectura
 
-1. El administrador accede a `/admin`.
-2. Se autentica mediante contraseña.
-3. El servidor genera un JWT.
-4. El token se almacena en una cookie segura.
-5. El middleware protege las rutas administrativas.
-6. El editor permite generar contenido estructurado.
-7. Las imágenes pueden subirse a Cloudflare R2.
-8. Actualmente, el MDX generado debe descargarse y posteriormente incorporarse manualmente al repositorio.
+```text
+Usuario
+   ↓
+Cloudflare
+   ↓
+Cloudflare Workers
+   ↓
+Astro SSR
+   ↓
+Contenido MDX
+   ↓
+HTML generado
+   ↓
+Navegador
+```
 
-**Esta última etapa es una limitación arquitectónica importante.**
+---
 
-## Arquitectura
+## 4. Arquitectura
 
 ![Diagrama de arquitectura de PixelPress](/images/projects/pixelpress/architecture.png)
 
-### Relaciones principales
+*Arquitectura general de PixelPress con Astro SSR, Cloudflare Workers, MDX, API, autenticación, almacenamiento R2 e integraciones externas.*
 
-- Astro SSR genera y sirve las páginas.
-- Middleware protege las rutas administrativas.
-- Las API routes gestionan autenticación, posts y uploads.
-- Cloudflare R2 almacena imágenes.
-- MDX mantiene el contenido versionado.
-- Giscus proporciona comentarios mediante GitHub Discussions.
-- AdSense proporciona el mecanismo de monetización.
+### Componentes principales
 
-## Stack tecnológico
+- **Astro SSR** — Renderizado y routing.
+- **Middleware** — Protección de rutas administrativas.
+- **API Routes** — Autenticación, posts y uploads.
+- **React** — Componentes interactivos y editor administrativo.
+- **MDX** — Persistencia editorial versionada.
+- **Zod** — Validación estructural del contenido.
+- **Cloudflare R2** — Almacenamiento de imágenes.
+- **Giscus** — Comentarios mediante GitHub Discussions.
+- **Google AdSense** — Integración de publicidad.
 
-| Tecnología         | Función                            |
-| ------------------ | ---------------------------------- |
-| Astro 7            | Framework principal y SSR          |
-| Cloudflare Workers | Runtime edge                       |
-| TypeScript         | Tipado estático                    |
-| React 19           | Editor administrativo              |
-| Tailwind CSS 4     | Sistema de estilos                 |
-| MDX                | Contenido editorial                |
-| Zod                | Validación del contenido           |
-| Cloudflare R2      | Almacenamiento de imágenes         |
-| Web Crypto API     | Firma y validación JWT             |
-| Giscus             | Sistema de comentarios             |
-| Google AdSense     | Sistema de anuncios                |
-| Wrangler           | Desarrollo y despliegue Cloudflare |
-| pnpm               | Gestión de dependencias            |
+---
 
-## Funcionalidades implementadas
+## 5. Stack Tecnológico
+
+| Tecnología         | Función                           |
+| ------------------ | --------------------------------- |
+| Astro 7            | Framework principal y SSR         |
+| Cloudflare Workers | Runtime edge                      |
+| TypeScript         | Tipado estático                   |
+| React 19           | Componentes interactivos y editor |
+| Tailwind CSS 4     | Estilos                           |
+| MDX                | Contenido editorial               |
+| Zod                | Validación de schemas             |
+| Cloudflare R2      | Almacenamiento de imágenes        |
+| Web Crypto API     | Implementación de JWT             |
+| Giscus             | Comentarios                       |
+| Google AdSense     | Publicidad                        |
+| Wrangler           | Desarrollo y despliegue           |
+| pnpm               | Gestión de dependencias           |
+
+---
+
+## 6. Funcionalidades Implementadas
+
+### Contenido
 
 - Blog bilingüe español/inglés.
-- SSR mediante Astro.
-- Despliegue sobre Cloudflare Workers.
 - Artículos MDX.
-- Validación de contenido mediante Zod.
-- Paginación server-side.
 - Categorías.
 - Artículos destacados.
 - Borradores.
-- Posts relacionados.
+- Artículos relacionados.
+- Paginación server-side.
 - Tabla de contenidos automática.
+- Inserción de vídeos de YouTube.
 - Compartir artículos.
-- Dark mode / Light mode.
-- View Transitions.
-- Página 404 personalizada.
-- Página 500 personalizada.
-- Panel administrativo.
+- SEO básico.
+
+### Administración
+
+- Login administrativo.
 - Autenticación mediante JWT.
 - Cookies HttpOnly, Secure y SameSite.
 - Middleware de protección.
 - Dashboard administrativo.
 - Editor rich-text.
+- Generación de contenido MDX.
 - Subida de imágenes a Cloudflare R2.
-- Inserción de vídeos de YouTube.
-- Inserción de marcadores de anuncios.
-- API REST para posts.
-- Sistema de comentarios con Giscus.
-- Sistema de anuncios con diferentes modos.
-- Fuentes autoalojadas.
-- SEO básico.
-- Scripts CLI para creación de posts y subida a R2.
 
-## Funcionalidades parciales / experimentales
+### Interfaz
 
-### Búsqueda
+- Diseño responsive.
+- Dark mode / Light mode.
+- View Transitions.
+- Componentes reutilizables.
+- Páginas 404 y 500 personalizadas.
 
-Existe `SearchBar` y la dependencia Fuse.js, pero la búsqueda todavía no está conectada a una implementación funcional.
+### Integraciones
 
-### Newsletter
+- Cloudflare R2.
+- Giscus.
+- Google AdSense.
 
-La interfaz existe, pero no existe integración con un proveedor de email.
+### CLI
 
-### Editor
+- Scripts para creación de posts.
+- Scripts para subida de imágenes a R2.
 
-El editor funciona mediante `contentEditable` y genera MDX descargable, pero **no existe publicación server-side real**.
+### Funcionalidades parciales
 
-### Eliminación de artículos
+- **Búsqueda:** existe `SearchBar` y la dependencia Fuse.js, pero la búsqueda todavía no está conectada a una implementación funcional.
+- **Newsletter:** existe la interfaz, pero no hay integración con un proveedor de email.
+- **Eliminación de artículos:** existe el endpoint DELETE, pero actualmente no elimina los archivos MDX del repositorio.
+- **Navegación móvil:** existe el botón de menú, pero la implementación no está completa.
+- **Tiptap:** existen dependencias instaladas, pero el editor actual utiliza `contentEditable`.
 
-El endpoint DELETE existe, pero no elimina realmente los archivos MDX del repositorio.
+---
 
-### Navegación móvil
-
-Existe el botón hamburger, pero el menú móvil no está completamente implementado.
-
-### Tiptap
-
-Existen dependencias de Tiptap, pero no son utilizadas por el editor actual.
-
-## Decisiones técnicas relevantes
+## 7. Decisiones Técnicas Relevantes
 
 ### Astro SSR + Cloudflare Workers
 
-Se utiliza SSR sobre edge en lugar de un sitio completamente estático.
+Se eligió SSR sobre edge computing para ejecutar frontend, middleware y API dentro del mismo entorno.
 
-**Ventaja:** permite ejecutar middleware y API routes junto con el frontend.
+**Ventaja:** permite combinar renderizado, lógica de servidor y endpoints en Cloudflare Workers.
 
-**Trade-off:** introduce dependencia del runtime de Cloudflare y mayor complejidad que un sitio estático convencional.
+**Trade-off:** introduce dependencia del runtime de Cloudflare y mayor complejidad frente a un sitio completamente estático.
 
 ### JWT mediante Web Crypto API
 
-La autenticación utiliza `crypto.subtle` para implementar HS256 sin depender de una librería externa.
+La autenticación utiliza `crypto.subtle` para implementar HMAC-SHA256 sin incorporar una biblioteca criptográfica adicional.
 
 **Ventaja:** utiliza APIs nativas compatibles con Workers.
 
-**Trade-off:** mantener criptografía manual aumenta la responsabilidad del proyecto frente a utilizar una librería especializada y ampliamente auditada.
+**Trade-off:** implementar manualmente componentes de autenticación aumenta la responsabilidad de mantenimiento y requiere una revisión de seguridad más cuidadosa que una solución especializada.
 
-### MDX como almacenamiento de contenido
+### MDX como almacenamiento editorial
 
-Los artículos permanecen versionados dentro del repositorio.
+Los artículos permanecen dentro del repositorio y forman parte del historial de Git.
 
-**Ventaja:** historial mediante Git, estructura reproducible y validación mediante schemas.
+**Ventaja:** contenido versionado, reproducible y validable.
 
-**Trade-off:** el contenido no puede publicarse completamente desde el panel administrativo.
+**Trade-off:** publicar contenido requiere modificar el repositorio y desplegar una nueva versión.
 
-### Tailwind CSS v4 CSS-first
+### Tailwind CSS 4
 
-La configuración de Tailwind se realiza directamente mediante CSS.
+Se utiliza el modelo CSS-first de Tailwind CSS 4.
 
-**Ventaja:** reduce la configuración JavaScript específica de Tailwind.
+**Ventaja:** mantiene gran parte de la configuración directamente en CSS.
 
-**Trade-off:** requiere familiaridad con el nuevo modelo de configuración.
+**Trade-off:** requiere trabajar con el nuevo modelo de configuración de Tailwind.
 
-### i18n mediante rutas duplicadas
+### Rutas independientes por idioma
 
-Se mantienen estructuras `/` y `/en/`.
+El contenido español e inglés utiliza estructuras de rutas diferenciadas.
 
 **Ventaja:** control explícito sobre el contenido de cada idioma.
 
-**Trade-off:** introduce duplicación y aumenta el coste de mantenimiento.
+**Trade-off:** aumenta el mantenimiento y puede introducir duplicación estructural.
 
-## Seguridad
+---
 
-### Implementado
+## 8. Seguridad
+
+### Controles implementados
 
 - JWT firmado mediante HMAC-SHA256.
 - Expiración de tokens.
@@ -236,70 +264,61 @@ Se mantienen estructuras `/` y `/en/`.
 - SameSite=Strict.
 - Middleware para proteger `/admin`.
 - Protección de API routes.
-- Validación de contenido MDX mediante Zod.
+- Validación de contenido mediante Zod.
 
 ### Limitaciones identificadas
 
-- Sin rate limiting en login.
-- Sin protección CSRF explícita.
-- Comparación directa de contraseñas.
-- Sin validación suficiente del tamaño/tipo de archivos subidos.
-- Sin refresh tokens.
-- Posible exposición de detalles internos de errores.
-- Gestión manual de JWT.
+- No existe rate limiting para login.
+- No existe protección CSRF explícita documentada.
+- Las credenciales requieren una comparación más robusta.
+- La validación de uploads puede fortalecerse.
+- No existen tests automatizados de autenticación.
+- La gestión manual de JWT aumenta la superficie de mantenimiento.
 
-### Mejoras prioritarias
+### Prioridades
 
-1. Rate limiting del login.
-2. Comparación de credenciales timing-safe.
-3. Validación estricta de uploads.
-4. Eliminación de detalles internos de errores.
-5. Tests automatizados para autenticación y API.
+1. Añadir rate limiting al login.
+2. Utilizar comparación timing-safe de credenciales.
+3. Validar estrictamente tamaño y tipo de archivos.
+4. Evitar exponer detalles internos en respuestas de error.
+5. Añadir tests de autenticación y API.
 
-## Testing y calidad
+---
 
-Actualmente:
+## 9. Calidad y Estado Actual
 
-- No existen tests unitarios.
-- No existen tests de integración.
-- No existen tests E2E.
-- No existe cobertura.
-- No existe CI/CD.
-- No existe una configuración completa de linting automatizado.
+### Testing
 
-TypeScript utiliza configuración estricta, aunque el proyecto configura `ignoreBuildErrors: true`.
+Actualmente no existen:
 
-**Esto debería considerarse deuda técnica**, porque permitir que el build ignore errores de TypeScript reduce la capacidad del proyecto para detectar problemas antes del despliegue.
+- Tests unitarios.
+- Tests de integración.
+- Tests E2E.
+- Cobertura automatizada.
+- Pipeline CI/CD.
 
-## Experiencia de usuario
+TypeScript utiliza configuración estricta, aunque el proyecto mantiene `ignoreBuildErrors: true`.
 
-La interfaz utiliza una estética inspirada en videojuegos retro/pixel-art.
+Esto constituye **deuda técnica**, porque permite desplegar aunque existan errores de TypeScript.
 
-### Principales vistas
+### Estado
 
-- Homepage.
-- Blog.
-- Categorías.
-- Artículo individual.
-- Login administrativo.
-- Dashboard.
-- Editor.
-- Páginas 404/500.
+#### Clasificación: proof of concept
 
-### Responsive
+La base funcional del proyecto está implementada, pero todavía existen capacidades incompletas:
 
-- Grid adaptable.
-- Sidebar oculta en móvil.
-- Layout administrativo adaptable.
-- Header responsive.
+- Publicación completamente automatizada.
+- Búsqueda.
+- Newsletter.
+- Navegación móvil completa.
+- Eliminación real de artículos.
+- Tests automatizados.
+- CI/CD.
+- Hardening de autenticación.
 
-Sin embargo, el menú móvil todavía está incompleto.
+Por tanto, **no debe presentarse como una plataforma editorial terminada**, sino como un proyecto full-stack en desarrollo con una base funcional significativa.
 
-## Métricas
-
-No existen métricas de rendimiento o uso verificables suficientes para presentar como resultados.
-
-Datos observables:
+### Datos observables
 
 - ~20 componentes Astro/React.
 - ~15 rutas considerando ambos idiomas.
@@ -309,113 +328,68 @@ Datos observables:
 - 16 dependencias de producción.
 - 10 dependencias de desarrollo.
 
-No recomendaría convertir estos números en supuestos indicadores de calidad. Son simplemente métricas de tamaño del proyecto.
+Estas cifras describen el tamaño del proyecto, no su calidad ni rendimiento.
 
-## Estado actual
+---
 
-### Clasificación: Active Development
+## 10. Evidencia Visual
 
-El proyecto tiene una base funcional considerable, pero todavía presenta características incompletas:
-
-- Publicación completamente automatizada.
-- Búsqueda.
-- Newsletter.
-- Menú móvil.
-- Eliminación real de posts.
-- Tests.
-- CI/CD.
-- Hardening de autenticación.
-- Integración completa de algunas dependencias instaladas.
-
-Por tanto, **no lo presentaría como producto terminado**.
-
-## Limitaciones principales
-
-- El editor no publica directamente en producción.
-- La búsqueda no está implementada.
-- Newsletter sin backend.
-- Sin tests.
-- Sin CI/CD.
-- Login sin rate limiting.
-- Menú móvil incompleto.
-- DELETE no elimina realmente contenido.
-- Dependencias sin utilizar.
-- Duplicación de rutas por idioma.
-- Sitemap pendiente.
-- Footer con enlaces genéricos.
-
-## Evolución futura
-
-Priorizaría las mejoras en este orden:
-
-1. **Completar el flujo de publicación.**
-2. **Añadir tests para autenticación y API.**
-3. **Implementar rate limiting.**
-4. **Validar correctamente los uploads.**
-5. **Implementar búsqueda con Fuse.js**, reutilizando la dependencia existente.
-6. **Completar navegación móvil.**
-7. **Configurar CI/CD.**
-8. Implementar newsletter.
-9. Generar sitemap automáticamente.
-10. Evaluar reemplazar `contentEditable` por Tiptap.
-
-No introduciría nuevas tecnologías antes de resolver las capacidades incompletas que ya existen.
-
-## Qué demuestra este proyecto
-
-- Desarrollo full-stack con Astro.
-- SSR sobre edge computing.
-- Cloudflare Workers.
-- Diseño de API REST.
-- Autenticación JWT.
-- Cookies seguras.
-- Middleware de autorización.
-- Web Crypto API.
-- Gestión de contenido mediante MDX.
-- Validación con Zod.
-- Editor rich-text.
-- Integración React + Astro.
-- Cloudflare R2.
-- Internacionalización.
-- Tailwind CSS v4.
-- Integración con servicios externos.
-- Diseño de componentes reutilizables.
-- Arquitectura orientada a contenido.
-
-## Clasificación
-
-### Active Development
-
-Proyecto con una base funcional considerable pero con múltiples capacidades incompletas. No debe presentarse como un producto terminado ni como un CMS completamente operativo.
-
-## Visuales
-
-<!-- IMAGE 01 — Homepage -->
+### Homepage
 
 ![Homepage con artículo destacado y grid de artículos](/images/projects/pixelpress/homepage.png)
 
-_Visita principal con el artículo destacado (GTA VI) y el grid de los últimos artículos organizados por categoría._
+*Artículo destacado y grid de publicaciones organizadas por categoría.*
 
-<!-- IMAGE 02 — Blog -->
+### Blog
 
-![Listado del blog con barra de búsqueda](/images/projects/pixelpress/blog.png)
+![Listado del blog](/images/projects/pixelpress/blog.png)
 
-_Página de listado completo del blog con barra de búsqueda, grid de artículos y paginación._
+*Listado de artículos con navegación y paginación.*
 
-<!-- IMAGE 03 — Artículo -->
+### Artículo
 
-![Artículo individual con TOC, anuncios y comentarios](/images/projects/pixelpress/article.png)
+![Artículo individual](/images/projects/pixelpress/article.png)
 
-_Vista de un artículo individual mostrando tabla de contenido, contenido MDX, anuncios integrados, artículos relacionados y botones de compartir._
+*Vista individual con contenido MDX, tabla de contenidos, artículos relacionados, anuncios y comentarios.*
 
-<!-- IMAGE 04 — Admin Login -->
+### Administración
 
-![Panel de login de administración](/images/projects/pixelpress/admin-login.png)
+![Panel de login](/images/projects/pixelpress/admin-login.png)
 
-_Formulario de autenticación del panel administrativo con campo de contraseña y botón de inicio de sesión._
+*Interfaz de autenticación del panel administrativo.*
 
-<!-- IMAGE 05 — Arquitectura -->
+### Arquitectura
 
 ![Diagrama de arquitectura de PixelPress](/images/projects/pixelpress/architecture.png)
 
-_Diagrama de la arquitectura completa: Cloudflare Workers, Astro SSR, MDX Content, JWT Auth, API Routes, Cloudflare R2, Browser, Giscus y AdSense._
+*Arquitectura completa del sistema y sus integraciones.*
+
+---
+
+## 11. Limitaciones y Evolución
+
+### Limitaciones actuales
+
+- El editor no publica directamente en producción.
+- La búsqueda todavía no está implementada.
+- Newsletter sin proveedor de email.
+- Sin tests automatizados.
+- Sin CI/CD.
+- Login sin rate limiting.
+- Menú móvil incompleto.
+- DELETE no elimina realmente los archivos MDX.
+- Existen dependencias instaladas que actualmente no se utilizan.
+- Las rutas bilingües requieren mantenimiento separado.
+
+### Evolución prioritaria
+
+1. Completar el flujo de publicación.
+2. Implementar tests de autenticación y API.
+3. Añadir rate limiting.
+4. Fortalecer validación de uploads.
+5. Implementar búsqueda reutilizando Fuse.js.
+6. Completar navegación móvil.
+7. Configurar CI/CD.
+8. Automatizar sitemap y procesos editoriales.
+
+La prioridad debe ser **completar las capacidades existentes antes de introducir nuevas tecnologías o patrones arquitectónicos**.

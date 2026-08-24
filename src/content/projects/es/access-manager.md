@@ -4,7 +4,6 @@ description: "Proyecto de estudio de autenticación backend que implementa y com
 subtitle: "Comparación práctica de arquitecturas de autenticación"
 stack: "Java 21, Spring Boot, Spring Security, JPA, MySQL, Docker"
 github: "https://github.com/HC-ONLINE/AccessManager"
-site: null
 ---
 
 ## 1. Resumen

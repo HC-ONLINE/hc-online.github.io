@@ -4,7 +4,6 @@ description: "API asíncrona para orquestar múltiples proveedores LLM mediante 
 subtitle: "Orquestación multi-proveedor LLM e infraestructura backend"
 stack: "Python, FastAPI, Pydantic, HTTPX, Redis, Docker, GitHub Actions"
 github: "https://github.com/HC-ONLINE/ModelRouter"
-site: null
 ---
 
 ## 1. Resumen

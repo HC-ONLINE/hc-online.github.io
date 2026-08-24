@@ -4,7 +4,6 @@ description: "RBAC authorization study built with Spring Boot and Spring Securit
 subtitle: "Role-based and policy-oriented authorization"
 stack: "Java 21, Spring Boot, Spring Security, JPA, MySQL, Docker"
 github: "https://github.com/HC-ONLINE/PermissionManager"
-site: null
 ---
 
 ## 1. Summary

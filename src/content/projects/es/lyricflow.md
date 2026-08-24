@@ -3,8 +3,8 @@ title: "LyricFlow"
 description: "Reproductor de música web con letras sincronizadas en tiempo real, visualización de audio mediante Canvas y Web Audio API, múltiples temas visuales y un pipeline CLI para preparar contenido."
 subtitle: "Reproductor multimedia con letras sincronizadas y visualización de audio"
 stack: "Next.js, React, TypeScript, Tailwind CSS, Web Audio API, Canvas"
-github: "[https://github.com/HC-ONLINE/LyricFlow](https://github.com/HC-ONLINE/LyricFlow)"
-site: "[https://lyric-flow-lime.vercel.app](https://lyric-flow-lime.vercel.app)"
+github: "https://github.com/HC-ONLINE/LyricFlow"
+site: "https://lyric-flow-lime.vercel.app"
 ---
 
 ## 1. Resumen

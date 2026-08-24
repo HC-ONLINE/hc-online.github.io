@@ -3,8 +3,8 @@ title: "LyricFlow"
 description: "Web music player with real-time synchronized lyrics, Canvas and Web Audio API visualization, multiple visual themes, and a CLI pipeline for content preparation."
 subtitle: "Multimedia player with synchronized lyrics and audio visualization"
 stack: "Next.js, React, TypeScript, Tailwind CSS, Web Audio API, Canvas"
-github: "[https://github.com/HC-ONLINE/LyricFlow](https://github.com/HC-ONLINE/LyricFlow)"
-site: "[https://lyric-flow-lime.vercel.app](https://lyric-flow-lime.vercel.app)"
+github: "https://github.com/HC-ONLINE/LyricFlow"
+site: "https://lyric-flow-lime.vercel.app"
 ---
 
 ## 1. Summary

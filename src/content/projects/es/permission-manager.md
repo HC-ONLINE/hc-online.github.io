@@ -4,7 +4,6 @@ description: "Estudio técnico de autorización RBAC construido con Spring Boot 
 subtitle: "Autorización basada en roles y políticas"
 stack: "Java 21, Spring Boot, Spring Security, JPA, MySQL, Docker"
 github: "https://github.com/HC-ONLINE/PermissionManager"
-site: null
 ---
 
 ## 1. Resumen

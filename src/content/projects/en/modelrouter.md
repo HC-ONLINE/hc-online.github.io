@@ -4,7 +4,6 @@ description: "Asynchronous API for orchestrating multiple LLM providers through 
 subtitle: "Multi-provider LLM orchestration and backend infrastructure"
 stack: "Python, FastAPI, Pydantic, HTTPX, Redis, Docker, GitHub Actions"
 github: "https://github.com/HC-ONLINE/ModelRouter"
-site: null
 ---
 
 ## 1. Overview

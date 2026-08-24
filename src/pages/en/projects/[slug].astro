@@ -403,6 +403,13 @@ const icons: Record<string, string> = {
     background: var(--color-bg-card-hover);
   }
 
+  .content-styles :global(hr) {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-accent), transparent);
+    margin: 2.5rem 0;
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;

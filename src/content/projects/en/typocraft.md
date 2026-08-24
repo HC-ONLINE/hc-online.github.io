@@ -1,99 +1,117 @@
 ---
 title: "TypoCraft"
-description: "Interactive Markdown editor with real-time preview that transforms the same content through three distinct typographic systems"
+description: "Interactive Markdown editorial experience that transforms the same content through three visually distinct typographic systems."
 subtitle: "Same content, three completely different reading experiences"
 stack: "Astro 7.x, React 19, TypeScript 5.7, Tailwind CSS 4.x, Marked"
 github: "https://github.com/HC-ONLINE/TypoCraft"
 site: "https://hc-online.github.io/TypoCraft/"
 ---
 
-## Overview
+## 1. Summary
 
-TypoCraft is an interactive Markdown editor with real-time preview that transforms the same content through three distinct typographic systems: **Manuscript, Modernist, and Deep Night**.
+**TypoCraft** is an interactive editorial experience that allows users to write Markdown and preview it in real time through three different typographic systems: **Manuscript**, **Modernist**, and **Deep Night**.
 
-Each theme combines different typography, colors, spacing, composition, and decorative elements to demonstrate how typographic decisions can radically change the perception of identical content.
+The content remains unchanged while its visual presentation changes completely. Each system combines different typography, colors, spacing, composition, and decorative elements to demonstrate how design decisions can transform the reading experience without modifying the underlying content.
 
-Built with **Astro, React, TypeScript, and Tailwind CSS**, the application runs entirely in the browser and is deployed as a static site on GitHub Pages.
+Built with **Astro, React, TypeScript, and Tailwind CSS**, the project runs entirely in the browser and is deployed as a static application through GitHub Pages.
 
-## Context / Problem
+| 3              | 4                | 1         | ~560      |
+| -------------- | ---------------- | --------- | --------- |
+| visual systems | React components | main page | TSX lines |
 
-### Technical Objective
+---
 
-Build a browser-based Markdown editor capable of rendering content in real time through multiple visual and typographic systems.
+## 2. Objective
 
-### Design Objective
+TypoCraft was developed as a technical and visual exploration of the relationship between **content, typography, and interface design**.
 
-Explore the relationship between **writing and visual design**, demonstrating how the presentation layer can significantly change the reading experience without changing the underlying content.
+The technical objective was to build an application capable of:
 
-TypoCraft does not address a specific business problem or attempt to operate as a CMS or SaaS platform. It is primarily a **frontend design and technical exploration**.
+- Editing Markdown directly in the browser.
+- Rendering content in real time.
+- Preserving the same content while switching themes.
+- Applying radically different visual systems through CSS.
+- Maintaining a lightweight static frontend architecture.
+- Adapting the experience to desktop and mobile devices.
 
-## Solution
+The project is not intended to be a CMS or SaaS platform. Its primary purpose is to demonstrate **frontend development, editorial composition, theming, and interaction design**.
 
-TypoCraft uses a split-pane interface:
+---
 
-- **Editor:** Markdown textarea with line numbers and content statistics.
-- **Preview:** Live HTML rendering of the current Markdown content.
+## 3. Solution
 
-Users can switch between three themes without losing their content.
+The application uses a split interface with two main areas:
+
+- **Editor:** allows users to enter Markdown and displays content statistics.
+- **Preview:** immediately converts the Markdown into HTML and applies the selected visual system.
+
+Users can switch between three experiences:
 
 ### Manuscript
 
-A classical editorial system featuring serif typography, parchment-like backgrounds, drop caps, and decorative elements.
+A system inspired by classical editorial publications, using serif typography, parchment-like backgrounds, drop caps, and ornamental elements.
 
 ### Modernist
 
-A clean contemporary editorial layout based on a floating A4 page, sans-serif typography, and minimal visual hierarchy.
+A contemporary editorial composition based on a floating A4 page, sans-serif typography, and minimal visual hierarchy.
 
 ### Deep Night
 
-A dark interface inspired by developer environments, featuring a browser-window mockup and a code-editor aesthetic.
+A dark interface inspired by development tools, featuring a simulated browser window and a code-editor aesthetic.
 
-### Data flow
+### Processing Flow
 
 ```text
 User Markdown
-     ↓
+      ↓
 React State
-     ↓
+      ↓
 marked
-     ↓
+      ↓
 Generated HTML
-     ↓
+      ↓
 Selected Theme
-     ↓
+      ↓
 Typographic Preview
-```
+````
 
 All processing occurs locally in the browser.
 
-## Architecture
+---
 
-TypoCraft follows a lightweight client-side architecture:
+## 4. Architecture
 
 ![TypoCraft architecture diagram](/images/projects/typocraft/architecture.png)
 
-_Architecture diagram: GitHub Pages, Astro build, React island, components, marked, CSS themes, and browser output._
+*Architecture diagram: GitHub Pages, Astro, React, components, marked, CSS systems, and browser.*
 
-There is no backend, API, database, authentication layer, or remote storage.
+TypoCraft uses a frontend-only architecture without a backend:
 
-Astro provides the static application shell while React handles the interactive experience through client-side hydration.
+- **Astro** generates the static application shell.
+- **React** manages application state and interaction.
+- **marked** converts Markdown into HTML.
+- **CSS and Tailwind** provide the visual systems.
+- **GitHub Pages** serves the generated application.
 
-## Technology Stack
+There is no API, database, authentication layer, or remote storage.
 
-### Frontend
+This architecture keeps the project lightweight and appropriate for a static interactive experience.
 
-| Technology       | Purpose                            |
-| ---------------- | ---------------------------------- |
-| Astro 7.x        | Static shell, routing, and build   |
-| React 19         | Interactivity and state management |
-| TypeScript 5.7   | Static typing                      |
-| Tailwind CSS 4.x | Styling and responsive design      |
+---
 
-### Markdown Processing
+## 5. Technology Stack
 
-| Technology  | Purpose                  |
-| ----------- | ------------------------ |
-| marked 18.x | Markdown-to-HTML parsing |
+| Technology       | Purpose                               |
+| ---------------- | ------------------------------------- |
+| Astro 7.x        | Static shell, routing, and generation |
+| React 19         | Interactivity and state management    |
+| TypeScript 5.7   | Static typing                         |
+| Tailwind CSS 4.x | Styling and responsive design         |
+| marked 18.x      | Markdown processing                   |
+| Vite             | Build tooling                         |
+| pnpm             | Package management                    |
+| GitHub Actions   | Deployment automation                 |
+| GitHub Pages     | Static hosting                        |
 
 ### Typography
 
@@ -103,212 +121,200 @@ Astro provides the static application shell while React handles the interactive 
 - Crimson Pro
 - Material Symbols
 
-### Build & Deployment
+---
 
-- pnpm
-- GitHub Actions
-- GitHub Pages
-- Vite
-
-The deployment pipeline automatically builds and deploys the application when changes are pushed to `main`.
-
-## Implemented Features
+## 6. Features
 
 - Real-time Markdown editor and preview.
 - Three visual systems: Manuscript, Modernist, and Deep Night.
-- Theme switching without content loss.
-- Dynamic line numbers.
+- Theme switching without losing content.
+- Dynamic line numbering.
 - Character counter.
 - Line counter.
-- Responsive layout.
-- Theme-specific custom scrollbars.
 - Theme-specific Markdown rendering.
-- Drop caps and decorative elements in Manuscript.
+- Custom scrollbars.
+- Drop caps and ornamentation in Manuscript.
 - Floating A4 composition in Modernist.
-- Browser-window mockup in Deep Night.
-- "Live Render" status indicator.
-- Responsive theme navigation.
-- Automated GitHub Actions deployment.
+- Simulated browser window in Deep Night.
+- Real-time rendering indicator.
+- Responsive layout.
+- Desktop and mobile navigation.
+- Automated deployment through GitHub Actions.
 
-## Key Technical Decisions
+---
+
+## 7. Key Technical Decisions
 
 ### Astro + React
 
-Astro provides the static shell while React is used for the interactive application.
+Astro provides the static application shell while React is used for the interactive experience.
 
-**Advantage:** static delivery with JavaScript limited to the interactive portion.
+**Advantage:** keeps delivery static and concentrates JavaScript where interaction is required.
 
-**Trade-off:** the application concentrates most of its interaction inside a single React island, so Astro's island architecture is not fully leveraged.
+**Trade-off:** most of the interactive experience currently resides inside a single React island, so the project does not fully leverage Astro's islands architecture.
 
 ### `marked`
 
-Used to convert Markdown into HTML in real time.
+`marked` is used to transform Markdown into HTML during editing.
 
-**Advantage:** lightweight and straightforward API.
+**Advantage:** straightforward API and direct client-side processing.
 
-**Trade-off:** no built-in syntax highlighting and requires sanitization if content is eventually stored or shared.
+**Trade-off:** generated HTML requires sanitization if the content is eventually stored, shared, or published.
 
-### CSS-based theming
+### CSS-based Theming
 
-Themes are applied using CSS classes and variables.
+Visual systems are implemented through CSS classes and variables.
 
-**Advantage:** allows substantial visual changes without modifying the Markdown content or core rendering logic.
+**Advantage:** allows substantial visual changes without modifying the content or core processing flow.
 
-**Trade-off:** adding a new theme currently requires manual changes across CSS and multiple components.
+**Trade-off:** adding a new visual system currently requires changes across components and associated styles.
 
-### No persistence
+### No Persistence
 
-Content only exists in application state.
+Content exists only in application state.
 
-**Advantage:** keeps the demo simple.
+**Advantage:** keeps the architecture simple and free from external storage dependencies.
 
 **Trade-off:** content is lost when the page is refreshed.
 
-## Security
+---
+
+## 8. Security and Quality
+
+### Security
 
 The application has no backend and does not transmit user-entered content.
 
-The attack surface is therefore limited.
+The preview uses `dangerouslySetInnerHTML` to insert HTML generated by `marked`. In the current architecture, content remains local and there is no persistence or remote content exchange.
 
-### Important consideration
+If storage, publishing, or document sharing were introduced, HTML sanitization would be required before rendering untrusted content.
 
-The preview uses `dangerouslySetInnerHTML` to render the HTML generated by `marked`.
+### Current Quality Controls
 
-This is acceptable for the current local-only implementation. If content sharing or persistence were introduced, HTML sanitization would become necessary.
+Currently there are no:
 
-## Testing & Quality
+- Unit tests.
+- Integration tests.
+- E2E tests.
+- Automated coverage.
+- Automated linting.
 
-Currently:
+GitHub Actions currently automates the build and deployment process.
 
-- No unit tests.
-- No integration tests.
-- No E2E tests.
-- No code coverage.
-- No automated linting.
-- CI does not run a separate type-checking or linting step.
+These capabilities are part of the technical evolution of the project and are not currently implemented features.
 
-The Astro build currently acts as the primary automated quality gate.
+---
 
-## User Experience
+## 9. User Experience
 
-### Structure
-
-TypoCraft uses a full-viewport interface composed of:
+The interface uses almost the entire viewport and is organized around two primary elements:
 
 - Markdown editor.
-- Live preview.
-- Fixed navigation bar.
-- Theme selector.
+- Real-time preview.
 
-### Responsive
+### Desktop
 
-**Desktop:** editor and preview appear side by side.
+The editor and preview are displayed side by side.
 
-**Mobile:** both panels switch to a vertically stacked layout.
+### Mobile
 
-The navigation also adapts the theme selector to use circular controls on smaller screens.
+The panels switch to a vertically stacked composition and theme controls adapt to the available space.
 
 ### Interaction
 
-Each modification to the Markdown immediately updates the preview.
+Every Markdown modification immediately updates the preview.
 
 Theme changes happen instantly while preserving the current content.
 
-## Visuals
+The central UX concept is that **users can experiment with different visual decisions without changing the content they are writing**.
+
+---
+
+## 10. Visual Evidence
 
 <!-- IMAGE 01 — Modernist -->
 
 ![Editor and preview with Modernist theme](/images/projects/typocraft/modernist.png)
 
-_Full view with the Modernist theme: Markdown editor on the left, floating A4 page preview on the right._
+*Full view of the Modernist system: Markdown editor on the left and floating A4 composition on the right.*
 
 <!-- IMAGE 02 — Manuscript -->
 
 ![Manuscript theme with drop caps and ornamentation](/images/projects/typocraft/manuscript.png)
 
-_Manuscript theme view showing serif typography, parchment-like background, decorative drop cap, and ornamental elements._
+*Manuscript system showing serif typography, parchment-like background, decorative drop cap, and ornamental elements.*
 
 <!-- IMAGE 03 — Deep Night -->
 
 ![Deep Night theme with browser chrome mockup](/images/projects/typocraft/deepnight.png)
 
-_Deep Night theme with code-editor aesthetic, simulated browser window, and dark color palette._
+*Deep Night system with code-editor aesthetics, simulated browser window, and dark composition.*
 
-## Metrics
+---
 
-No verified performance, Lighthouse, bundle-size, coverage, or benchmark metrics were found in the repository.
-
-Observable project data:
-
-- 4 React components.
-- 1 Astro layout.
-- 1 main page.
-- 3 visual systems.
-- ~560 lines of TSX.
-- ~187 lines of CSS.
-- Static deployment through GitHub Pages.
-
-## Current Status
+## 11. Current Status
 
 ### Classification: Demo / Proof of Concept
 
-The classification is supported by:
+TypoCraft currently demonstrates:
 
-- Version `0.1.0`.
-- No persistence.
-- No backend.
-- No automated tests.
-- Unused dependencies.
-- No export functionality.
-- No collaboration features.
-- Demo-oriented GitHub Pages deployment.
+- Frontend development with Astro and React.
+- Visual system design.
+- Real-time Markdown processing.
+- Editorial and typographic design.
+- Responsive design.
+- React integration through Astro Islands.
+- Automated build and deployment.
 
-The project is best presented as a **frontend, typography, and interaction showcase**, rather than a production-ready Markdown editor.
+It is not presented as a production-ready Markdown editor because it currently lacks persistence, export functionality, collaboration, and an automated testing suite.
 
-## Limitations
+---
+
+## 12. Limitations and Evolution
+
+### Current Limitations
 
 - Content is lost on refresh.
-- No Markdown/HTML/PDF export.
+- No Markdown, HTML, or PDF export.
 - No syntax highlighting.
 - No collaboration.
 - No automated tests.
-- No CI linting.
-- Unused dependencies remain.
+- No independent linting step in CI.
+- Some dependencies require review.
 - New themes require manual implementation.
-- HTML output is not sanitized.
-- Some theme configuration is duplicated between React and CSS.
-- No local or remote persistence.
+- Generated HTML is not sanitized.
+- Some visual configuration is duplicated between React and CSS.
 
-## Future Evolution
+### Proposed Evolution
 
-Potential improvements include:
+1. Add local persistence using `localStorage` or IndexedDB.
+2. Add Markdown, HTML, and PDF export.
+3. Add syntax highlighting.
+4. Make editor and preview panes resizable.
+5. Add in-document search.
+6. Move themes toward a more declarative configuration.
+7. Add automated tests.
+8. Add HTML sanitization.
+9. Review and remove unnecessary dependencies.
+10. Add automated vulnerability analysis to the pipeline.
 
-- Local persistence using `localStorage` or IndexedDB.
-- Markdown, HTML, and PDF export.
-- Syntax highlighting with Shiki.
-- Resizable editor/preview panes.
-- In-editor search.
-- Configuration-driven theme system.
-- Visual theme builder.
-- Component testing with Vitest and React Testing Library.
-- HTML sanitization.
-- Dependency cleanup.
-- Automated dependency vulnerability scanning.
+Evolution should prioritize improving existing capabilities before introducing additional technologies.
 
-No formal roadmap is currently documented in the repository.
+---
 
-## What This Project Demonstrates
+## 13. What This Project Demonstrates
 
-TypoCraft demonstrates:
+TypoCraft demonstrates practical experience with:
 
 - **Astro + React frontend architecture.**
 - **React state management.**
-- **Astro Islands integration.**
+- **Astro Islands.**
 - **Responsive interface design.**
 - **CSS-based visual systems.**
-- **Advanced theming with CSS variables and classes.**
+- **Theming through variables and classes.**
 - **Real-time Markdown processing.**
 - **Typography and editorial composition.**
-- **Reusable component architecture.**
-- **Automated build and deployment with GitHub Actions.**
+- **Reusable interface components.**
+- **GitHub Actions automation.**
 - **Static deployment through GitHub Pages.**
+- **Separation between content, processing logic, and visual presentation.**
